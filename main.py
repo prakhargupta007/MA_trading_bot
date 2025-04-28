@@ -3,7 +3,7 @@ from config import TICKER,  SMA_LONG_PERIOD, SMA_SHORT_PERIOD, RSI_PERIOD, MACD_
 from data.fetch_data import fetch_data
 from strategy.combined_strategy import generate_signals
 from backtest.backtester import backtest_strategy
-from backtest.backtest_table import create_backtest_table
+from backtest.backtest_table import create_and_save_backtest_table
 from indicators.sma import calculate_sma
 
 def main():
@@ -22,7 +22,7 @@ def main():
     print('results of backtesting generated successfully')
 
     print('Showing results...')
-    backtest_table = create_backtest_table(results_of_backtesting, TICKER)
+    backtest_table = create_and_save_backtest_table(results_of_backtesting, TICKER)
     print(f"backtest table printed successfully")
 
     print('Showing results...')

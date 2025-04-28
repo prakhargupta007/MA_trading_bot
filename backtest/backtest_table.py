@@ -1,12 +1,19 @@
 import csv 
 from tabulate import tabulate 
 import pandas as pd
+import os
 
-def create_backtest_table(backtesting_results, ticker):
+from config import FOLDER_PATH
+
+def create_and_save_backtest_table(backtesting_results, ticker):
     actions, dates, numbers, prices, cash_flows = backtesting_results
 
+    os.makedirs(FOLDER_PATH, exist_ok=True)
+
     file_name = f'Backtesting table of {ticker}.csv'
-    with open(file_name, mode='w', newline='') as file:
+    full_path = os.path.join(FOLDER_PATH, file_name)
+
+    with open(full_path, mode='w', newline='') as file:
         writer = csv.writer(file)
         # Write the header
         writer.writerow(['Action', 'Date', 'Number of Stocks', 'Price per Stock', 'Cash Flow'])
@@ -20,3 +27,4 @@ def create_backtest_table(backtesting_results, ticker):
     backtest_table = tabulate(df, headers='keys', tablefmt='grid')
 
     return backtest_table
+

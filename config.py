@@ -22,3 +22,7 @@ BACKTESTING_PERIOD = '10y'
 
 TRANSACTION_FEE_PER_STOCK = 0.05
 MINIMUM_TRANSACTION_FEE = 1 
+
+#The folder path in which the cretaed backtest_table should be saved in. 
+# maybe a 'r' is needed, if this doesn't work
+FOLDER_PATH = '/Users/prakhar/MA_trading_bot/trial_files_backtesting'
