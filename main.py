@@ -22,7 +22,7 @@ def main():
     print('results of backtesting generated successfully')
 
     print('Showing results...')
-    backtest_table = create_backtest_table(results_of_backtesting)
+    backtest_table = create_backtest_table(results_of_backtesting, TICKER)
     print(f"backtest table printed successfully")
 
     print('Showing results...')
