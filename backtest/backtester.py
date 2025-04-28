@@ -10,25 +10,24 @@ def backtest(data, signals, sma_long_period, sma_series_length, starting_balance
 
     for i in range(sma_long_period-1,sma_series_length):
         price_of_stock = data['Close'].iloc[i]
-        for signal in signals:
-            if signal == 'BUY':
-                n_stocks_bought = (starting_balance) / price_of_stock
-                starting_balance -= (n_stocks_bought * price_of_stock)
+        if signals[i] == 'BUY':
+            n_stocks_bought = (starting_balance) / price_of_stock
+            starting_balance -= (n_stocks_bought * price_of_stock)
                 
-                list_price_per_stock.append(round(price_of_stock,2))
-                list_number_of_stocks.append(round(n_stocks_bought,2))
-                list_total_cash_flow.append(round(starting_balance*(-1),2))
+            list_price_per_stock.append(round(price_of_stock,2))
+            list_number_of_stocks.append(round(n_stocks_bought,2))
+            list_total_cash_flow.append(round(starting_balance*(-1),2))
             
-            elif signal == 'SELL':
-                n_stocks_sold = starting_balance / price_of_stock
-                starting_balance += (n_stocks_sold * price_of_stock)
-            
-                list_price_per_stock.append(round(price_of_stock,2))
-                list_number_of_stocks.append(round(n_stocks_sold * -1))
-                list_total_cash_flow.append(round(starting_balance))
+        elif signals[i] == 'SELL':
+            n_stocks_sold = n_stocks_bought
+            starting_balance += (n_stocks_sold * price_of_stock)
+        
+            list_price_per_stock.append(round(price_of_stock,2))
+            list_number_of_stocks.append(round(n_stocks_sold * -1))
+            list_total_cash_flow.append(round(starting_balance))
 
-            else: 
-                continue
+        else: 
+            continue
                 
             list_actions.append(signal)
             list_dates.append(data.index[i])
