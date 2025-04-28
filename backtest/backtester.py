@@ -8,6 +8,8 @@ def backtest(data, signals, sma_long_period, sma_series_length, starting_balance
     list_price_per_stock = []
     list_total_cash_flow = []
 
+    n_stocks_bought = 0  # Initially, you have 0 stocks
+
     for i in range(sma_long_period-1,sma_series_length):
         price_of_stock = data['Close'].iloc[i]
         if signals[i] == 'BUY':
@@ -25,8 +27,10 @@ def backtest(data, signals, sma_long_period, sma_series_length, starting_balance
             list_price_per_stock.append(round(price_of_stock,2))
             list_number_of_stocks.append(round(n_stocks_sold * -1))
             list_total_cash_flow.append(round(starting_balance))
+            
         list_actions.append(signals[i])
         list_dates.append(data.index[i])
+
     # This check converts your holdings of stock into cash, if your last action was 'BUY' 
     # Here I haven't deducted the transaction_fee as we won't really be making a transaction 
     if signals[-1] == 'BUY':

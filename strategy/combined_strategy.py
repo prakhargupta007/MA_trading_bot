@@ -10,22 +10,21 @@ def generate_signals(bought,data, sma_long_period, sma_short_period, rsi_period,
     macd, macd_signal_line = calculate_macd(data, macd_fast, macd_short, macd_signal)
 
     signals = []
-    for i in range(sma_long_period -1 ,len(data)):
-        decision = 'tbd'
-        if not bought:
-            if sma_short.iloc[i] > sma_long.iloc[i] and rsi > 30 and macd > macd_signal_line:
-                signal = 'BUY'
-           #else: 
-               #signal = 'HOLD'
+    for i in range(sma_long_period - 1, len(data)):
+        # Default signal is 'HOLD'
+        signal = 'HOLD'
         
-        else: #if already bought
-            if sma_short.iloc[i] > sma_long.iloc[i] or rsi > 30 or macd > macd_signal_line:
+        if not bought:
+            if sma_short.iloc[i] > sma_long.iloc[i] and rsi.iloc[i] > 30 and macd.iloc[i] > macd_signal_line.iloc[i]:
+                signal = 'BUY'
+                bought = True  # Set bought to True after buying
+        
+        elif bought:  # Explicitly written , just for better readibility 
+            if sma_short.iloc[i] < sma_long.iloc[i] or rsi.iloc[i] < 30 or macd.iloc[i] < macd_signal_line.iloc[i]:
                 signal = 'SELL'
-                bought = False 
-           #else: 
-               #signal = 'HOLD'
-
-        signals.append(signal)
+                bought = False  # Reset bought to False after selling
+        
+        signals.append(signal)  # Append the signal for this day
 
     return signals
             
