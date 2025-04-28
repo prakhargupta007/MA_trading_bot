@@ -1,6 +1,7 @@
 import pandas as pd
+from indicators.sma import calculate_sma 
 #After first iteration starting_balance essentially becomes current_bank_balance. So technically the varibale name doesnt di complete justice to its function 
-def backtest(data, signals, sma_long_period, sma_series_length, starting_balance):
+def backtest_strategy(data, signals, sma_long_period, starting_balance):
     
     list_actions = []
     list_dates = []
@@ -9,6 +10,7 @@ def backtest(data, signals, sma_long_period, sma_series_length, starting_balance
     list_total_cash_flow = []
 
     n_stocks_bought = 0  # Initially, you have 0 stocks
+    sma_series_length = len(calculate_sma(data, sma_long_period)) 
 
     for i in range(sma_long_period-1,sma_series_length):
         price_of_stock = data['Close'].iloc[i]
