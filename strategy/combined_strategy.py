@@ -26,7 +26,4 @@ def generate_signals(bought,data, sma_long_period, sma_short_period, rsi_period,
         
         signals.append(signal)  # Append the signal for this day
 
-    return signals
-            
-
-
+    return signals    
