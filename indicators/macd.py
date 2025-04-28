@@ -1,5 +1,5 @@
 import pandas as pd
-from ema import * 
+from indicators.ema import calculate_ema
 
 def calculate_macd(data,short_period, long_period, signal_period):
     long_ema = calculate_ema(data,long_period)
