@@ -10,24 +10,24 @@ def main():
     try:
         print(f'Fetching historical data of {TICKER}')
         data = fetch_data(TICKER, BACKTESTING_PERIOD)
-        print('Data fetched successfully!')
+        print('Data fetched successfully!\n\n\n\n')
 
         print('Generating transaction signals based on strategy...')
         bought = False
         signals = generate_signals(bought, data, SMA_LONG_PERIOD, SMA_SHORT_PERIOD,RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD)
-        print('Transaction signals generated successfully')
+        print('Transaction signals generated successfully\n\n\n\n')
 
         print('Backtesting based on strategy...')
         results_of_backtesting = backtest_strategy(data, signals, SMA_LONG_PERIOD, STARTING_BALANCE)
-        print('results of backtesting generated successfully')
+        print('results of backtesting generated successfully\n\n\n\n')
 
         print('Showing results...')
         backtest_table = create_and_save_backtest_table(results_of_backtesting, TICKER)
-        print(f"backtest table printed successfully")
+        print(f"backtest table printed successfully\n\n\n\n")
 
         print('Showing results...')
         print(backtest_table)
-        print(f"backtest table printed successfully")
+        print(f"backtest table printed successfully\n\n\n\n")
 
     except Exception as e:
         print("\n❌ An error occurred:")

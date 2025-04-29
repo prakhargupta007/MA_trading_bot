@@ -10,7 +10,7 @@ def create_and_save_backtest_table(backtesting_results, ticker):
 
     os.makedirs(FOLDER_PATH, exist_ok=True)
 
-    file_name = f'Backtesting table of {ticker}.csv'
+    file_name = f'{ticker}_backtesting_table.csv'
     full_path = os.path.join(FOLDER_PATH, file_name)
 
     with open(full_path, mode='w', newline='') as file:
@@ -23,7 +23,7 @@ def create_and_save_backtest_table(backtesting_results, ticker):
             writer.writerow([action, date, number, price, cash_flow])
 
     print(f'Backtesting procedure of \033[1m{ticker}\033[0m:')
-    df = pd.read_csv(file_name)  # Change: read from the unique file
+    df = pd.read_csv(full_path)  # Change: read from the unique file
     backtest_table = tabulate(df, headers='keys', tablefmt='grid')
 
     return backtest_table
