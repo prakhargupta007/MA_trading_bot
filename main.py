@@ -46,7 +46,7 @@ def main():
 
         print('Calculating metrics...')
         end_balance = return_endbalance()
-        print(f'End balance   {end_balance}')
+        print(f'End balance: {end_balance}')
         print(f'Profit made: {calculate_profit(STARTING_BALANCE, end_balance)}')
         print(f'CAGR: {calculate_cagr(STARTING_BALANCE, float(BACKTESTING_PERIOD), end_balance)}')
         print('metrics calculated successfully\n\n')
