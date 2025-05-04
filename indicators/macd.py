@@ -1,4 +1,3 @@
-import pandas as pd
 from indicators.ema import calculate_ema
 
 def calculate_macd(data,fast_period, slow_period, signal_period):

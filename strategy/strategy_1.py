@@ -6,7 +6,7 @@ def generate_signals(bought,data, sma_long_period, sma_short_period, rsi_period,
     # Calculate indicators
     sma_short = calculate_sma(data, sma_short_period)
     sma_long = calculate_sma(data, sma_long_period)
-    rsi = calculate_rsi(data, rsi_period)
+    rsi = calculate_rsi(data, rsi_period) 
     macd, macd_signal_line = calculate_macd(data, macd_fast, macd_short, macd_signal)
 
     signals = []

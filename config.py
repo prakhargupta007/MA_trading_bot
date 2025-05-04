@@ -1,4 +1,4 @@
-TICKER = "NVDA"  # Example: Apple stock
+TICKER = "TSLA"  # Example: Apple stock
 
 # Strategy parameters
 # For the first step of the strategy i'll either use the EMA paramteres or the SMA paramteres.

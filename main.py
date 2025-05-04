@@ -1,9 +1,13 @@
 
 from config import TICKER,  SMA_LONG_PERIOD, SMA_SHORT_PERIOD, RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, BACKTESTING_PERIOD, STARTING_BALANCE
 from data.fetch_data import fetch_data
-from strategy.combined_strategy import generate_signals
+from strategy.strategy_1 import generate_signals
+
 from backtest.backtester import backtest_strategy
 from backtest.backtest_table import create_and_save_backtest_table
+from backtest.plot_backtest_data import plot_and_show_signals_of_strategy
+from backtest.plot_strategy_1 import plot_and_show_indicators_and_signals_of_strategy_1
+
 import traceback 
 
 def main():
@@ -28,6 +32,11 @@ def main():
         print('Showing results...')
         print(backtest_table)
         print(f"backtest table printed successfully\n\n")
+
+        print('Visualising the used strategy...')
+        #plot_and_show_signals_of_strategy(data,signals,TICKER)
+        plot_and_show_indicators_and_signals_of_strategy_1(data, signals, SMA_LONG_PERIOD, SMA_SHORT_PERIOD,RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, TICKER)
+        print('Plot shown successfully\n\n')
 
     except Exception as e:
         print("\n❌ An error occurred:")
