@@ -3,81 +3,88 @@ from indicators.sma import calculate_sma
 from backtest.transaction_fee import calculate_transaction_fee, get_accurate_number_of_stocks
 
 def backtest_strategy(data, signals, sma_long_period, starting_balance):
+    # define lists for results
     list_actions = []
     list_dates = []
     list_number_of_stocks = []
     list_price_per_stock = []
     list_total_cash_flow = []
 
-    n_stocks_bought = 0  # Initially, you have 0 stocks
+    # define initial parameters
+    n_stocks_bought = 0
     sma_series_length = len(calculate_sma(data, sma_long_period)) 
-    signal_index = 0  # index for tracking position in signals list
-
+    signal_index = 0
     hold_counter = 0
     stay_counter = 0
-    position = False  # False means: No stock held
+    position = False
 
     for i in range(sma_long_period - 1, sma_series_length):
         if signal_index >= len(signals):
-            break  # Prevent out-of-range error
+            break
 
-        price_of_stock = data['Close'].iloc[i]
+        price = data['Close'].iloc[i]
         signal = signals[signal_index]
 
         if signal == 'HOLD':
             if position:
-                hold_counter += 1  # If holding stocks, increase the hold counter
+                hold_counter += 1
             else:
-                stay_counter += 1  # If no stocks, increase the stay counter
+                stay_counter += 1
             signal_index += 1
-            continue  # Skip hold signals completely
+            continue
 
         if signal == 'BUY':
-            # If we were staying, log how long we stayed without buying
+            # if we were in STAY mode before the buy signal, log the STAY duration
             if stay_counter > 0:
                 list_actions.append(f'STAY for {stay_counter} days')
                 list_dates.append('')
                 list_number_of_stocks.append('')
                 list_price_per_stock.append('')
                 list_total_cash_flow.append('')
-                stay_counter = 0  # Reset stay counter
+                stay_counter = 0
 
-            n_stocks_bought,transaction_fee, reamaining_balance = get_accurate_number_of_stocks(starting_balance, price_of_stock) 
-            starting_balance = reamaining_balance
-                
+            # buy stocks, update balance, deduct fee
+            n_stocks_bought, fee, starting_balance = get_accurate_number_of_stocks(starting_balance, price)
+
+            # log BUY
             list_actions.append('BUY')
-            list_dates.append(data.index[i])   
-            list_price_per_stock.append(round(price_of_stock, 2))
+            list_dates.append(data.index[i])
             list_number_of_stocks.append(round(n_stocks_bought, 2))
-            list_total_cash_flow.append(round(-n_stocks_bought * price_of_stock, 2))  # Correct cash flow
+            list_price_per_stock.append(round(price, 2))
+            total_cost = n_stocks_bought * price + fee
+            list_total_cash_flow.append(round(-total_cost, 2))
 
-            position = True  # Now we hold stocks
+            position = True
             signal_index += 1
 
         elif signal == 'SELL':
-            # If we were holding, log how long we held
+            # if we were in HOLD mode before the sell signal, log the HOLD duration
             if hold_counter > 0:
                 list_actions.append(f'HOLD for {hold_counter} days')
                 list_dates.append('')
                 list_number_of_stocks.append('')
                 list_price_per_stock.append('')
                 list_total_cash_flow.append('')
-                hold_counter = 0  # Reset hold counter
+                hold_counter = 0
 
+            # log SELL
             list_actions.append('SELL')
             list_dates.append(data.index[i])
             n_stocks_sold = n_stocks_bought
-            starting_balance += (n_stocks_sold * price_of_stock) - calculate_transaction_fee(n_stocks_sold)
+            fee = calculate_transaction_fee(n_stocks_sold)
+            proceeds = n_stocks_sold * price - fee
+            starting_balance += proceeds
 
-            list_price_per_stock.append(round(price_of_stock, 2))
-            list_number_of_stocks.append(round(-n_stocks_sold, 2))  # Selling stocks
-            list_total_cash_flow.append(round(n_stocks_sold * price_of_stock, 2))  # Correct cash flow
+            list_number_of_stocks.append(round(-n_stocks_sold, 2))
+            list_price_per_stock.append(round(price, 2))
+            list_total_cash_flow.append(round(proceeds, 2))
 
-            position = False  # No longer holding stock
+            position = False
             signal_index += 1
 
-    # Final adjustment: if last action was 'BUY', convert stock to cash
-    if position:  # If still holding stock, sell it at last price
+    # forced SELL at end if still holding
+    if position:
+        # log any pending HOLD period
         if hold_counter > 0:
             list_actions.append(f'HOLD for {hold_counter} days')
             list_dates.append(data.index[-hold_counter])
@@ -85,10 +92,17 @@ def backtest_strategy(data, signals, sma_long_period, starting_balance):
             list_price_per_stock.append('')
             list_total_cash_flow.append('')
 
+        # log forced SELL
         list_actions.append('SELL (forced at end)')
         list_dates.append(data.index[-1])
-        price_of_stock = data['Close'].iloc[-1]
+        price = data['Close'].iloc[-1]
         n_stocks_sold = n_stocks_bought
-        starting_balance += n_stocks_sold * price_of_stock
-    
+        fee = calculate_transaction_fee(n_stocks_sold)
+        proceeds = n_stocks_sold * price - fee
+        starting_balance += proceeds
+
+        list_number_of_stocks.append(round(-n_stocks_sold, 2))
+        list_price_per_stock.append(round(price, 2))
+        list_total_cash_flow.append(round(proceeds, 2))
+
     return list_actions, list_dates, list_number_of_stocks, list_price_per_stock, list_total_cash_flow
