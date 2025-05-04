@@ -2,7 +2,7 @@ import yfinance as yf
 import pandas as pd
 
 def fetch_data(ticker, backtesting_period):   
-    data = yf.download(ticker, period=f'{backtesting_period}', threads=True)
+    data = yf.download(ticker, period=f'{backtesting_period}y', threads=True)
     data.columns.name = None
 
     if isinstance(data.columns, pd.MultiIndex):

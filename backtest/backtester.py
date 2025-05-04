@@ -4,6 +4,9 @@ from backtest.transaction_fee import calculate_transaction_fee, get_accurate_num
 
 def backtest_strategy(data, signals, sma_long_period, starting_balance):
     # define lists for results
+    global list_total_cash_flow
+    global list_actions
+
     list_actions = []
     list_dates = []
     list_number_of_stocks = []
@@ -106,3 +109,24 @@ def backtest_strategy(data, signals, sma_long_period, starting_balance):
         list_total_cash_flow.append(round(proceeds, 2))
 
     return list_actions, list_dates, list_number_of_stocks, list_price_per_stock, list_total_cash_flow
+
+
+def return_endbalance():
+    global list_actions
+    global list_total_cash_flow
+
+    indices = []
+
+    for i, action in enumerate(list_actions):
+        if action in ['SELL', 'SELL (forced at end)']:
+            indices.append(i)
+
+    if not indices:
+        print("No SELL actions found.")
+        return None
+
+    last_index = indices[-1]
+
+    end_balance = list_total_cash_flow[last_index]
+
+    return end_balance

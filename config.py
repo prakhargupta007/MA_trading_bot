@@ -18,7 +18,7 @@ MACD_SIGNAL_PERIOD = 9
 
 # Backtesting parameters
 STARTING_BALANCE = 10000  # Starting balance for backtesting
-BACKTESTING_PERIOD = '10y'
+BACKTESTING_PERIOD = '10'# in years as a string
 
 TRANSACTION_FEE_PER_STOCK = 0.05
 MINIMUM_TRANSACTION_FEE = 1 

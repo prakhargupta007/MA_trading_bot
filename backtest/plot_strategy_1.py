@@ -14,11 +14,11 @@ def plot_and_show_indicators_and_signals_of_strategy_1(data, signals, sma_long_p
     macd, macd_signal_line = calculate_macd(data, macd_fast, macd_short, macd_signal)
 
     # Plot closing price and indicators (SMA, MACD) on the primary axis (ax1)
-    ax1.plot(data.index, data['Close'], label='Close Price', color='black')
-    ax1.plot(data.index, sma_short, label='SMA Short', color='green')
-    ax1.plot(data.index, sma_long, label='SMA Long', color='red')
-    ax1.plot(data.index, macd, label='MACD', color='#FFD700')
-    ax1.plot(data.index, macd_signal_line, label='MACD Signal Line', color='grey')
+    ax1.plot(data.index, data['Close'], label='Close Price', color='black', zorder = 3)
+    ax1.plot(data.index, sma_short, label='SMA Short', color='green', zorder = 3)
+    ax1.plot(data.index, sma_long, label='SMA Long', color='red', zorder = 3)
+    ax1.plot(data.index, macd, label='MACD', color='cyan', zorder = 3)
+    ax1.plot(data.index, macd_signal_line, label='MACD Signal Line', color='purple')
 
     # Plot buy and sell signals
     holding = False
@@ -41,7 +41,7 @@ def plot_and_show_indicators_and_signals_of_strategy_1(data, signals, sma_long_p
 
     # Create a secondary axis for RSI
     ax2 = ax1.twinx()
-    ax2.plot(data.index, rsi, label='RSI', color='purple')
+    ax2.plot(data.index, rsi, label='RSI', color='#C9CDD1', zorder= 1)
     ax2.set_ylabel('RSI')
 
     # Add legends for both axes
