@@ -37,10 +37,10 @@ def backtest_strategy(data, signals, sma_long_period, starting_balance):
             # if we were in STAY mode before the buy signal, log the STAY duration
             if stay_counter > 0:
                 list_actions.append(f'STAY for {stay_counter} days')
-                list_dates.append('')
-                list_number_of_stocks.append('')
-                list_price_per_stock.append('')
-                list_total_cash_flow.append('')
+                list_dates.append(' ')
+                list_number_of_stocks.append(' ')
+                list_price_per_stock.append(' ')
+                list_total_cash_flow.append(' ')
                 stay_counter = 0
 
             # buy stocks, update balance, deduct fee
@@ -61,10 +61,10 @@ def backtest_strategy(data, signals, sma_long_period, starting_balance):
             # if we were in HOLD mode before the sell signal, log the HOLD duration
             if hold_counter > 0:
                 list_actions.append(f'HOLD for {hold_counter} days')
-                list_dates.append('')
-                list_number_of_stocks.append('')
-                list_price_per_stock.append('')
-                list_total_cash_flow.append('')
+                list_dates.append(' ')
+                list_number_of_stocks.append(' ')
+                list_price_per_stock.append(' ')
+                list_total_cash_flow.append(' ')
                 hold_counter = 0
 
             # log SELL
@@ -88,9 +88,9 @@ def backtest_strategy(data, signals, sma_long_period, starting_balance):
         if hold_counter > 0:
             list_actions.append(f'HOLD for {hold_counter} days')
             list_dates.append(data.index[-hold_counter])
-            list_number_of_stocks.append('')
-            list_price_per_stock.append('')
-            list_total_cash_flow.append('')
+            list_number_of_stocks.append(' ')
+            list_price_per_stock.append(' ')
+            list_total_cash_flow.append(' ')
 
         # log forced SELL
         list_actions.append('SELL (forced at end)')
