@@ -1,5 +1,6 @@
 import pandas as pd
 from indicators.sma import calculate_sma 
+from backtest.transaction_fee import calculate_transaction_fee, get_accurate_number_of_stocks
 
 def backtest_strategy(data, signals, sma_long_period, starting_balance):
     list_actions = []
@@ -41,11 +42,11 @@ def backtest_strategy(data, signals, sma_long_period, starting_balance):
                 list_total_cash_flow.append('')
                 stay_counter = 0  # Reset stay counter
 
-            list_actions.append('BUY')
-            list_dates.append(data.index[i])    
-            n_stocks_bought = starting_balance / price_of_stock
-            starting_balance -= n_stocks_bought * price_of_stock
+            n_stocks_bought,transaction_fee, reamaining_balance = get_accurate_number_of_stocks(starting_balance, price_of_stock) 
+            starting_balance = reamaining_balance
                 
+            list_actions.append('BUY')
+            list_dates.append(data.index[i])   
             list_price_per_stock.append(round(price_of_stock, 2))
             list_number_of_stocks.append(round(n_stocks_bought, 2))
             list_total_cash_flow.append(round(-n_stocks_bought * price_of_stock, 2))  # Correct cash flow
@@ -66,7 +67,7 @@ def backtest_strategy(data, signals, sma_long_period, starting_balance):
             list_actions.append('SELL')
             list_dates.append(data.index[i])
             n_stocks_sold = n_stocks_bought
-            starting_balance += n_stocks_sold * price_of_stock
+            starting_balance += (n_stocks_sold * price_of_stock) - calculate_transaction_fee(n_stocks_sold)
 
             list_price_per_stock.append(round(price_of_stock, 2))
             list_number_of_stocks.append(round(-n_stocks_sold, 2))  # Selling stocks
