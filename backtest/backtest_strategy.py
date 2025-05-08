@@ -121,6 +121,7 @@ def return_endbalance():
         if action in ['SELL', 'SELL (forced at end)']:
             indices.append(i)
 
+    # Error message just in case if there was no SELL action --> but this shouldn't happen
     if not indices:
         print("No SELL actions found.")
         return None

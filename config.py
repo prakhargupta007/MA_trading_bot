@@ -1,4 +1,4 @@
-TICKER = "AAPL"  # Example: Apple stock
+TICKER = "QQQ"  # Example: Apple stock
 
 # Strategy parameters
 # For the first step of the strategy i'll either use the EMA paramteres or the SMA paramteres.
@@ -23,6 +23,8 @@ BACKTESTING_PERIOD = '10'# in years as a string
 TRANSACTION_FEE_PER_STOCK = 0.05
 MINIMUM_TRANSACTION_FEE = 1 
 
-#The folder path in which the cretaed backtest_table should be saved in. 
-# maybe a 'r' is needed, if this doesn't work
-FOLDER_PATH = '/Users/prakhar/MA_trading_bot/trial_files_backtesting'
+#The folder path in which the created backtest_table should be saved in. 
+FOLDER_PATH = '/Users/prakhar/MA_trading_bot/csv_trial_files_backtesting'
+
+# The folder I want my excel file to be saved in
+OUTPUT_FOLDER_PATH_FOR_EXCEL_FILE = '/Users/prakhar/MA_trading_bot/excel_trial_files_backtesting'  

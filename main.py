@@ -3,11 +3,12 @@ from config import TICKER,  SMA_LONG_PERIOD, SMA_SHORT_PERIOD, RSI_PERIOD, MACD_
 from data.fetch_data import fetch_data
 from strategy.strategy_1 import generate_signals
 
-from backtest.backtester import backtest_strategy
-from backtest.backtester import return_endbalance
+from backtest.backtest_strategy import backtest_strategy
+from backtest.backtest_strategy import return_endbalance
 from backtest.backtest_table import create_and_save_backtest_table
 from backtest.plot_backtest_data import plot_and_show_signals_of_strategy
 from backtest.plot_strategy_1 import plot_and_show_indicators_and_signals_of_strategy_1
+from backtest.excel_table import convert_csv_file_to_excel_file
 
 from metrics.cagr import calculate_cagr
 from metrics.profit import calculate_profit
@@ -50,6 +51,10 @@ def main():
         print(f'Profit made: {calculate_profit(STARTING_BALANCE, end_balance)}')
         print(f'CAGR: {calculate_cagr(STARTING_BALANCE, float(BACKTESTING_PERIOD), end_balance)}')
         print('metrics calculated successfully\n\n')
+
+        print('Converting csv file to excel file...')
+        print(convert_csv_file_to_excel_file(TICKER))
+        print('csv file converted to excel sheet successfully\n\n')
 
     except Exception as e:
         print("\n❌ An error occurred:")
