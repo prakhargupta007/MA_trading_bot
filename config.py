@@ -1,9 +1,5 @@
 TICKER = "QQQ"  # Example: Apple stock
-
-# Strategy parameters
-# For the first step of the strategy i'll either use the EMA paramteres or the SMA paramteres.
-#EMA_SHORT_PERIOD = 9
-#EMA_LONG_PERIOD = 21
+DATA_API_IS_YFINANCE = False #If true: data will be fetsched form yfinance,    #if false: data will be fetched from Alpha Vantage
 
 SMA_SHORT_PERIOD = 50 
 SMA_LONG_PERIOD = 200
@@ -27,4 +23,7 @@ MINIMUM_TRANSACTION_FEE = 1
 FOLDER_PATH = '/Users/prakhar/MA_trading_bot/csv_trial_files_backtesting'
 
 # The folder I want my excel file to be saved in
-OUTPUT_FOLDER_PATH_FOR_EXCEL_FILE = '/Users/prakhar/MA_trading_bot/excel_trial_files_backtesting'  
+OUTPUT_FOLDER_PATH_FOR_EXCEL_FILE = '/Users/prakhar/MA_trading_bot/excel_trial_files_backtesting'
+FOLDER_PATH_FOR_CSV_FILE = '/Users/prakhar/MA_trading_bot/csv_trial_files_backtesting'  
+
+ALPHA_VANTAGE_API_KEY = '9VTDPFM0O0LXNZ41'

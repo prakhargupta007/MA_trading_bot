@@ -1,7 +1,7 @@
 import yfinance as yf
 import pandas as pd
 
-def fetch_data(ticker, backtesting_period):   
+def fetch_data_from_yfinance(ticker, backtesting_period):   
     data = yf.download(ticker, period=f'{backtesting_period}y', threads=True)
     data.columns.name = None
 

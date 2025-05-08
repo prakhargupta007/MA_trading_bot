@@ -1,6 +1,7 @@
 
-from config import TICKER,  SMA_LONG_PERIOD, SMA_SHORT_PERIOD, RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, BACKTESTING_PERIOD, STARTING_BALANCE
-from data.fetch_data import fetch_data
+from config import TICKER, DATA_API_IS_YFINANCE, SMA_LONG_PERIOD, SMA_SHORT_PERIOD, RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, BACKTESTING_PERIOD, STARTING_BALANCE
+from data.fetch_data_from_yfinance import fetch_data_from_yfinance
+from data.fetch_data_from_alpha_vantage import fetch_data_from_alpha_vantage 
 from strategy.strategy_1 import generate_signals
 
 from backtest.backtest_strategy import backtest_strategy
@@ -18,7 +19,10 @@ import traceback
 def main():
     try:
         print(f'\n\nFetching historical data of {TICKER}')
-        data = fetch_data(TICKER, BACKTESTING_PERIOD)
+        if DATA_API_IS_YFINANCE:
+            data = fetch_data_from_yfinance(TICKER, BACKTESTING_PERIOD)
+        else: 
+            data = fetch_data_from_alpha_vantage(TICKER, BACKTESTING_PERIOD)
         print('Data of {TICKER} fetched successfully!\n\n')
 
         print('Generating transaction signals based on strategy...')
