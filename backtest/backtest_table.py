@@ -5,7 +5,7 @@ import os
 
 from config import FOLDER_PATH
 
-def create_and_save_backtest_table(backtesting_results, ticker):
+def create_and_save_backtest_table_csv_file(backtesting_results, ticker):
     actions, dates, numbers, prices, cash_flows = backtesting_results
 
     os.makedirs(FOLDER_PATH, exist_ok=True)

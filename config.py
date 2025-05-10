@@ -1,5 +1,9 @@
-TICKER = "QQQ"  # Example: Apple stock
-DATA_API_IS_YFINANCE = False #If true: data will be fetsched form yfinance,    #if false: data will be fetched from Alpha Vantage
+TICKER = "MSFT"  # Example: Apple stock
+ 
+#If true: data will be fetsched form yfinance
+#if false: data will be fetched from Alpha Vantage
+# reason for prefence for yfinance = I can access the adjusted close price fpr free whereas Alpha Vantage asks you to buy the premium version to get the adjusted close price
+DATA_API_IS_YFINANCE = False
 
 SMA_SHORT_PERIOD = 50 
 SMA_LONG_PERIOD = 200

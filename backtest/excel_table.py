@@ -20,4 +20,4 @@ def convert_csv_file_to_excel_file(ticker):
     # Open the Excel file (works only on Mac)
     os.system(f'open "{excel_path}"')
 
-    return f"✅ {csv_file_name} converted to Excel and saved at: {excel_path}"
+    return f" Excel file of backtesting data of {ticker} converted to Excel and saved"
