@@ -3,7 +3,9 @@ from config import TICKER, DATA_API_IS_YFINANCE, SMA_LONG_PERIOD, SMA_SHORT_PERI
 from data.fetch_data_from_yfinance import fetch_data_from_yfinance
 from data.fetch_data_from_alpha_vantage import fetch_data_from_alpha_vantage 
 from strategy.strategy_1 import generate_signals
+from strategy.strategy_2 import strategy_2 
 from strategy.strategy_SMA import strategy_SMA
+from strategy.strategy_EMA import strategy_EMA
 
 from backtest.backtest_strategy import backtest_strategy
 from backtest.backtest_strategy import return_endbalance
@@ -29,7 +31,10 @@ def main():
 
         print('Generating transaction signals based on strategy...')
         bought = False
-        signals = generate_signals(bought, data, SMA_LONG_PERIOD, SMA_SHORT_PERIOD,RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD)
+        signals = strategy_2(bought, data, SMA_LONG_PERIOD, SMA_SHORT_PERIOD,RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD)
+        #signals = strategy_1(bought, data, SMA_LONG_PERIOD, SMA_SHORT_PERIOD)
+        #signals = strategy_SMA(bought, data, SMA_LONG_PERIOD, SMA_SHORT_PERIOD)
+        #signals = generate_signals(bought, data, SMA_LONG_PERIOD, SMA_SHORT_PERIOD,RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD)
         print('✅ Transaction signals generated successfully\n\n')
 
         print('Backtesting based on strategy...')
@@ -48,7 +53,7 @@ def main():
         #Use follllowing line for just buy and sell universal plotting:
         plot_and_show_signals_of_strategy(data,signals,TICKER) 
         #Use following line for just strategy_1 plotting:
-        plot_and_show_indicators_and_signals_of_strategy_1(data, signals, SMA_LONG_PERIOD, SMA_SHORT_PERIOD,RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, TICKER)
+        #plot_and_show_indicators_and_signals_of_strategy_1(data, signals, SMA_LONG_PERIOD, SMA_SHORT_PERIOD,RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, TICKER)
         print('✅ Plot shown successfully\n\n')
 
         print('Calculating metrics...')
