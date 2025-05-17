@@ -3,6 +3,7 @@ from config import TICKER, DATA_API_IS_YFINANCE, SMA_LONG_PERIOD, SMA_SHORT_PERI
 from data.fetch_data_from_yfinance import fetch_data_from_yfinance
 from data.fetch_data_from_alpha_vantage import fetch_data_from_alpha_vantage 
 from strategy.strategy_1 import generate_signals
+from strategy.strategy_SMA import strategy_SMA
 
 from backtest.backtest_strategy import backtest_strategy
 from backtest.backtest_strategy import return_endbalance
@@ -13,6 +14,7 @@ from backtest.excel_table import convert_csv_file_to_excel_file
 
 from metrics.cagr import calculate_cagr
 from metrics.profit import calculate_profit
+from metrics.buy_hold_profit import calculate_profit_if_bought_and_held
 
 import traceback 
 
@@ -52,13 +54,20 @@ def main():
         print('Calculating metrics...')
         end_balance = return_endbalance()
         print(f'End balance: {end_balance}')
-        print(f'Profit made: {calculate_profit(STARTING_BALANCE, end_balance)}')
+        profit_in_percent, profit = calculate_profit(STARTING_BALANCE, end_balance)
+        print(f'Profit made: {profit}')
+        print(f'Profit made: {profit_in_percent}')
         print(f'CAGR: {calculate_cagr(STARTING_BALANCE, float(BACKTESTING_PERIOD), end_balance)}')
         print('✅ metrics calculated successfully\n\n')
+        profit_of_buy_and_hold, cash_at_end_of_buy_and_hold = calculate_profit_if_bought_and_held(data, STARTING_BALANCE)
+        print(f'If bought and hold: {profit_of_buy_and_hold}')
+        print(f'CAGR of buy and hold: {calculate_cagr(STARTING_BALANCE, float(BACKTESTING_PERIOD), cash_at_end_of_buy_and_hold)}')
 
         print('Converting csv file to excel file...')
         print(convert_csv_file_to_excel_file(TICKER))
         print('✅ csv file converted to excel sheet successfully\n\n')
+
+        
 
     except Exception as e:
         print("\n❌ An error occurred:")
