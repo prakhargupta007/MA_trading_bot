@@ -4,7 +4,7 @@ from indicators.sma import calculate_sma
 from indicators.rsi import calculate_rsi
 from indicators.macd import calculate_macd
 
-def plot_and_show_indicators_and_signals_of_strategy_1(data, signals, sma_long_period, sma_short_period, rsi_period, macd_fast, macd_short, macd_signal, ticker):
+def plot_sma_rsi_macd_strategy(data, signals, sma_long_period, sma_short_period, rsi_period, macd_fast, macd_short, macd_signal, ticker):
     # Create figure and axis
     fig, ax1 = plt.subplots(figsize=(14, 7))
 

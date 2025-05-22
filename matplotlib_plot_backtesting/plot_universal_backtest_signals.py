@@ -1,7 +1,7 @@
 # Universal fucntion that can be used for any startegy
 import matplotlib.pyplot as plt
 
-def plot_and_show_signals_of_strategy(data, signals, ticker):
+def plot_signals_of_strategy(data, signals, ticker):
     # Create figure and axis
     fig, ax = plt.subplots(figsize=(14, 7))
 

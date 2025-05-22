@@ -1,12 +1,17 @@
-TICKER = "MSFT"  # Example: Apple stock
- 
-#If true: data will be fetsched form yfinance
-#if false: data will be fetched from Alpha Vantage
-# reason for prefence for yfinance = I can access the adjusted close price fpr free whereas Alpha Vantage asks you to buy the premium version to get the adjusted close price
+TICKER = "MSFT"  # Example: Apple stock 
+
 DATA_API_IS_YFINANCE = False
+    # If true: data will be fetsched form yfinance
+    # If false: data will be fetched from Alpha Vantage
+    # reason for prefence for yfinance = I can access the adjusted close price for free whereas Alpha Vantage asks you to buy the premium version to get the adjusted close price
+
+STRATEGY = None
 
 SMA_SHORT_PERIOD = 50 
 SMA_LONG_PERIOD = 200
+
+EMA_SHORT_PERIOD = 50
+EMA_LONG_PERIOD = 200
 
 RSI_PERIOD = 14  # period for RS (Relative Strength) index
 RSI_OVERBOUGHT_WARNING = 70  

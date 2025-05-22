@@ -1,6 +1,6 @@
 from indicators.ema import calculate_ema
 
-def strategy_EMA(bought,data, ema_long_period, ema_short_period):
+def ema_strategy(bought,data, ema_long_period, ema_short_period):
 
     ema_short = calculate_ema(data, ema_short_period)
     ema_long = calculate_ema(data, ema_long_period)

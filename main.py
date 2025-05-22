@@ -1,18 +1,19 @@
 
-from config import TICKER, DATA_API_IS_YFINANCE, SMA_LONG_PERIOD, SMA_SHORT_PERIOD, RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, BACKTESTING_PERIOD, STARTING_BALANCE
+from config import TICKER, DATA_API_IS_YFINANCE, SMA_LONG_PERIOD, SMA_SHORT_PERIOD, EMA_LONG_PERIOD , EMA_SHORT_PERIOD, RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, BACKTESTING_PERIOD, STARTING_BALANCE
 from data.fetch_data_from_yfinance import fetch_data_from_yfinance
 from data.fetch_data_from_alpha_vantage import fetch_data_from_alpha_vantage 
-from strategy.strategy_1 import generate_signals
-from strategy.strategy_2 import strategy_2 
-from strategy.strategy_SMA import strategy_SMA
-from strategy.strategy_EMA import strategy_EMA
+
+from strategy.sma_strategy import sma_strategy 
+from strategy.ema_strategy import ema_strategy
+from strategy.sma_rsi_strategy import sma_rsi_strategy 
+from strategy.sma_rsi_macd_strategy import sma_rsi_macd_strategy
 
 from backtest.backtest_strategy import backtest_strategy
 from backtest.backtest_strategy import return_endbalance
-from backtest.backtest_table import create_and_save_backtest_table_csv_file
-from backtest.plot_backtest_data import plot_and_show_signals_of_strategy
-from backtest.plot_strategy_1 import plot_and_show_indicators_and_signals_of_strategy_1
-from backtest.excel_table import convert_csv_file_to_excel_file
+from backtest.create_and_save_backtest_table_csv_file import create_and_save_backtest_table_csv_file
+from matplotlib_plot_backtesting.plot_universal_backtest_signals import plot_signals_of_strategy
+from matplotlib_plot_backtesting.plot_sma_rsi_macd_strategy import plot_sma_rsi_macd_strategy
+from backtest.convert_csv_file_to_excel_file import convert_csv_file_to_excel_file
 
 from metrics.cagr import calculate_cagr
 from metrics.profit import calculate_profit
@@ -22,6 +23,8 @@ import traceback
 
 def main():
     try:
+
+        
         print(f'\n\nFetching historical data of {TICKER}')
         if DATA_API_IS_YFINANCE:
             data = fetch_data_from_yfinance(TICKER, BACKTESTING_PERIOD)
@@ -31,10 +34,10 @@ def main():
 
         print('Generating transaction signals based on strategy...')
         bought = False
-        signals = strategy_2(bought, data, SMA_LONG_PERIOD, SMA_SHORT_PERIOD,RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD)
-        #signals = strategy_1(bought, data, SMA_LONG_PERIOD, SMA_SHORT_PERIOD)
-        #signals = strategy_SMA(bought, data, SMA_LONG_PERIOD, SMA_SHORT_PERIOD)
-        #signals = generate_signals(bought, data, SMA_LONG_PERIOD, SMA_SHORT_PERIOD,RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD)
+        #signals = sma_strategy(bought, data, SMA_LONG_PERIOD, SMA_SHORT_PERIOD)
+        signals = ema_strategy(bought, data, SMA_LONG_PERIOD, SMA_SHORT_PERIOD)
+        #signals = sma_rsi_strategy(bought, data, SMA_LONG_PERIOD, SMA_SHORT_PERIOD, RSI_PERIOD)
+        #signals = sma_rsi_macd_strategy(bought, data, SMA_LONG_PERIOD, SMA_SHORT_PERIOD, RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD)
         print('✅ Transaction signals generated successfully\n\n')
 
         print('Backtesting based on strategy...')
@@ -50,11 +53,11 @@ def main():
         print(f"✅ backtest table printed successfully\n\n")
 
         print('Visualising the used strategy...')
-        #Use follllowing line for just buy and sell universal plotting:
-        plot_and_show_signals_of_strategy(data,signals,TICKER) 
-        #Use following line for just strategy_1 plotting:
-        #plot_and_show_indicators_and_signals_of_strategy_1(data, signals, SMA_LONG_PERIOD, SMA_SHORT_PERIOD,RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, TICKER)
-        print('✅ Plot shown successfully\n\n')
+        #Use following line for just buy and sell universal plotting:
+        plot_signals_of_strategy(data,signals,TICKER) 
+        #Use following line for just sma_rsi_macd_strategy plotting:
+        #plot_sma_rsi_macd_strategy(data, signals, SMA_LONG_PERIOD, SMA_SHORT_PERIOD,RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, TICKER)
+        print('✅ plot shown successfully\n\n')
 
         print('Calculating metrics...')
         end_balance = return_endbalance()
@@ -67,12 +70,11 @@ def main():
         profit_of_buy_and_hold, cash_at_end_of_buy_and_hold = calculate_profit_if_bought_and_held(data, STARTING_BALANCE)
         print(f'If bought and hold: {profit_of_buy_and_hold}')
         print(f'CAGR of buy and hold: {calculate_cagr(STARTING_BALANCE, float(BACKTESTING_PERIOD), cash_at_end_of_buy_and_hold)}')
+        print('✅ metrics of buy and hold option calculated successfully\n\n')
 
         print('Converting csv file to excel file...')
         print(convert_csv_file_to_excel_file(TICKER))
-        print('✅ csv file converted to excel sheet successfully\n\n')
 
-        
 
     except Exception as e:
         print("\n❌ An error occurred:")
