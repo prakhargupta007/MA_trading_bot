@@ -11,9 +11,12 @@ from strategy.sma_rsi_macd_strategy import sma_rsi_macd_strategy
 from backtest.backtest_strategy import backtest_strategy
 from backtest.backtest_strategy import return_endbalance
 from backtest.create_and_save_backtest_table_csv_file import create_and_save_backtest_table_csv_file
-from matplotlib_plot_backtesting.plot_universal_backtest_signals import plot_signals_of_strategy
+from backtest.convert_csv_file_to_excel_file_and_open_it import convert_csv_file_to_excel_file_and_open_it
+
+from matplotlib_plot_backtesting.matplotlib_plot_universal_backtest_signals import matplotlib_plot_universal_strategy_signals
 from matplotlib_plot_backtesting.plot_sma_rsi_macd_strategy import plot_sma_rsi_macd_strategy
-from backtest.convert_csv_file_to_excel_file import convert_csv_file_to_excel_file
+
+from plotly_plot_backtesting.plotly_plot_signals_of_strategy_and_save import plotly_plot_signals_of_strategy_and_save
 
 from metrics.cagr import calculate_cagr
 from metrics.profit import calculate_profit
@@ -24,7 +27,7 @@ import traceback
 def main():
     try:
 
-        
+
         print(f'\n\nFetching historical data of {TICKER}')
         if DATA_API_IS_YFINANCE:
             data = fetch_data_from_yfinance(TICKER, BACKTESTING_PERIOD)
@@ -54,7 +57,8 @@ def main():
 
         print('Visualising the used strategy...')
         #Use following line for just buy and sell universal plotting:
-        plot_signals_of_strategy(data,signals,TICKER) 
+        plotly_plot_signals_of_strategy_and_save(data,signals,TICKER)
+        #matplotlib_plot_universal_strategy_signals(data,signals,TICKER)   _______________________________________
         #Use following line for just sma_rsi_macd_strategy plotting:
         #plot_sma_rsi_macd_strategy(data, signals, SMA_LONG_PERIOD, SMA_SHORT_PERIOD,RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, TICKER)
         print('✅ plot shown successfully\n\n')
@@ -72,8 +76,8 @@ def main():
         print(f'CAGR of buy and hold: {calculate_cagr(STARTING_BALANCE, float(BACKTESTING_PERIOD), cash_at_end_of_buy_and_hold)}')
         print('✅ metrics of buy and hold option calculated successfully\n\n')
 
-        print('Converting csv file to excel file...')
-        print(convert_csv_file_to_excel_file(TICKER))
+        print('Converting csv file to excel file and opening it (if desired)...')
+        print(convert_csv_file_to_excel_file_and_open_it(TICKER))
 
 
     except Exception as e:
