@@ -8,10 +8,14 @@ def sma_rsi_macd_strategy(bought,data, sma_long_period, sma_short_period, rsi_pe
     sma_short = calculate_sma(data, sma_short_period)
     sma_long = calculate_sma(data, sma_long_period)
     rsi = calculate_rsi(data, rsi_period) 
-
     macd, macd_signal_line = calculate_macd(data, macd_fast, macd_short, macd_signal)
 
     signals = []
+
+    # Add initial HOLDs so signal list matches the data length
+    for _ in range(sma_long_period - 1):  # replace with correct variable name
+        signals.append('HOLD')
+
     for i in range(sma_long_period - 1, len(data)):
         # Default signal is 'HOLD'
         signal = 'HOLD'

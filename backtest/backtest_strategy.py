@@ -3,7 +3,10 @@ from indicators.sma import calculate_sma
 from backtest.transaction_fee import calculate_transaction_fee, get_accurate_number_of_stocks
 
 def backtest_strategy(data, signals, starting_balance):
-    # Remove sma_long_period parameter if not needed elsewhere
+    
+    global list_actions
+    global list_total_cash_flow
+
     list_actions = []
     list_dates = []
     list_number_of_stocks = []
@@ -17,7 +20,7 @@ def backtest_strategy(data, signals, starting_balance):
 
     for i in range(len(data)):
         price = data['Close'].iloc[i]
-        signal = signals[i]  # Use signals[i] instead of signals[signal_index]
+        signal = signals[i] 
 
         if signal == 'HOLD':
             if position:

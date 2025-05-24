@@ -5,9 +5,10 @@ def sma_strategy(bought,data, sma_long_period, sma_short_period):
     sma_short = calculate_sma(data, sma_short_period)
     sma_long = calculate_sma(data, sma_long_period)
 
-    
-
     signals = []
+
+    for _ in range(sma_long_period - 1):  # replace with correct variable name
+        signals.append('HOLD')
 
     for i in range(sma_long_period - 1, len(data)):
         # Default signal is 'HOLD'

@@ -9,6 +9,11 @@ def sma_rsi_strategy(bought,data, sma_long_period, sma_short_period, rsi_period)
     rsi = calculate_rsi(data, rsi_period) 
 
     signals = []
+
+    # Add initial HOLDs so signal list matches the data length
+    for _ in range(sma_long_period - 1):  # replace with correct variable name
+        signals.append('HOLD')
+        
     for i in range(sma_long_period - 1, len(data)):
         # Default signal is 'HOLD'
         signal = 'HOLD'

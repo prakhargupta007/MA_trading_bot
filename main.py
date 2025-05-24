@@ -38,9 +38,9 @@ def main():
         print('Generating transaction signals based on strategy...')
         bought = False
         #signals = sma_strategy(bought, data, SMA_LONG_PERIOD, SMA_SHORT_PERIOD)
-        signals = ema_strategy(bought, data, EMA_LONG_PERIOD, EMA_SHORT_PERIOD)
+        #signals = ema_strategy(bought, data, EMA_LONG_PERIOD, EMA_SHORT_PERIOD)
         #signals = sma_rsi_strategy(bought, data, SMA_LONG_PERIOD, SMA_SHORT_PERIOD, RSI_PERIOD)
-        #signals = sma_rsi_macd_strategy(bought, data, SMA_LONG_PERIOD, SMA_SHORT_PERIOD, RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD)
+        signals = sma_rsi_macd_strategy(bought, data, SMA_LONG_PERIOD, SMA_SHORT_PERIOD, RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD)
         print('✅ Transaction signals generated successfully\n\n')
 
         print('Backtesting based on strategy...')
@@ -57,7 +57,7 @@ def main():
 
         print('Visualising the used strategy...')
         #Use following line for just buy and sell universal plotting:
-        matplotlib_plot_universal_strategy_signals(data,signals,TICKER)
+        #matplotlib_plot_universal_strategy_signals(data,signals,TICKER)
         plotly_plot_universal_strategy_signals_and_save(data,signals,TICKER)    
         #Use following line for just sma_rsi_macd_strategy plotting:
         #matplotlib_plot_sma_rsi_macd_strategy(data, signals, SMA_LONG_PERIOD, SMA_SHORT_PERIOD,RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, TICKER) #matplotlib_plot_sma_rsi_macd_strategy(data, signals, SMA_LONG_PERIOD, SMA_SHORT_PERIOD,RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, TICKER)
