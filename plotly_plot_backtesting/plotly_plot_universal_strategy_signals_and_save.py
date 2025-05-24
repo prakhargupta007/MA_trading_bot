@@ -5,7 +5,7 @@ import os
 import plotly.io as pio
 pio.renderers.default = "browser"
 
-def plotly_plot_signals_of_strategy_and_save(data, signals, ticker):
+def plotly_plot_universal_strategy_signals_and_save(data, signals, ticker):
     fig = go.Figure()
 
     # Plot close price
@@ -81,4 +81,6 @@ def plotly_plot_signals_of_strategy_and_save(data, signals, ticker):
     file_name = f"{ticker}_strategy_plot.html"
     # Save the interactive chart as HTML into that folder
     full_path = os.path.join(OUTPUT_FOLDER_PATH_FOR_PLOTLY_CHART, file_name)
+    fig.write_html(full_path)
+
 

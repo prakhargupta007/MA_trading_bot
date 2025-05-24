@@ -14,9 +14,9 @@ from backtest.create_and_save_backtest_table_csv_file import create_and_save_bac
 from backtest.convert_csv_file_to_excel_file_and_open_it import convert_csv_file_to_excel_file_and_open_it
 
 from matplotlib_plot_backtesting.matplotlib_plot_universal_backtest_signals import matplotlib_plot_universal_strategy_signals
-from matplotlib_plot_backtesting.plot_sma_rsi_macd_strategy import plot_sma_rsi_macd_strategy
+from matplotlib_plot_backtesting.matplotlib_plot_sma_rsi_macd_strategy import matplotlib_plot_sma_rsi_macd_strategy
 
-from plotly_plot_backtesting.plotly_plot_signals_of_strategy_and_save import plotly_plot_signals_of_strategy_and_save
+from plotly_plot_backtesting.plotly_plot_universal_strategy_signals_and_save import plotly_plot_universal_strategy_signals_and_save
 
 from metrics.cagr import calculate_cagr
 from metrics.profit import calculate_profit
@@ -33,18 +33,18 @@ def main():
             data = fetch_data_from_yfinance(TICKER, BACKTESTING_PERIOD)
         else: 
             data = fetch_data_from_alpha_vantage(TICKER, BACKTESTING_PERIOD)
-        print('✅ Data of {TICKER} fetched successfully!\n\n')
+        print(f'✅ Data of {TICKER} fetched successfully!\n\n')
 
         print('Generating transaction signals based on strategy...')
         bought = False
         #signals = sma_strategy(bought, data, SMA_LONG_PERIOD, SMA_SHORT_PERIOD)
-        signals = ema_strategy(bought, data, SMA_LONG_PERIOD, SMA_SHORT_PERIOD)
+        signals = ema_strategy(bought, data, EMA_LONG_PERIOD, EMA_SHORT_PERIOD)
         #signals = sma_rsi_strategy(bought, data, SMA_LONG_PERIOD, SMA_SHORT_PERIOD, RSI_PERIOD)
         #signals = sma_rsi_macd_strategy(bought, data, SMA_LONG_PERIOD, SMA_SHORT_PERIOD, RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD)
         print('✅ Transaction signals generated successfully\n\n')
 
         print('Backtesting based on strategy...')
-        results_of_backtesting = backtest_strategy(data, signals, SMA_LONG_PERIOD, STARTING_BALANCE)
+        results_of_backtesting = backtest_strategy(data, signals, STARTING_BALANCE)
         print('✅ Results of backtesting generated successfully\n\n')
 
         print('Table getting saved...')
@@ -57,10 +57,10 @@ def main():
 
         print('Visualising the used strategy...')
         #Use following line for just buy and sell universal plotting:
-        plotly_plot_signals_of_strategy_and_save(data,signals,TICKER)
-        #matplotlib_plot_universal_strategy_signals(data,signals,TICKER)   _______________________________________
+        matplotlib_plot_universal_strategy_signals(data,signals,TICKER)
+        plotly_plot_universal_strategy_signals_and_save(data,signals,TICKER)    
         #Use following line for just sma_rsi_macd_strategy plotting:
-        #plot_sma_rsi_macd_strategy(data, signals, SMA_LONG_PERIOD, SMA_SHORT_PERIOD,RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, TICKER)
+        #matplotlib_plot_sma_rsi_macd_strategy(data, signals, SMA_LONG_PERIOD, SMA_SHORT_PERIOD,RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, TICKER) #matplotlib_plot_sma_rsi_macd_strategy(data, signals, SMA_LONG_PERIOD, SMA_SHORT_PERIOD,RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, TICKER)
         print('✅ plot shown successfully\n\n')
 
         print('Calculating metrics...')
@@ -77,7 +77,7 @@ def main():
         print('✅ metrics of buy and hold option calculated successfully\n\n')
 
         print('Converting csv file to excel file and opening it (if desired)...')
-        print(convert_csv_file_to_excel_file_and_open_it(TICKER))
+        print(convert_csv_file_to_excel_file_and_open_it(TICKER)) #will only open if chose to do so in config file
 
 
     except Exception as e:
@@ -87,3 +87,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
+

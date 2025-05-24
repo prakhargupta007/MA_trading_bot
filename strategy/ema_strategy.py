@@ -9,6 +9,10 @@ def ema_strategy(bought,data, ema_long_period, ema_short_period):
 
     signals = []
 
+    # Add initial HOLDs so signal list matches the data length
+    for _ in range(ema_long_period - 1):  # replace with correct variable name
+        signals.append('HOLD')
+
     for i in range(ema_long_period - 1, len(data)):
         # Default signal is 'HOLD'
         signal = 'HOLD'
