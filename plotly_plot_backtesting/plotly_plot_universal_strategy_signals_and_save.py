@@ -5,7 +5,7 @@ import os
 import plotly.io as pio
 pio.renderers.default = "browser"
 
-def plotly_plot_universal_strategy_signals_and_save(data, signals, ticker):
+def plotly_plot_universal_strategy_signals_and_save(data, signals, ticker, chosen_strategy):
     fig = go.Figure()
 
     # Plot close price
@@ -66,7 +66,7 @@ def plotly_plot_universal_strategy_signals_and_save(data, signals, ticker):
 
     # Update layout
     fig.update_layout(
-        title=f'Backtested Strategy on {ticker} stock',
+        title=f'Backtested {chosen_strategy.upper()} strategy on {ticker} stock',
         xaxis_title='Date',
         yaxis_title='Price',
         hovermode='x unified',

@@ -4,7 +4,7 @@ from indicators.sma import calculate_sma
 from indicators.rsi import calculate_rsi
 from indicators.macd import calculate_macd
 
-def matplotlib_plot_sma_rsi_macd_strategy(data, signals, sma_long_period, sma_short_period, rsi_period, macd_fast, macd_short, macd_signal, ticker):
+def matplotlib_plot_sma_rsi_macd_strategy(data, signals, sma_long_period, sma_short_period, rsi_period, macd_fast, macd_short, macd_signal, ticker, chosen_strategy):
     # Create figure and axis
     fig, ax1 = plt.subplots(figsize=(14, 7))
 
@@ -35,7 +35,7 @@ def matplotlib_plot_sma_rsi_macd_strategy(data, signals, sma_long_period, sma_sh
                 holding = False
 
     # Title and labels for price-related data
-    ax1.set_title(f'Backtested Strategy on {ticker} stock', fontsize=16)
+    ax1.set_title(f'Backtested {chosen_strategy} strategy on {ticker} stock', fontsize=16)
     ax1.set_xlabel('Date')
     ax1.set_ylabel('Price')
 

@@ -1,11 +1,12 @@
 from indicators.sma import calculate_sma
 
-def sma_strategy(bought,data, sma_long_period, sma_short_period):
+def sma_strategy(data, sma_long_period, sma_short_period, **kwargs):
 
     sma_short = calculate_sma(data, sma_short_period)
     sma_long = calculate_sma(data, sma_long_period)
 
     signals = []
+    bought = False
 
     for _ in range(sma_long_period - 1):  # replace with correct variable name
         signals.append('HOLD')

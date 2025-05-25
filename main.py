@@ -1,12 +1,12 @@
 
-from config import TICKER, DATA_API_IS_YFINANCE, SMA_LONG_PERIOD, SMA_SHORT_PERIOD, EMA_LONG_PERIOD , EMA_SHORT_PERIOD, RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, BACKTESTING_PERIOD, STARTING_BALANCE
+
+from config import TICKER, DATA_API_IS_YFINANCE, BACKTESTING_PERIOD, STARTING_BALANCE
+from config import SMA_LONG_PERIOD, SMA_SHORT_PERIOD, EMA_LONG_PERIOD, EMA_SHORT_PERIOD, RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD
+from config import CHOSEN_STRATEGY
 from data.fetch_data_from_yfinance import fetch_data_from_yfinance
 from data.fetch_data_from_alpha_vantage import fetch_data_from_alpha_vantage 
 
-from strategy.sma_strategy import sma_strategy 
-from strategy.ema_strategy import ema_strategy
-from strategy.sma_rsi_strategy import sma_rsi_strategy 
-from strategy.sma_rsi_macd_strategy import sma_rsi_macd_strategy
+from strategy.strategy_map import strategy_map
 
 from backtest.backtest_strategy import backtest_strategy
 from backtest.backtest_strategy import return_endbalance
@@ -35,12 +35,20 @@ def main():
             data = fetch_data_from_alpha_vantage(TICKER, BACKTESTING_PERIOD)
         print(f'✅ Data of {TICKER} fetched successfully!\n\n')
 
-        print('Generating transaction signals based on strategy...')
-        bought = False
-        #signals = sma_strategy(bought, data, SMA_LONG_PERIOD, SMA_SHORT_PERIOD)
-        #signals = ema_strategy(bought, data, EMA_LONG_PERIOD, EMA_SHORT_PERIOD)
-        #signals = sma_rsi_strategy(bought, data, SMA_LONG_PERIOD, SMA_SHORT_PERIOD, RSI_PERIOD)
-        signals = sma_rsi_macd_strategy(bought, data, SMA_LONG_PERIOD, SMA_SHORT_PERIOD, RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD)
+        indicator_parameters = {
+            'data': data,
+            'sma_long_period': SMA_LONG_PERIOD,
+            'sma_short_period': SMA_SHORT_PERIOD,
+            'ema_long_period': EMA_LONG_PERIOD,
+            'ema_short_period': EMA_SHORT_PERIOD,
+            'rsi_period': RSI_PERIOD,
+            'macd_fast': MACD_FAST_PERIOD,
+            'macd_slow': MACD_SLOW_PERIOD,
+            'macd_signal': MACD_SIGNAL_PERIOD
+        }
+
+        print(f'Generating transaction signals based on the strategy ...')
+        signals = strategy_map[CHOSEN_STRATEGY](**indicator_parameters)
         print('✅ Transaction signals generated successfully\n\n')
 
         print('Backtesting based on strategy...')
@@ -52,15 +60,16 @@ def main():
         print(f"✅ Backtest table saved successfully\n\n")
 
         print('Showing results in table...')
+        print(f'RESULTS OF \033[1m{CHOSEN_STRATEGY.upper()}\033[0m STRATEGY:')
         print(backtest_table)
         print(f"✅ backtest table printed successfully\n\n")
 
         print('Visualising the used strategy...')
         #Use following line for just buy and sell universal plotting:
-        #matplotlib_plot_universal_strategy_signals(data,signals,TICKER)
-        plotly_plot_universal_strategy_signals_and_save(data,signals,TICKER)    
+        #matplotlib_plot_universal_strategy_signals(data,signals,TICKER, CHOSEN_STRATEGY.upper())
+        plotly_plot_universal_strategy_signals_and_save(data,signals,TICKER, CHOSEN_STRATEGY.upper())    
         #Use following line for just sma_rsi_macd_strategy plotting:
-        #matplotlib_plot_sma_rsi_macd_strategy(data, signals, SMA_LONG_PERIOD, SMA_SHORT_PERIOD,RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, TICKER) #matplotlib_plot_sma_rsi_macd_strategy(data, signals, SMA_LONG_PERIOD, SMA_SHORT_PERIOD,RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, TICKER)
+        #matplotlib_plot_sma_rsi_macd_strategy(data, signals, SMA_LONG_PERIOD, SMA_SHORT_PERIOD,RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, TICKER, CHOSEN_STRATEGY.upper()) #matplotlib_plot_sma_rsi_macd_strategy(data, signals, SMA_LONG_PERIOD, SMA_SHORT_PERIOD,RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, TICKER)
         print('✅ plot shown successfully\n\n')
 
         print('Calculating metrics...')

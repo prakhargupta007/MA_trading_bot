@@ -1,12 +1,12 @@
 from indicators.ema import calculate_ema
 
-def ema_strategy(bought,data, ema_long_period, ema_short_period):
+def ema_strategy(data, ema_long_period, ema_short_period, **kwargs):
 
     ema_short = calculate_ema(data, ema_short_period)
     ema_long = calculate_ema(data, ema_long_period)
 
     signals = []
-
+    bought = False
     # Add initial HOLDs so signal list matches the data length
     for _ in range(ema_long_period - 1):  # replace with correct variable name
         signals.append('HOLD')

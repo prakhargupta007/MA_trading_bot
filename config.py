@@ -5,7 +5,12 @@ DATA_API_IS_YFINANCE = False
     # If false: data will be fetched from Alpha Vantage
     # reason for prefence for yfinance = I can access the adjusted close price for free whereas Alpha Vantage asks you to buy the premium version to get the adjusted close price
 
-STRATEGY = None
+# Here you can choose from:
+# 'sma'
+# 'ema'
+# 'sma_rsi'
+# 'sma_rsi_macd'
+CHOSEN_STRATEGY = 'sma_rsi_macd'
 
 SMA_SHORT_PERIOD = 50 
 SMA_LONG_PERIOD = 200

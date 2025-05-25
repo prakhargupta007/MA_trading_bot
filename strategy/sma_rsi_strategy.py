@@ -2,14 +2,14 @@ from indicators.sma import calculate_sma
 from indicators.rsi import calculate_rsi
 
 
-def sma_rsi_strategy(bought,data, sma_long_period, sma_short_period, rsi_period):
+def sma_rsi_strategy(data, sma_long_period, sma_short_period, rsi_period, **kwargs):
     # Calculate indicators
     sma_short = calculate_sma(data, sma_short_period)
     sma_long = calculate_sma(data, sma_long_period)
     rsi = calculate_rsi(data, rsi_period) 
 
     signals = []
-
+    bought = False
     # Add initial HOLDs so signal list matches the data length
     for _ in range(sma_long_period - 1):  # replace with correct variable name
         signals.append('HOLD')

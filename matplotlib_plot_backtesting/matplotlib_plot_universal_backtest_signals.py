@@ -1,7 +1,7 @@
 # Universal fucntion that can be used for any startegy
 import matplotlib.pyplot as plt
 
-def matplotlib_plot_universal_strategy_signals(data, signals, ticker):
+def matplotlib_plot_universal_strategy_signals(data, signals, ticker, chosen_strategy):
     # Create figure and axis
     fig, ax = plt.subplots(figsize=(14, 7))
 
@@ -24,7 +24,7 @@ def matplotlib_plot_universal_strategy_signals(data, signals, ticker):
                 holding = False
 
     # Title and labels
-    ax.set_title(f'Backtested Strategy on {ticker} stock', fontsize=16)
+    ax.set_title(f'backtested {chosen_strategy} on {ticker} stock', fontsize=16)
     ax.set_xlabel('Date')
     ax.set_ylabel('Price')
     ax.legend()
