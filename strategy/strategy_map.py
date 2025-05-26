@@ -3,7 +3,7 @@ from strategy.ema_strategy import ema_strategy
 from strategy.sma_rsi_strategy import sma_rsi_strategy 
 from strategy.sma_rsi_macd_strategy import sma_rsi_macd_strategy
 
-# Here evry new startegy must be added
+# Here every new startegy must be added
 
 strategy_map = {
     'sma': sma_strategy,
