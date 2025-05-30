@@ -1,4 +1,4 @@
-TICKERS = "NFLX"  # Example: Apple stock 
+TICKERS =  "AAPL"  # Example: Apple stock 
 
 # If true: data will be fetched from yfinance
 # If false: data will be fetched from Alpha Vantage
@@ -6,16 +6,14 @@ TICKERS = "NFLX"  # Example: Apple stock
 DATA_API_IS_YFINANCE = True 
 
 # Here you can choose from:
-# 'sma' 'ema' 'sma_rsi' 'sma_rsi_macd'
-CHOSEN_STRATEGY = 'sma_rsi_macd'
+# 'sma' 'ema' 'sma_rsi' 'sma_rsi_macd'  'ema_rsi'
+CHOSEN_STRATEGY = 'ema_rsi'
 
 # Backtesting parameters
 STARTING_BALANCE = 10000  # Starting balance for backtesting
 BACKTESTING_PERIOD = '10'# in years as a string 
-#
 
-
-OPEN_ALL_EXCEL_FILES_AFTER_SAVING = True
+OPEN_ALL_EXCEL_FILES_AFTER_SAVING = False
 
 
 

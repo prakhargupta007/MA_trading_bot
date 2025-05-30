@@ -115,8 +115,8 @@ def main():
             summary_buy_hold_CAGRs.append(f'{cagr_buy_hold} %')
 
         summary_table = create_and_save_backtest_summary_table_csv_file(summary_tickers, summary_CAGRs, summary_buy_hold_CAGRs)
-        print(f'RESULTS OF \033[1m{CHOSEN_STRATEGY.upper()}\033[0m STRATEGY:')
-        print(summary_table)
+        print(f'RESULTS OF \033[1m{CHOSEN_STRATEGY.upper()}\033[0m STRATEGY OVER PAST \033[1m{BACKTESTING_PERIOD.upper()}\033[0m years')
+        print(f'{summary_table}\n\n')
 
         print('Converting csv summary file to excel summary file and opening it (if desired)...') 
         print(convert_summary_csv_file_to_excel_file_and_open_it())
