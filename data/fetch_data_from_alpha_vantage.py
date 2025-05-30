@@ -7,7 +7,7 @@ def fetch_data_from_alpha_vantage(ticker, backtesting_period):
     ts = TimeSeries(key=ALPHA_VANTAGE_API_KEY, output_format='pandas')
 
     # Fetching data from Alpha Vantage (full data)
-    # data, meta_data = ts.get_daily_adjusted(symbol=ticker, outputsize='full')  # --> Premium ALpha Vantage account rquired for adjusted close price 
+    # data, meta_data = ts.get_daily_adjusted(symbol=ticker, outputsize='full')  # --> Premium ALpha Vantage account required for adjusted close price 
     data, meta_data = ts.get_daily(symbol=ticker, outputsize='full') # --> works with free plan 
     data = data.rename(columns={
         '1. open': 'Open',

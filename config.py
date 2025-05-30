@@ -1,17 +1,31 @@
 TICKERS = "NFLX"  # Example: Apple stock 
 
+# If true: data will be fetched from yfinance
+# If false: data will be fetched from Alpha Vantage
+# reason for prefence for yfinance = I can access the adjusted close price for free whereas Alpha Vantage asks you to buy the premium version to get the adjusted close price
 DATA_API_IS_YFINANCE = True 
-    # If true: data will be fetched from yfinance
-    # If false: data will be fetched from Alpha Vantage
-    # reason for prefence for yfinance = I can access the adjusted close price for free whereas Alpha Vantage asks you to buy the premium version to get the adjusted close price
 
 # Here you can choose from:
-# 'sma'
-# 'ema'
-# 'sma_rsi'
-# 'sma_rsi_macd'
+# 'sma' 'ema' 'sma_rsi' 'sma_rsi_macd'
 CHOSEN_STRATEGY = 'sma_rsi_macd'
 
+# Backtesting parameters
+STARTING_BALANCE = 10000  # Starting balance for backtesting
+BACKTESTING_PERIOD = '10'# in years as a string 
+#
+
+
+OPEN_ALL_EXCEL_FILES_AFTER_SAVING = True
+
+
+
+
+
+
+
+
+
+#Strategy parameters for indicators
 SMA_SHORT_PERIOD = 50 
 SMA_LONG_PERIOD = 200
 
@@ -26,10 +40,16 @@ MACD_SLOW_PERIOD = 12
 MACD_FAST_PERIOD = 26  
 MACD_SIGNAL_PERIOD = 9  
 
-# Backtesting parameters
-STARTING_BALANCE = 10000  # Starting balance for backtesting
-BACKTESTING_PERIOD = '10'# in years as a string
 
+
+
+
+
+
+
+
+
+# Hardcoded folder paths for backtesting and API key
 TRANSACTION_FEE_PER_STOCK = 0.05
 MINIMUM_TRANSACTION_FEE = 1 
 
@@ -42,8 +62,6 @@ FOLDER_PATH_FOR_EXCEL_FILE = '/Users/prakhar/MA_trading_bot/excel_trial_files_ba
 FOLDER_PATH_FOR_CSV_FILE = '/Users/prakhar/MA_trading_bot/csv_trial_files_backtesting'
 
 FOLDER_PATH_FOR_SUMMARIZED_EXCEL_FILE = '/Users/prakhar/MA_trading_bot/excel_summary_files_backtesting'
-
-OPEN_ALL_EXCEL_FILES_AFTER_SAVING = True
 
 #Here the last symbol should be '/' because I am combining this path with the file name and hence creating a new path where the html portly chart gets saved
 OUTPUT_FOLDER_PATH_FOR_PLOTLY_CHART = '/Users/prakhar/MA_trading_bot/charts_plotted_portly' 
