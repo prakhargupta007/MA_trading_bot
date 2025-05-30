@@ -1,7 +1,7 @@
-TICKER = "AAPL"  # Example: Apple stock 
+TICKERS = "NFLX"  # Example: Apple stock 
 
-DATA_API_IS_YFINANCE = False
-    # If true: data will be fetsched form yfinance
+DATA_API_IS_YFINANCE = True 
+    # If true: data will be fetched from yfinance
     # If false: data will be fetched from Alpha Vantage
     # reason for prefence for yfinance = I can access the adjusted close price for free whereas Alpha Vantage asks you to buy the premium version to get the adjusted close price
 
@@ -34,13 +34,16 @@ TRANSACTION_FEE_PER_STOCK = 0.05
 MINIMUM_TRANSACTION_FEE = 1 
 
 #The folder path in which the created backtest_table should be saved in. 
-FOLDER_PATH = '/Users/prakhar/MA_trading_bot/csv_trial_files_backtesting'
+FOLDER_PATH_FOR_INDIVIDUAL_BACKTEST_TABLE = '/Users/prakhar/MA_trading_bot/csv_trial_files_backtesting'
+FOLDER_PATH_FOR_SUMMARY_BACKTEST_TABLE = '/Users/prakhar/MA_trading_bot/csv_summary_files_backtesting '
 
 # The folder I want my excel file to be saved in
-OUTPUT_FOLDER_PATH_FOR_EXCEL_FILE = '/Users/prakhar/MA_trading_bot/excel_trial_files_backtesting'
+FOLDER_PATH_FOR_EXCEL_FILE = '/Users/prakhar/MA_trading_bot/excel_trial_files_backtesting'
 FOLDER_PATH_FOR_CSV_FILE = '/Users/prakhar/MA_trading_bot/csv_trial_files_backtesting'
 
-OPEN_EXCEL_FILE_AFTER_SAVING = False
+FOLDER_PATH_FOR_SUMMARIZED_EXCEL_FILE = '/Users/prakhar/MA_trading_bot/excel_summary_files_backtesting'
+
+OPEN_ALL_EXCEL_FILES_AFTER_SAVING = True
 
 #Here the last symbol should be '/' because I am combining this path with the file name and hence creating a new path where the html portly chart gets saved
 OUTPUT_FOLDER_PATH_FOR_PLOTLY_CHART = '/Users/prakhar/MA_trading_bot/charts_plotted_portly' 

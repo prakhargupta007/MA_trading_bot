@@ -3,7 +3,8 @@ from tabulate import tabulate
 import pandas as pd
 import os
 
-from config import FOLDER_PATH
+from config import FOLDER_PATH_FOR_INDIVIDUAL_BACKTEST_TABLE
+FOLDER_PATH = FOLDER_PATH_FOR_INDIVIDUAL_BACKTEST_TABLE
 
 def create_and_save_backtest_table_csv_file(backtesting_results, ticker):
     actions, dates, numbers, prices, cash_flows = backtesting_results
