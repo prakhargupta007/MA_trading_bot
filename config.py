@@ -11,9 +11,17 @@ CHOSEN_STRATEGY = 'ema_rsi'
 
 # Backtesting parameters
 STARTING_BALANCE = 10000  # Starting balance for backtesting
-BACKTESTING_PERIOD = '10'# in years as a string 
 
-OPEN_ALL_EXCEL_FILES_AFTER_SAVING = False
+# For the backtesting period, 2 options are available: 
+#   1. Just enter the x number of years as a string, and the backtesting period will be set from today to exactly that many years ago 
+#   2. Enter the start and end dates as strings, and the backtesting period will be set from the start date to the end date
+BACKTESTING_PERIOD = '10'# in years as a string 
+#Fromat of the date should be YYYY-MM-DD
+START_OF_BACKTESTING = '2000-01-01'
+END_OF_BACKTESTING = '2023-01-01'
+
+OPEN_INDIVIDUAL_PROCESS_EXCEL_FILES_AFTER_SAVING = False
+OPEN_SUMMARY_EXCEL_FILE_AFTER_SAVING = True
 
 
 

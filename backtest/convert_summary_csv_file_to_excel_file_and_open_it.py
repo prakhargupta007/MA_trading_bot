@@ -2,7 +2,7 @@ import pandas as pd
 import os
 from config import FOLDER_PATH_FOR_SUMMARIZED_EXCEL_FILE
 from config import FOLDER_PATH_FOR_SUMMARY_BACKTEST_TABLE
-from config import OPEN_ALL_EXCEL_FILES_AFTER_SAVING
+from config import OPEN_SUMMARY_EXCEL_FILE_AFTER_SAVING
 from config import TICKERS
 
 def convert_summary_csv_file_to_excel_file_and_open_it():
@@ -21,7 +21,7 @@ def convert_summary_csv_file_to_excel_file_and_open_it():
     df.to_excel(excel_path, index=False)
 
     # Open the Excel file (works only on Mac)
-    if OPEN_ALL_EXCEL_FILES_AFTER_SAVING:
+    if OPEN_SUMMARY_EXCEL_FILE_AFTER_SAVING:
         os.system(f'open "{excel_path}"')
 
     return f"✅ csv summary file of backtesting data converted to summary Excel file and saved\n\n"
