@@ -1,6 +1,27 @@
+import pandas as pd 
+from config import APPL_STOCK_TEST_MODE
 
+if APPL_STOCK_TEST_MODE:
+    START_OF_BACKTESTING = '2015-06-01'
+    END_OF_BACKTESTING = '2025-05-30'
+    BACKTESTING_PERIOD = '10'
+    option_1_chosen = False 
 
-from config import TICKERS, DATA_API_IS_YFINANCE, BACKTESTING_PERIOD, STARTING_BALANCE
+else:
+    try: 
+        from config import BACKTESTING_PERIOD
+        print(f'\nOption 1 was chosen --> Backtesting period is set from today to exactly {BACKTESTING_PERIOD} years ago')
+        option_1_chosen = True
+        START_OF_BACKTESTING = None
+        END_OF_BACKTESTING = None
+    except:
+        from config import START_OF_BACKTESTING, END_OF_BACKTESTING
+        print(f'\nOption 2 was chosen --> Backtesting period is set from {START_OF_BACKTESTING} to {END_OF_BACKTESTING}')
+        BACKTESTING_PERIOD = ((pd.to_datetime(END_OF_BACKTESTING) - pd.to_datetime(START_OF_BACKTESTING)).days)/365.25
+        option_1_chosen = False
+    
+
+from config import TICKERS, DATA_API_IS_YFINANCE, STARTING_BALANCE
 from config import SMA_LONG_PERIOD, SMA_SHORT_PERIOD, EMA_LONG_PERIOD, EMA_SHORT_PERIOD, RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD
 from config import CHOSEN_STRATEGY
 from data.fetch_data_from_yfinance import fetch_data_from_yfinance
@@ -38,18 +59,23 @@ def main():
         for TICKER in TICKER_LIST: 
 
             bold_underscore = '\033[1m_\033[0m'
-            print(bold_underscore * 100)
+            print('\n',bold_underscore * 100)
 
-            print(f'\n\nFetching historical data of {TICKER}')
-            if DATA_API_IS_YFINANCE:
-                data = fetch_data_from_yfinance(TICKER, BACKTESTING_PERIOD)
-            else: 
-                data = fetch_data_from_alpha_vantage(TICKER, BACKTESTING_PERIOD)
-                
-            if data is None or data.empty:
-                raise ValueError(f"❌ No data was fetched for ticker {TICKER}. Please check the ticker symbol or your internet connection.")
+            if APPL_STOCK_TEST_MODE: 
+                data = pd.read_csv("/Users/prakhar/MA_trading_bot/data/test_data_AAPL.csv", index_col="Date", parse_dates=True)
+                print('\nSample data of APPL, which is stored locally is being used')
 
-            print(f'✅ Data of {TICKER} fetched successfully!\n\n')
+            else:
+                print(f'\n\nFetching historical data of {TICKER}')
+                if DATA_API_IS_YFINANCE:
+                    data = fetch_data_from_yfinance(TICKER, option_1_chosen, BACKTESTING_PERIOD, END_OF_BACKTESTING, START_OF_BACKTESTING)
+                else: 
+                    data = fetch_data_from_alpha_vantage(TICKER, option_1_chosen, BACKTESTING_PERIOD, END_OF_BACKTESTING, START_OF_BACKTESTING)
+                    
+                if data is None or data.empty:
+                    raise ValueError(f"❌ No data was fetched for ticker {TICKER}. Please check the ticker symbol or your internet connection.")
+
+                print(f'✅ Data of {TICKER} fetched successfully!\n\n')
         
 
 
@@ -115,7 +141,10 @@ def main():
             summary_buy_hold_CAGRs.append(f'{cagr_buy_hold} %')
 
         summary_table = create_and_save_backtest_summary_table_csv_file(summary_tickers, summary_CAGRs, summary_buy_hold_CAGRs)
-        print(f'RESULTS OF \033[1m{CHOSEN_STRATEGY.upper()}\033[0m STRATEGY OVER PAST \033[1m{BACKTESTING_PERIOD.upper()}\033[0m years')
+        if option_1_chosen == False or APPL_STOCK_TEST_MODE:
+            print(f'RESULTS OF \033[1m{CHOSEN_STRATEGY.upper()}\033[0m STRATEGY FROM \033[1m{START_OF_BACKTESTING}\033[0m TO \033[1m{END_OF_BACKTESTING}\033[0m --> (\033[1m{round(float(BACKTESTING_PERIOD), 2)}\033[0m years)')
+        else:
+            print(f'RESULTS OF \033[1m{CHOSEN_STRATEGY.upper()}\033[0m STRATEGY OVER PAST \033[1m{round(float(BACKTESTING_PERIOD), 2)}\033[0m years')
         print(f'{summary_table}\n\n')
 
         print('Converting csv summary file to excel summary file and opening it (if desired)...') 

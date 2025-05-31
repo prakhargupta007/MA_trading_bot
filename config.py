@@ -1,9 +1,11 @@
-TICKERS =  "AAPL"  # Example: Apple stock 
+APPL_STOCK_TEST_MODE = False 
+
+TICKERS =  "NFLX"  # Example: Apple stock 
 
 # If true: data will be fetched from yfinance
 # If false: data will be fetched from Alpha Vantage
 # reason for prefence for yfinance = I can access the adjusted close price for free whereas Alpha Vantage asks you to buy the premium version to get the adjusted close price
-DATA_API_IS_YFINANCE = True 
+DATA_API_IS_YFINANCE = True #--> SHOULD BE TRUE AT ALL TIMES! 
 
 # Here you can choose from:
 # 'sma' 'ema' 'sma_rsi' 'sma_rsi_macd'  'ema_rsi'
@@ -12,16 +14,17 @@ CHOSEN_STRATEGY = 'ema_rsi'
 # Backtesting parameters
 STARTING_BALANCE = 10000  # Starting balance for backtesting
 
-# For the backtesting period, 2 options are available: 
-#   1. Just enter the x number of years as a string, and the backtesting period will be set from today to exactly that many years ago 
-#   2. Enter the start and end dates as strings, and the backtesting period will be set from the start date to the end date
-BACKTESTING_PERIOD = '10'# in years as a string 
-#Fromat of the date should be YYYY-MM-DD
-START_OF_BACKTESTING = '2000-01-01'
-END_OF_BACKTESTING = '2023-01-01'
+#    For the backtesting period, 2 options are available: 
+#       1. Just enter the x number of years as a string, and the backtesting period will be set from today to exactly that many years ago 
+#       2. Enter the start and end dates as strings, and the backtesting period will be set from the start date to the end date
+#    --> If choosing option 1, comment out option 2 and vice versa!
+BACKTESTING_PERIOD = '7.452'# in years as a string 
+        #Format of the date should be YYYY-MM-DD
+#START_OF_BACKTESTING = '2013-01-01'
+#END_OF_BACKTESTING = '2015-01-01'
 
 OPEN_INDIVIDUAL_PROCESS_EXCEL_FILES_AFTER_SAVING = False
-OPEN_SUMMARY_EXCEL_FILE_AFTER_SAVING = True
+OPEN_SUMMARY_EXCEL_FILE_AFTER_SAVING = False
 
 
 

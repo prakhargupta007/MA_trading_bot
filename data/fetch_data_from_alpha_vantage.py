@@ -3,7 +3,7 @@ from config import ALPHA_VANTAGE_API_KEY
 from alpha_vantage.timeseries import TimeSeries
 import pandas as pd
 
-def fetch_data_from_alpha_vantage(ticker, backtesting_period):  
+def fetch_data_from_alpha_vantage(ticker, option_1_chosen, backtesting_period, end_of_backtesting, start_of_backtesting):  
     ts = TimeSeries(key=ALPHA_VANTAGE_API_KEY, output_format='pandas')
 
     # Fetching data from Alpha Vantage (full data)
@@ -26,10 +26,20 @@ def fetch_data_from_alpha_vantage(ticker, backtesting_period):
     data = data.dropna(subset=["Close"])  # Remove rows with NaN in 'Close'
 
     # Unlike the yfinance API the Alpha VAntage API doesn't take the paramter of period, which is why we need to fetch the whole data first and then slice it according to the backtesting_period
-    if backtesting_period:
-        # Slice the DataFrame based on backtesting_period (e.g., for 1 year data)
+    if option_1_chosen:
+        backtesting_period = float(backtesting_period)
         end_date = data.index.max()
-        start_date = end_date - pd.DateOffset(years=int(backtesting_period))  # Limit by years
+
+        full_years = int(backtesting_period)
+        remaining_fraction = backtesting_period - full_years
+        extra_days = int(remaining_fraction * 365.25)
+
+        offset = pd.DateOffset(years=full_years, days=extra_days)
+        start_date = end_date - offset
+
         data = data[start_date:end_date]
+
+    else: 
+        data = data[start_of_backtesting:end_of_backtesting]
 
     return data
