@@ -76,8 +76,6 @@ def main():
                     raise ValueError(f"❌ No data was fetched for ticker {TICKER}. Please check the ticker symbol or your internet connection.")
 
                 print(f'✅ Data of {TICKER} fetched successfully!\n\n')
-        
-
 
             indicator_parameters = {
                 'data': data,

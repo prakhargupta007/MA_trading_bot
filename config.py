@@ -1,6 +1,6 @@
-APPL_STOCK_TEST_MODE = False 
+APPL_STOCK_TEST_MODE = True 
 
-TICKERS =  "NFLX"  # Example: Apple stock 
+TICKERS =  "AMZN"  # Example: Apple stock 
 
 # If true: data will be fetched from yfinance
 # If false: data will be fetched from Alpha Vantage
@@ -18,7 +18,7 @@ STARTING_BALANCE = 10000  # Starting balance for backtesting
 #       1. Just enter the x number of years as a string, and the backtesting period will be set from today to exactly that many years ago 
 #       2. Enter the start and end dates as strings, and the backtesting period will be set from the start date to the end date
 #    --> If choosing option 1, comment out option 2 and vice versa!
-BACKTESTING_PERIOD = '7.452'# in years as a string 
+BACKTESTING_PERIOD = '1'# in years as a string 
         #Format of the date should be YYYY-MM-DD
 #START_OF_BACKTESTING = '2013-01-01'
 #END_OF_BACKTESTING = '2015-01-01'

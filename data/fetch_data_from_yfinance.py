@@ -17,6 +17,7 @@ def fetch_data_from_yfinance(ticker, option_1_chosen, backtesting_period, end_of
     else:
         data = yf.download(ticker, start=start_of_backtesting, end=end_of_backtesting, threads=True)
 
+
     if isinstance(data.columns, pd.MultiIndex):
         data.columns = data.columns.get_level_values(0)  # Get the first level of the MultiIndex columns
     # Ensure 'Close' is numeric and handles any NaN values
