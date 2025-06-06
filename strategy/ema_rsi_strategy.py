@@ -1,36 +1,28 @@
 from indicators.ema import calculate_ema
 from indicators.rsi import calculate_rsi
 
-
-def ema_rsi_strategy(data, ema_long_period, ema_short_period, rsi_period, **kwargs):
-    # Calculate indicators
+def ema_rsi_strategy(data, ema_long_period, ema_short_period, rsi_period, rsi_overbought, rsi_oversold, **kwargs):
     ema_short = calculate_ema(data, ema_short_period)
     ema_long = calculate_ema(data, ema_long_period)
-    rsi = calculate_rsi(data, rsi_period) 
+    rsi = calculate_rsi(data, rsi_period)
 
     signals = []
     bought = False
-    # Add initial HOLDs so signal list matches the data length
-    for _ in range(ema_long_period - 1):  # replace with correct variable name
+
+    for _ in range(max(ema_long_period, rsi_period) - 1):
         signals.append('HOLD')
-        
-    for i in range(ema_long_period - 1, len(data)):
+
+    for i in range(max(ema_long_period, rsi_period) - 1, len(data)):
         # Default signal is 'HOLD'
         signal = 'HOLD'
         
         if not bought:
-            if (ema_short.iloc[i] > ema_long.iloc[i] 
-                and rsi.iloc[i] < 30 
-                #and macd.iloc[i] > macd_signal_line.iloc[i]
-                ):
+            if ema_short.iloc[i] > ema_long.iloc[i] and rsi.iloc[i] < rsi_oversold:
                 signal = 'BUY'
                 bought = True  # Set bought to True after buying
         
-        elif bought:  # Explicitly written , just for better readibility 
-            if (ema_short.iloc[i] < ema_long.iloc[i] 
-                and rsi.iloc[i] > 70 
-                #or macd.iloc[i] < macd_signal_line.iloc[i]
-                ):
+        elif bought:  # Explicitly written, just for better readability 
+            if ema_short.iloc[i] < ema_long.iloc[i] and rsi.iloc[i] > rsi_overbought:
                 signal = 'SELL'
                 bought = False  # Reset bought to False after selling
         

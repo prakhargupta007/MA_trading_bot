@@ -20,7 +20,7 @@ def backtest_strategy(data, signals, starting_balance):
 
     for i in range(len(data)):
         price = data['Close'].iloc[i]
-        signal = signals[i] 
+        signal = signals[i] if i < len(signals) else 'HOLD'
 
         if signal == 'HOLD':
             if position:

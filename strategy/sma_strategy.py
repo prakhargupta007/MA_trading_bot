@@ -1,14 +1,13 @@
 from indicators.sma import calculate_sma
 
 def sma_strategy(data, sma_long_period, sma_short_period, **kwargs):
-
     sma_short = calculate_sma(data, sma_short_period)
     sma_long = calculate_sma(data, sma_long_period)
 
     signals = []
     bought = False
 
-    for _ in range(sma_long_period - 1):  # replace with correct variable name
+    for _ in range(sma_long_period - 1):
         signals.append('HOLD')
 
     for i in range(sma_long_period - 1, len(data)):
@@ -20,7 +19,7 @@ def sma_strategy(data, sma_long_period, sma_short_period, **kwargs):
                 signal = 'BUY'
                 bought = True  # Set bought to True after buying
         
-        elif bought:  # Explicitly written , just for better readibility 
+        elif bought:  # Explicitly written, just for better readability 
             if sma_short.iloc[i] < sma_long.iloc[i]:
                 signal = 'SELL'
                 bought = False  # Reset bought to False after selling

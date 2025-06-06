@@ -1,7 +1,7 @@
 import pandas as pd 
-from config import APPL_STOCK_TEST_MODE
+from config import AAPL_STOCK_TEST_MODE
 
-if APPL_STOCK_TEST_MODE:
+if AAPL_STOCK_TEST_MODE:
     START_OF_BACKTESTING = '2015-06-01'
     END_OF_BACKTESTING = '2025-05-30'
     BACKTESTING_PERIOD = '10'
@@ -22,7 +22,7 @@ else:
     
 
 from config import TICKERS, DATA_API_IS_YFINANCE, STARTING_BALANCE
-from config import SMA_LONG_PERIOD, SMA_SHORT_PERIOD, EMA_LONG_PERIOD, EMA_SHORT_PERIOD, RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD
+from config import SMA_LONG_PERIOD, SMA_SHORT_PERIOD, EMA_LONG_PERIOD, EMA_SHORT_PERIOD, RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, RSI_OVERBOUGHT_WARNING, RSI_OVERSOLD_WARNING
 from config import CHOSEN_STRATEGY
 from data.fetch_data_from_yfinance import fetch_data_from_yfinance
 from data.fetch_data_from_alpha_vantage import fetch_data_from_alpha_vantage 
@@ -61,9 +61,9 @@ def main():
             bold_underscore = '\033[1m_\033[0m'
             print('\n',bold_underscore * 100)
 
-            if APPL_STOCK_TEST_MODE: 
+            if AAPL_STOCK_TEST_MODE: 
                 data = pd.read_csv("/Users/prakhar/MA_trading_bot/data/test_data_AAPL.csv", index_col="Date", parse_dates=True)
-                print('\nSample data of APPL, which is stored locally is being used')
+                print('\nSample data of AAPL, which is stored locally is being used')
 
             else:
                 print(f'\n\nFetching historical data of {TICKER}')
@@ -86,7 +86,9 @@ def main():
                 'rsi_period': RSI_PERIOD,
                 'macd_fast': MACD_FAST_PERIOD,
                 'macd_slow': MACD_SLOW_PERIOD,
-                'macd_signal': MACD_SIGNAL_PERIOD
+                'macd_signal': MACD_SIGNAL_PERIOD,
+                'rsi_overbought': RSI_OVERBOUGHT_WARNING,
+                'rsi_oversold': RSI_OVERSOLD_WARNING
             }
 
             print(f'Backtesting strategy:  \033[1m{CHOSEN_STRATEGY.upper()}\033[0m STRATEGY\n')
@@ -139,7 +141,7 @@ def main():
             summary_buy_hold_CAGRs.append(f'{cagr_buy_hold} %')
 
         summary_table = create_and_save_backtest_summary_table_csv_file(summary_tickers, summary_CAGRs, summary_buy_hold_CAGRs)
-        if option_1_chosen == False or APPL_STOCK_TEST_MODE:
+        if option_1_chosen == False or AAPL_STOCK_TEST_MODE:
             print(f'RESULTS OF \033[1m{CHOSEN_STRATEGY.upper()}\033[0m STRATEGY FROM \033[1m{START_OF_BACKTESTING}\033[0m TO \033[1m{END_OF_BACKTESTING}\033[0m --> (\033[1m{round(float(BACKTESTING_PERIOD), 2)}\033[0m years)')
         else:
             print(f'RESULTS OF \033[1m{CHOSEN_STRATEGY.upper()}\033[0m STRATEGY OVER PAST \033[1m{round(float(BACKTESTING_PERIOD), 2)}\033[0m years')
@@ -151,7 +153,7 @@ def main():
     except Exception as e:
         print("\n❌ An error occurred:")
         traceback.print_exc()  # Shows full error with file name + line number
-        exit(1)
+        raise
 
 if __name__ == "__main__":
     main()
