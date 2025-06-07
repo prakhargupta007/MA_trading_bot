@@ -59,7 +59,7 @@ def main():
         for TICKER in TICKER_LIST: 
 
             bold_underscore = '\033[1m_\033[0m'
-            print('\n',bold_underscore * 100)
+            print('\n',bold_underscore * 200)
 
             if AAPL_STOCK_TEST_MODE: 
                 data = pd.read_csv("/Users/prakhar/MA_trading_bot/data/test_data_AAPL.csv", index_col="Date", parse_dates=True)

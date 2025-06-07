@@ -1,7 +1,9 @@
 import os
-AAPL_STOCK_TEST_MODE = os.environ.get('AAPL_STOCK_TEST_MODE', 'True') == 'True'
+    # If True, backtesting period settings as determined in main.py file will be used
+    # If False, backtesting period settings as determined in this config file will be used
+AAPL_STOCK_TEST_MODE = True 
 
-TICKERS =  "AMZN"  # Example: Apple stock 
+TICKERS =  "TSLA"  # Example: Apple stock 
 
 if AAPL_STOCK_TEST_MODE:
     TICKERS = 'AAPL'
@@ -16,16 +18,16 @@ DATA_API_IS_YFINANCE = True #--> SHOULD BE TRUE AT ALL TIMES!
 CHOSEN_STRATEGY = 'ema_rsi'
 
 # Backtesting parameters
-STARTING_BALANCE = 100  # Starting balance for backtesting
+STARTING_BALANCE = 10000  # Starting balance for backtesting
 
-#    For the backtesting period, 2 options are available: 
+#      For the backtesting period, 2 options are available: 
 #       1. Just enter the x number of years as a string, and the backtesting period will be set from today to exactly that many years ago 
 #       2. Enter the start and end dates as strings, and the backtesting period will be set from the start date to the end date
 #    --> If choosing option 1, comment out option 2 and vice versa!
-BACKTESTING_PERIOD = '5'# in years as a string 
+#BACKTESTING_PERIOD = '10'# in years as a string 
         #Format of the date should be YYYY-MM-DD
-#START_OF_BACKTESTING = '2013-01-01'
-#END_OF_BACKTESTING = '2015-01-01'
+START_OF_BACKTESTING = '2010-01-01'
+END_OF_BACKTESTING = '2025-01-01'
 
 OPEN_INDIVIDUAL_PROCESS_EXCEL_FILES_AFTER_SAVING = False
 OPEN_SUMMARY_EXCEL_FILE_AFTER_SAVING = False
@@ -46,8 +48,6 @@ EMA_SHORT_PERIOD = 50
 EMA_LONG_PERIOD = 200
 
 RSI_PERIOD = 14  # period for RS (Relative Strength) index
-# RSI_OVERBOUGHT = 70  # RSI level considered overbought (removed)
-# RSI_OVERSOLD = 30  # RSI level considered oversold (removed)
 RSI_OVERBOUGHT_WARNING = 70  
 RSI_OVERSOLD_WARNING = 30
 
