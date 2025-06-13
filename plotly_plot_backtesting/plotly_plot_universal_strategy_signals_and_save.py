@@ -78,9 +78,8 @@ def plotly_plot_universal_strategy_signals_and_save(data, signals, ticker, chose
     # Show the figure
     fig.show()
 
-    # Hard-coded folder path
-    file_name = f"{ticker}_strategy_plot.html"
-    # Save the interactive chart as HTML into that folder
+    # Save the interactive chart as HTML
+    file_name = f"{ticker}_{chosen_strategy}_strategy_plot.html"
     full_path = os.path.join(OUTPUT_FOLDER_PATH_FOR_PLOTLY_CHART, file_name)
     fig.write_html(full_path)
 

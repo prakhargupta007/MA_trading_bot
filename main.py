@@ -40,6 +40,7 @@ from matplotlib_plot_backtesting.matplotlib_plot_universal_backtest_signals impo
 from matplotlib_plot_backtesting.matplotlib_plot_sma_rsi_macd_strategy import matplotlib_plot_sma_rsi_macd_strategy
 
 from plotly_plot_backtesting.plotly_plot_universal_strategy_signals_and_save import plotly_plot_universal_strategy_signals_and_save
+from plotly_plot_backtesting.plotly_plot_strategy_with_indicators_and_save import plotly_plot_strategy_with_indicators_and_save
 
 from metrics.cagr import calculate_cagr
 from metrics.profit import calculate_profit
@@ -110,12 +111,11 @@ def main():
             print(f"✅ backtest table printed successfully\n\n")
 
             print('Visualising the used strategy...')
-            #Use following line for just buy and sell universal plotting:
-            #matplotlib_plot_universal_strategy_signals(data,signals,TICKER, CHOSEN_STRATEGY.upper())
-            plotly_plot_universal_strategy_signals_and_save(data,signals,TICKER, CHOSEN_STRATEGY.upper())    
-            #Use following line for just sma_rsi_macd_strategy plotting:
-            #matplotlib_plot_sma_rsi_macd_strategy(data, signals, SMA_LONG_PERIOD, SMA_SHORT_PERIOD,RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, TICKER, CHOSEN_STRATEGY.upper()) #matplotlib_plot_sma_rsi_macd_strategy(data, signals, SMA_LONG_PERIOD, SMA_SHORT_PERIOD,RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, TICKER)
-            print('✅ plot shown successfully\n\n')
+            # Plot basic buy/sell signals
+            plotly_plot_universal_strategy_signals_and_save(data, signals, TICKER, CHOSEN_STRATEGY.upper())
+            # Plot strategy with indicators
+            plotly_plot_strategy_with_indicators_and_save(data, signals, TICKER, CHOSEN_STRATEGY.upper(), indicator_parameters)
+            print('✅ plots shown successfully\n\n')
 
             print('Calculating metrics...')
             end_balance = return_endbalance()

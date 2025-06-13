@@ -15,7 +15,7 @@ DATA_API_IS_YFINANCE = True #--> SHOULD BE TRUE AT ALL TIMES!
 
 # Here you can choose from:
 # 'sma' 'ema' 'sma_rsi' 'sma_rsi_macd'  'ema_rsi'
-CHOSEN_STRATEGY = 'ema_rsi'
+CHOSEN_STRATEGY = 'ema'
 
 # Backtesting parameters
 STARTING_BALANCE = 10000  # Starting balance for backtesting
