@@ -21,7 +21,7 @@ def plotly_plot_strategy_with_indicators_and_save(data, signals, ticker, chosen_
         indicator_parameters (dict): Dictionary containing all indicator parameters
     """
     # Get the required indicators for this strategy from the indicator map
-    from indicators.indicator_map import indicator_map
+    from indicators.strategywise_indicator_map import indicator_map
     required_indicators = indicator_map.get(chosen_strategy.lower(), [])
     
     # Calculate all indicators

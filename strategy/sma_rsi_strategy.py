@@ -6,7 +6,7 @@ def sma_rsi_strategy(data, sma_long_period, sma_short_period, rsi_period, rsi_ov
     sma_long = calculate_sma(data, sma_long_period)
     rsi = calculate_rsi(data, rsi_period)
 
-    signals = []
+    signals = ['HOLD']
     bought = False
 
     for _ in range(max(sma_long_period, rsi_period) - 1):

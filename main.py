@@ -27,6 +27,8 @@ from config import CHOSEN_STRATEGY
 from data.fetch_data_from_yfinance import fetch_data_from_yfinance
 from data.fetch_data_from_alpha_vantage import fetch_data_from_alpha_vantage 
 
+from indicators.check_indicator_length import check_indicator_length
+
 from strategy.strategy_map import strategy_map
 
 from backtest.backtest_strategy import backtest_strategy
@@ -91,6 +93,13 @@ def main():
                 'rsi_overbought': RSI_OVERBOUGHT_WARNING,
                 'rsi_oversold': RSI_OVERSOLD_WARNING
             }
+
+            message, good_to_go = check_indicator_length(data, indicator_parameters)
+            if not good_to_go:
+                print(f'❌ {message}')
+                exit()
+            else:
+                print(f'✅ {message}')
 
             print(f'Backtesting strategy:  \033[1m{CHOSEN_STRATEGY.upper()}\033[0m STRATEGY\n')
             print(f'Generating transaction signals based on the strategy ...')

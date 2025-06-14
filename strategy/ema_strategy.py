@@ -4,7 +4,7 @@ def ema_strategy(data, ema_long_period, ema_short_period, **kwargs):
     ema_short = calculate_ema(data, ema_short_period)
     ema_long = calculate_ema(data, ema_long_period)
 
-    signals = []
+    signals = ['HOLD']
     bought = False
 
     for _ in range(ema_long_period - 1):

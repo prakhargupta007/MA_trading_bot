@@ -8,7 +8,7 @@ def sma_rsi_macd_strategy(data, sma_long_period, sma_short_period, rsi_period, r
     rsi = calculate_rsi(data, rsi_period)
     macd, macd_signal_line = calculate_macd(data, fast_period=12, slow_period=26, signal_period=9)
 
-    signals = []
+    signals = ['HOLD']
     bought = False
 
     for _ in range(max(sma_long_period, rsi_period) - 1):
