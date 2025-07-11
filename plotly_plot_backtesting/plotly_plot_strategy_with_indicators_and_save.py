@@ -60,7 +60,7 @@ def plotly_plot_strategy_with_indicators_and_save(data, signals, ticker, chosen_
         cols=1,
         shared_xaxes=True,
         vertical_spacing=0.05,
-        subplot_titles=([f'Price and Moving Averages'] + 
+        subplot_titles=([f'Price and Indicators'] + 
                        ['RSI'] * ('rsi' in calculated_indicators) +
                        ['MACD'] * ('macd' in calculated_indicators))
     )

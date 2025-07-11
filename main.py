@@ -1,7 +1,7 @@
 import pandas as pd 
-from config import AAPL_STOCK_TEST_MODE
+from config import USE_STORED_DATA
 
-if AAPL_STOCK_TEST_MODE:
+if USE_STORED_DATA:
     START_OF_BACKTESTING = '2015-06-01'
     END_OF_BACKTESTING = '2025-05-30'
     BACKTESTING_PERIOD = '10'
@@ -37,6 +37,7 @@ from backtest.create_and_save_backtest_table_csv_file import create_and_save_bac
 from backtest.convert_csv_file_to_excel_file_and_open_it import convert_csv_file_to_excel_file_and_open_it
 from backtest.create_and_save_backtest_summary_table_csv_file import create_and_save_backtest_summary_table_csv_file
 from backtest.convert_summary_csv_file_to_excel_file_and_open_it import convert_summary_csv_file_to_excel_file_and_open_it 
+from backtest.convert_csv_file_to_pdf import convert_csv_summarized_backtest_table_to_pdf
 
 from matplotlib_plot_backtesting.matplotlib_plot_universal_backtest_signals import matplotlib_plot_universal_strategy_signals
 from matplotlib_plot_backtesting.matplotlib_plot_sma_rsi_macd_strategy import matplotlib_plot_sma_rsi_macd_strategy
@@ -47,7 +48,8 @@ from plotly_plot_backtesting.plotly_plot_strategy_with_indicators_and_save impor
 from metrics.cagr import calculate_cagr
 from metrics.profit import calculate_profit
 from metrics.buy_hold_profit import calculate_profit_if_bought_and_held
-
+from metrics.cagr_strategy_efficiency import cagr_strategy_efficiency
+from metrics.average_cagr_of_list import calculate_average_cagr_of_list
 import traceback 
 
 def main():
@@ -58,13 +60,14 @@ def main():
         summary_tickers = []
         summary_CAGRs = []
         summary_buy_hold_CAGRs = []
+        summary_cagr_strategy_efficiencies = []
 
         for TICKER in TICKER_LIST: 
 
             bold_underscore = '\033[1m_\033[0m'
             print('\n',bold_underscore * 200)
 
-            if AAPL_STOCK_TEST_MODE: 
+            if USE_STORED_DATA: 
                 data = pd.read_csv("/Users/prakhar/MA_trading_bot/data/test_data_AAPL.csv", index_col="Date", parse_dates=True)
                 print('\nSample data of AAPL, which is stored locally is being used')
 
@@ -131,7 +134,7 @@ def main():
             print(f'End balance: {end_balance}')
             profit_in_percent, profit = calculate_profit(STARTING_BALANCE, end_balance)
             print(f'Profit made: {profit}')
-            print(f'Profit made: {profit_in_percent}')
+            print(f'Profit made in percentage: {profit_in_percent}')
             cagr = calculate_cagr(STARTING_BALANCE, float(BACKTESTING_PERIOD), end_balance)
             print(f'CAGR: {cagr} %')
             print('✅ metrics calculated successfully\n\n')
@@ -140,28 +143,37 @@ def main():
             print(f'If bought and hold: {profit_of_buy_and_hold}')
             cagr_buy_hold = calculate_cagr(STARTING_BALANCE, float(BACKTESTING_PERIOD), cash_at_end_of_buy_and_hold)
             print(f'CAGR of buy and hold: {cagr_buy_hold} %')
+            cagr_strategy_efficiency_in_percent = cagr_strategy_efficiency(cagr, cagr_buy_hold)
+            print(f'CAGR strategy efficiency: {cagr_strategy_efficiency_in_percent}')
             print('✅ metrics of buy and hold option calculated successfully\n\n')
 
             print('Converting csv file to excel file and opening it (if desired)...')
             print(convert_csv_file_to_excel_file_and_open_it(TICKER)) # will only open if chosen to do so in config file
 
             summary_tickers.append(TICKER)
-            summary_CAGRs.append(f'{cagr} %')
-            summary_buy_hold_CAGRs.append(f'{cagr_buy_hold} %')
+            summary_CAGRs.append(cagr)
+            summary_buy_hold_CAGRs.append(cagr_buy_hold)
+            summary_cagr_strategy_efficiencies.append(cagr_strategy_efficiency_in_percent)
 
-        summary_table = create_and_save_backtest_summary_table_csv_file(summary_tickers, summary_CAGRs, summary_buy_hold_CAGRs)
-        if option_1_chosen == False or AAPL_STOCK_TEST_MODE:
-            print(f'RESULTS OF \033[1m{CHOSEN_STRATEGY.upper()}\033[0m STRATEGY FROM \033[1m{START_OF_BACKTESTING}\033[0m TO \033[1m{END_OF_BACKTESTING}\033[0m --> (\033[1m{round(float(BACKTESTING_PERIOD), 2)}\033[0m years)')
+        summary_table, csv_path_of_summary_table = create_and_save_backtest_summary_table_csv_file(summary_tickers, summary_CAGRs, summary_buy_hold_CAGRs, summary_cagr_strategy_efficiencies)
+        if option_1_chosen == False or USE_STORED_DATA:
+            summary_table_headline = f'RESULTS OF \033[1m{CHOSEN_STRATEGY.upper()}\033[0m STRATEGY FROM \033[1m{START_OF_BACKTESTING}\033[0m TO \033[1m{END_OF_BACKTESTING}\033[0m --> (\033[1m{round(float(BACKTESTING_PERIOD), 2)}\033[0m years)'
+            print(summary_table_headline)
         else:
-            print(f'RESULTS OF \033[1m{CHOSEN_STRATEGY.upper()}\033[0m STRATEGY OVER PAST \033[1m{round(float(BACKTESTING_PERIOD), 2)}\033[0m years')
-        print(f'{summary_table}\n\n')
+            summary_table_headline = f'RESULTS OF \033[1m{CHOSEN_STRATEGY.upper()}\033[0m STRATEGY OVER PAST \033[1m{round(float(BACKTESTING_PERIOD), 2)}\033[0m years'
+            print(summary_table_headline)
+        print(summary_table)
+        print(f'Average CAGR of all tickers of {CHOSEN_STRATEGY.upper()} strategy: \033[1m{calculate_average_cagr_of_list(summary_CAGRs)}% \033[0m\n\n')
 
         print('Converting csv summary file to excel summary file and opening it (if desired)...') 
         print(convert_summary_csv_file_to_excel_file_and_open_it())
 
+        print('Converting csv summary file to pdf file...')
+        convert_csv_summarized_backtest_table_to_pdf(csv_path_of_summary_table, title=f'{CHOSEN_STRATEGY.upper()} STRATEGY RESULTS \n with Backtesting period from {START_OF_BACKTESTING} to {END_OF_BACKTESTING}')
+
     except Exception as e:
         print("\n❌ An error occurred:")
-        traceback.print_exc()  # Shows full error with file name + line number
+        traceback.print_exc()  # Shows full error with file name + line number for easier debugging
         raise
 
 if __name__ == "__main__":
