@@ -1,11 +1,12 @@
 import os
     # If True, backtesting period settings as determined in main.py file will be used and ticker is automatically set as 'APPL'
     # If False, backtesting period settings as determined in this config file will be used
-USE_STORED_DATA = True 
+USE_STORED_DATA = False 
 
+TICKERS = 'AAPL,NVDA,TSLA'
 #TICKERS =  "JNJ,KO,PG,D"
 #TICKERS =  "MSFT,DIS,UNH,UPS"
-TICKERS =  "TSLA,NVDA,ARKK,META"
+#TICKERS =  "TSLA,NVDA,ARKK,META"
 
 # leave the following untouched unless the stored data ticker gets changed
 if USE_STORED_DATA:
@@ -18,7 +19,7 @@ DATA_API_IS_YFINANCE = True #--> SHOULD BE TRUE AT ALL TIMES!
 
 # Here you can choose from:
 # 'sma' 'ema' 'sma_rsi' 'sma_rsi_macd'  'ema_rsi'
-CHOSEN_STRATEGY = 'ema_rsi'
+CHOSEN_STRATEGY = 'sma'
 
 # Backtesting parameters
 STARTING_BALANCE = 10000  # Starting balance for backtesting
@@ -30,7 +31,7 @@ STARTING_BALANCE = 10000  # Starting balance for backtesting
 #BACKTESTING_PERIOD = '10'# in years as a string 
         #Format of the date should be YYYY-MM-DD
 START_OF_BACKTESTING = '2010-06-01'
-END_OF_BACKTESTING = '2025-06-01'
+END_OF_BACKTESTING = '2025-07-09'
 
 OPEN_INDIVIDUAL_PROCESS_EXCEL_FILES_AFTER_SAVING = False
 OPEN_SUMMARY_EXCEL_FILE_AFTER_SAVING = False

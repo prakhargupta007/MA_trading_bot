@@ -169,7 +169,10 @@ def main():
         print(convert_summary_csv_file_to_excel_file_and_open_it())
 
         print('Converting csv summary file to pdf file...')
-        convert_csv_summarized_backtest_table_to_pdf(csv_path_of_summary_table, title=f'{CHOSEN_STRATEGY.upper()} STRATEGY RESULTS \n with Backtesting period from {START_OF_BACKTESTING} to {END_OF_BACKTESTING}')
+        convert_csv_summarized_backtest_table_to_pdf(
+            csv_path_of_summary_table,
+            title=f'{CHOSEN_STRATEGY.upper()} STRATEGY RESULTS with Backtesting period from {START_OF_BACKTESTING} to {END_OF_BACKTESTING}'
+        )
 
     except Exception as e:
         print("\n❌ An error occurred:")
