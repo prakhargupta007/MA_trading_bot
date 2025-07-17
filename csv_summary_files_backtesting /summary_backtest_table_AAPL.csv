@@ -1,2 +1,2 @@
-Ticker,Strategy CAGR (%),Buy & Hold CAGR (%),CAGR Strategy Efficiency (%)
-AAPL,16.86,21.23,79.42
+Ticker,Strategy CAGR (%),Buy & Hold CAGR (%),CAGR Strategy Efficiency (%),Sharpe ratio
+AAPL,13.26,21.23,62.46,0.42

@@ -1,11 +1,10 @@
 __pycache__/
 *.pyc 
+/csv_summary_files_backtesting/
 /csv_trial_files_backtesting/
 /excel_trial_files_backtesting/
 /plots_trial_files_backtesting/
 /charts_plotted_portly/
 /excel_summary_files_backtesting/
-/csv_summary_files_backtesting/
 /PNGs_plotly_charts/
-/csv_summary_files_backtesting/
 /pdf_summary_files-backtesting/

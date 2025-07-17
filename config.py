@@ -1,9 +1,9 @@
 import os
     # If True, backtesting period settings as determined in main.py file will be used and ticker is automatically set as 'APPL'
     # If False, backtesting period settings as determined in this config file will be used
-USE_STORED_DATA = False 
+USE_STORED_DATA = True 
 
-TICKERS = 'AAPL,NVDA,TSLA'
+TICKERS = 'AMD,NVDA,GOOG'
 #TICKERS =  "JNJ,KO,PG,D"
 #TICKERS =  "MSFT,DIS,UNH,UPS"
 #TICKERS =  "TSLA,NVDA,ARKK,META"
@@ -63,11 +63,11 @@ MACD_SIGNAL_PERIOD = 9
 
 
 
-
-# Hardcoded folder paths for backtesting and API key
+RISK_FREE_RATE = 0.052 #(current risk free rate in the US ==> yield on the 3-month US treasury bill)
 TRANSACTION_FEE_PER_STOCK = 0.05
 MINIMUM_TRANSACTION_FEE = 1 
 
+# Hardcoded folder paths for backtesting and API key
 #The csv folder paths in which the resepctive files should be saved in. 
 FOLDER_PATH_FOR_INDIVIDUAL_BACKTEST_TABLE = '/Users/prakhar/MA_trading_bot/csv_trial_files_backtesting'
 FOLDER_PATH_FOR_SUMMARY_BACKTEST_TABLE = '/Users/prakhar/MA_trading_bot/csv_summary_files_backtesting '

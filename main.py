@@ -33,6 +33,7 @@ from strategy.strategy_map import strategy_map
 
 from backtest.backtest_strategy import backtest_strategy
 from backtest.backtest_strategy import return_endbalance
+from backtest.backtest_strategy import return_portfolio_values 
 from backtest.create_and_save_backtest_table_csv_file import create_and_save_backtest_table_csv_file
 from backtest.convert_csv_file_to_excel_file_and_open_it import convert_csv_file_to_excel_file_and_open_it
 from backtest.create_and_save_backtest_summary_table_csv_file import create_and_save_backtest_summary_table_csv_file
@@ -44,12 +45,14 @@ from matplotlib_plot_backtesting.matplotlib_plot_sma_rsi_macd_strategy import ma
 
 from plotly_plot_backtesting.plotly_plot_universal_strategy_signals_and_save import plotly_plot_universal_strategy_signals_and_save
 from plotly_plot_backtesting.plotly_plot_strategy_with_indicators_and_save import plotly_plot_strategy_with_indicators_and_save
+from plotly_plot_backtesting.plotly_plot_portfolio_values_chart import plotly_plot_portfolio_values
 
 from metrics.cagr import calculate_cagr
 from metrics.profit import calculate_profit
 from metrics.buy_hold_profit import calculate_profit_if_bought_and_held
 from metrics.cagr_strategy_efficiency import cagr_strategy_efficiency
 from metrics.average_cagr_of_list import calculate_average_cagr_of_list
+from metrics.sharpe import calculate_sharpe_ratio
 import traceback 
 
 def main():
@@ -61,6 +64,7 @@ def main():
         summary_CAGRs = []
         summary_buy_hold_CAGRs = []
         summary_cagr_strategy_efficiencies = []
+        summary_sharpe_ratios = []
 
         for TICKER in TICKER_LIST: 
 
@@ -119,6 +123,7 @@ def main():
 
             print('Showing results in table...')
             print(f'RESULTS OF \033[1m{CHOSEN_STRATEGY.upper()}\033[0m STRATEGY:')
+            print('The number of days inbetween buy and sell transactions are just the number of tradings days (=days which exclude weekends and holidays)')
             print(backtest_table)
             print(f"✅ backtest table printed successfully\n\n")
 
@@ -127,6 +132,11 @@ def main():
             plotly_plot_universal_strategy_signals_and_save(data, signals, TICKER, CHOSEN_STRATEGY.upper())
             # Plot strategy with indicators
             plotly_plot_strategy_with_indicators_and_save(data, signals, TICKER, CHOSEN_STRATEGY.upper(), indicator_parameters)
+            # Plot Portfolio curve
+            portfolio_values = return_portfolio_values()
+            portfolio_values_series = pd.Series(portfolio_values) # list gets converted into a panda series because the function expects the data type pd.series 
+            plotly_plot_portfolio_values(portfolio_values_series, data)
+
             print('✅ plots shown successfully\n\n')
 
             print('Calculating metrics...')
@@ -137,6 +147,12 @@ def main():
             print(f'Profit made in percentage: {profit_in_percent}')
             cagr = calculate_cagr(STARTING_BALANCE, float(BACKTESTING_PERIOD), end_balance)
             print(f'CAGR: {cagr} %')
+            # Calculate Sharpe ratio
+            if len(portfolio_values) > 1:
+                sharpe_ratio = calculate_sharpe_ratio(portfolio_values_series)
+                print(f'Sharpe Ratio: {sharpe_ratio}')
+            else:
+                print('Sharpe Ratio: N/A (not enough data)')
             print('✅ metrics calculated successfully\n\n')
 
             profit_of_buy_and_hold, cash_at_end_of_buy_and_hold = calculate_profit_if_bought_and_held(data, STARTING_BALANCE)
@@ -154,8 +170,9 @@ def main():
             summary_CAGRs.append(cagr)
             summary_buy_hold_CAGRs.append(cagr_buy_hold)
             summary_cagr_strategy_efficiencies.append(cagr_strategy_efficiency_in_percent)
+            summary_sharpe_ratios.append(sharpe_ratio)
 
-        summary_table, csv_path_of_summary_table = create_and_save_backtest_summary_table_csv_file(summary_tickers, summary_CAGRs, summary_buy_hold_CAGRs, summary_cagr_strategy_efficiencies)
+        summary_table, csv_path_of_summary_table = create_and_save_backtest_summary_table_csv_file(summary_tickers, summary_CAGRs, summary_buy_hold_CAGRs, summary_cagr_strategy_efficiencies, summary_sharpe_ratios)
         if option_1_chosen == False or USE_STORED_DATA:
             summary_table_headline = f'RESULTS OF \033[1m{CHOSEN_STRATEGY.upper()}\033[0m STRATEGY FROM \033[1m{START_OF_BACKTESTING}\033[0m TO \033[1m{END_OF_BACKTESTING}\033[0m --> (\033[1m{round(float(BACKTESTING_PERIOD), 2)}\033[0m years)'
             print(summary_table_headline)
