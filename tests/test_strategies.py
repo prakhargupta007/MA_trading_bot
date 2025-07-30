@@ -1,11 +1,11 @@
 import unittest
 import pandas as pd
 import numpy as np
-from strategy.sma_strategy import sma_strategy
-from strategy.ema_strategy import ema_strategy
-from strategy.sma_rsi_strategy import sma_rsi_strategy
-from strategy.ema_rsi_strategy import ema_rsi_strategy
-from strategy.sma_rsi_macd_strategy import sma_rsi_macd_strategy
+from rule_based_strategy.sma_strategy import sma_strategy
+from rule_based_strategy.ema_strategy import ema_strategy
+from rule_based_strategy.sma_rsi_strategy import sma_rsi_strategy
+from rule_based_strategy.ema_rsi_strategy import ema_rsi_strategy
+from rule_based_strategy.sma_rsi_macd_strategy import sma_rsi_macd_strategy
 
 class TestStrategies(unittest.TestCase):
     def setUp(self):

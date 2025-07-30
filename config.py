@@ -19,7 +19,7 @@ DATA_API_IS_YFINANCE = True #--> SHOULD BE TRUE AT ALL TIMES!
 
 # Here you can choose from:
 # 'sma' 'ema' 'sma_rsi' 'sma_rsi_macd'  'ema_rsi'
-CHOSEN_STRATEGY = 'sma'
+CHOSEN_STRATEGY = 'ema_rsi'
 
 # Backtesting parameters
 STARTING_BALANCE = 10000  # Starting balance for backtesting
@@ -66,6 +66,7 @@ MACD_SIGNAL_PERIOD = 9
 RISK_FREE_RATE = 0.052 # current risk free rate in the US ==> yield on the 3-month US treasury bill
 TRANSACTION_FEE_PER_STOCK = 0.05
 MINIMUM_TRANSACTION_FEE = 1 
+MINIMUM_PERCENTAGE_THRESHOLD = 0.01 # This minimum percentage threshold is used to determine whether to buy or sell and to reduce unneccesary tiny trades. At the moment this threshold is set to 1% which is reasonable, however this can be adjusted to possibly improve perfromance 
 
 # Hardcoded folder paths for backtesting and API key
 #The csv folder paths in which the resepctive files should be saved in. 

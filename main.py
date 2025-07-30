@@ -24,12 +24,12 @@ else:
 from config import TICKERS, DATA_API_IS_YFINANCE, STARTING_BALANCE
 from config import SMA_LONG_PERIOD, SMA_SHORT_PERIOD, EMA_LONG_PERIOD, EMA_SHORT_PERIOD, RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, RSI_OVERBOUGHT_WARNING, RSI_OVERSOLD_WARNING
 from config import CHOSEN_STRATEGY
-from data.fetch_data_from_yfinance import fetch_data_from_yfinance
-from data.fetch_data_from_alpha_vantage import fetch_data_from_alpha_vantage 
+from data.fetch_data.fetch_data_from_yfinance import fetch_data_from_yfinance
+from data.fetch_data.fetch_data_from_alpha_vantage import fetch_data_from_alpha_vantage 
 
 from indicators.check_indicator_length import check_indicator_length
 
-from strategy.strategy_map import strategy_map
+from strategy_map import strategy_map
 
 from backtest.backtest_strategy import backtest_strategy
 from backtest.backtest_strategy import return_endbalance
@@ -72,7 +72,7 @@ def main():
             print('\n',bold_underscore * 200)
 
             if USE_STORED_DATA: 
-                data = pd.read_csv("/Users/prakhar/MA_trading_bot/data/test_data_AAPL.csv", index_col="Date", parse_dates=True)
+                data = pd.read_csv("/Users/prakhar/MA_trading_bot/data/data_AAPL_2015-2025.csv", index_col="Date", parse_dates=True)
                 print('\nSample data of AAPL, which is stored locally is being used')
 
             else:
