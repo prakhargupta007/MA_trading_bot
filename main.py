@@ -135,7 +135,7 @@ def main():
             # Plot Portfolio curve
             portfolio_values = return_portfolio_values()
             portfolio_values_series = pd.Series(portfolio_values) # list gets converted into a panda series because the function expects the data type pd.series 
-            plotly_plot_portfolio_values(portfolio_values_series, data)
+            plotly_plot_portfolio_values(portfolio_values_series, data, TICKER)
 
             print('✅ plots shown successfully\n\n')
 

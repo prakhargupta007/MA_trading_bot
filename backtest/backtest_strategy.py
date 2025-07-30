@@ -50,7 +50,7 @@ def backtest_strategy(data, signals, starting_balance):
                 list_price_per_stock.append(' ')
                 list_total_cash_flow.append(' ')
                 stay_counter = 0
-
+            
             # Execute buy logic
             n_stocks_bought, fee, cash = get_accurate_number_of_stocks(cash, price)
             list_actions.append('BUY')
@@ -72,6 +72,7 @@ def backtest_strategy(data, signals, starting_balance):
                 list_price_per_stock.append(' ')
                 list_total_cash_flow.append(' ')
                 hold_counter = 0
+
 
             # Execute sell logic
             list_actions.append('SELL')

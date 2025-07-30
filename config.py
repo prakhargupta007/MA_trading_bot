@@ -63,7 +63,7 @@ MACD_SIGNAL_PERIOD = 9
 
 
 
-RISK_FREE_RATE = 0.052 #(current risk free rate in the US ==> yield on the 3-month US treasury bill)
+RISK_FREE_RATE = 0.052 # current risk free rate in the US ==> yield on the 3-month US treasury bill
 TRANSACTION_FEE_PER_STOCK = 0.05
 MINIMUM_TRANSACTION_FEE = 1 
 

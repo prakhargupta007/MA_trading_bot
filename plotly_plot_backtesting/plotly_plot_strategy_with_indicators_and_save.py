@@ -201,7 +201,7 @@ def plotly_plot_strategy_with_indicators_and_save(data, signals, ticker, chosen_
 
     # Update layout
     fig.update_layout(
-        title=f'Backtested {chosen_strategy.upper()} Strategy on {ticker} Stock',
+        title=f'Plot of backtested {chosen_strategy.upper()} Strategy on {ticker} Stock with indicators',
         xaxis_title='Date',
         height=600 * n_subplots,  # Increased from 300 to 600 for better visibility
         showlegend=True,

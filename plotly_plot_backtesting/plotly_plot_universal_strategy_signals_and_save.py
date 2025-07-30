@@ -67,7 +67,7 @@ def plotly_plot_universal_strategy_signals_and_save(data, signals, ticker, chose
 
     # Update layout
     fig.update_layout(
-        title=f'Backtested {chosen_strategy.upper()} strategy on {ticker} stock',
+        title=f'Plot of backtested {chosen_strategy.upper()} strategy on {ticker} stock',
         xaxis_title='Date',
         yaxis_title='Price',
         hovermode='x unified',
