@@ -63,11 +63,20 @@ MACD_SIGNAL_PERIOD = 9
 
 
 
+# If I change/modify this feature column list I need to add/remove that feature to the function calculate_and_add_features_to_data as well!!!
+FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upper', 'bb_lower', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10']
+MINIMUM_PERCENTAGE_THRESHOLD = 0.01 # This minimum percentage threshold is used to determine whether to buy or sell and to reduce unneccesary tiny trades. At the moment this threshold is set to 1% which is reasonable, however this can be adjusted to possibly improve perfromance 
+TRAIN_SIZE = 0.8 # This is the percentage of the data that is used for training and the rest is used for testing.
+
+
+
+
+
+
+
 RISK_FREE_RATE = 0.052 # current risk free rate in the US ==> yield on the 3-month US treasury bill
 TRANSACTION_FEE_PER_STOCK = 0.05
 MINIMUM_TRANSACTION_FEE = 1 
-MINIMUM_PERCENTAGE_THRESHOLD = 0.01 # This minimum percentage threshold is used to determine whether to buy or sell and to reduce unneccesary tiny trades. At the moment this threshold is set to 1% which is reasonable, however this can be adjusted to possibly improve perfromance 
-
 # Hardcoded folder paths for backtesting and API key
 #The csv folder paths in which the resepctive files should be saved in. 
 FOLDER_PATH_FOR_INDIVIDUAL_BACKTEST_TABLE = '/Users/prakhar/MA_trading_bot/csv_trial_files_backtesting'

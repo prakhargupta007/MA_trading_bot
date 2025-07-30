@@ -1,6 +1,6 @@
 
 from config import MINIMUM_PERCENTAGE_THRESHOLD
-def add_labels_with_threshold(data):
+def label_data_with_threshold(data):
     """
     This func adds a 'Label' column to the input DataFrame based on next-day % change.
     0 = SELL, 1 = HOLD, 2 = BUY
@@ -26,5 +26,6 @@ def add_labels_with_threshold(data):
     
     # Optional: Drop the helper column
     data.drop(columns=['Next_Close'], inplace=True)
+    data = data.dropna()
     
     return data
