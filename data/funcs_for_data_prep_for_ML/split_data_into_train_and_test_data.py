@@ -1,5 +1,5 @@
 from config import TRAIN_SIZE
-def split_data(X, y):
+def split_data_into_train_and_test_data(X, y):
     split_index = int(len(X) * TRAIN_SIZE)
     X_train = X.iloc[:split_index]
     X_test = X.iloc[split_index:]
