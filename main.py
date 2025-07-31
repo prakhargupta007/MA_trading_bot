@@ -2,9 +2,9 @@ import pandas as pd
 from config import USE_STORED_DATA
 
 if USE_STORED_DATA:
-    START_OF_BACKTESTING = '2015-06-01'
+    START_OF_BACKTESTING = '2020-01-02'
     END_OF_BACKTESTING = '2025-05-30'
-    BACKTESTING_PERIOD = '10'
+    BACKTESTING_PERIOD = '5.41'
     option_1_chosen = False 
 
 else:
@@ -72,7 +72,7 @@ def main():
             print('\n',bold_underscore * 200)
 
             if USE_STORED_DATA: 
-                data = pd.read_csv("/Users/prakhar/MA_trading_bot/data/data_AAPL_2015-2025.csv", index_col="Date", parse_dates=True)
+                data = pd.read_csv("/Users/prakhar/MA_trading_bot/data/data_AAPL_2020-2025.csv", index_col="Date", parse_dates=True)
                 print('\nSample data of AAPL, which is stored locally is being used')
 
             else:

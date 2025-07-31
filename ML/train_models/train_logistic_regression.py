@@ -1,3 +1,6 @@
+# Run the following command to run this file on terminal: 
+# python3 -m ML.train_models.train_logistic_regression
+
 from data.prepare_data import prepare_data
 from ML.evaluate_model import evaluate_model
 from sklearn.linear_model import LogisticRegression

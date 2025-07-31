@@ -19,7 +19,8 @@ DATA_API_IS_YFINANCE = True #--> SHOULD BE TRUE AT ALL TIMES!
 
 # Here you can choose from:
 # 'sma' 'ema' 'sma_rsi' 'sma_rsi_macd'  'ema_rsi'
-CHOSEN_STRATEGY = 'ema_rsi'
+# 'logistic_regression'
+CHOSEN_STRATEGY = 'logistic_regression'
 
 # Backtesting parameters
 STARTING_BALANCE = 10000  # Starting balance for backtesting
@@ -36,7 +37,7 @@ END_OF_BACKTESTING = '2025-07-09'
 OPEN_INDIVIDUAL_PROCESS_EXCEL_FILES_AFTER_SAVING = False
 OPEN_SUMMARY_EXCEL_FILE_AFTER_SAVING = False
 
-INDICATORS_WHICH_ARE_NOT_TO_BE_CHECKED_FOR_LENGTH = ['data','rsi_overbought','rsi_oversold']
+INDICATORS_WHICH_ARE_NOT_TO_BE_CHECKED_FOR_LENGTH = ['data','rsi_overbought','rsi_oversold','logistic_regression']
 
 
 

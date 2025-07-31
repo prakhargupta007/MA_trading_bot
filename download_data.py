@@ -1,3 +1,5 @@
+# This function is used for downloading data from yfinance to store locally. function need to get run as seperate file on terminal 
+
 import yfinance as yf
 import pandas as pd
 
