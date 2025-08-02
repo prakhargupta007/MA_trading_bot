@@ -37,8 +37,7 @@ def calculate_and_add_features_to_data(data):
     # Momentum: how much price has changed over 10 days
     data['momentum_10'] = data['Close'] - data['Close'].shift(10)
 
-    # Drop any rows with NaN values caused by indicator windows
-    data_with_features = data.dropna().reset_index(drop=True)
+    data_with_features = data
 
     return data_with_features
 

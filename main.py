@@ -110,7 +110,7 @@ def main():
 
             print(f'Backtesting strategy:  \033[1m{CHOSEN_STRATEGY.upper()}\033[0m STRATEGY\n')
             print(f'Generating transaction signals based on the strategy ...')
-            signals = strategy_map[CHOSEN_STRATEGY](**indicator_parameters)
+            signals = strategy_map[CHOSEN_STRATEGY](**indicator_parameters) 
             print('✅ Transaction signals generated successfully\n\n')
 
             print('Backtesting based on strategy...')
@@ -126,6 +126,9 @@ def main():
             print('The number of days inbetween buy and sell transactions are just the number of tradings days (=days which exclude weekends and holidays)')
             print(backtest_table)
             print(f"✅ backtest table printed successfully\n\n")
+
+            print("len(data):", len(data))
+            print("len(signals):", len(signals))
 
             print('Visualising the used strategy...')
             # Plot basic buy/sell signals

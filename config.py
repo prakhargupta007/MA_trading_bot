@@ -1,9 +1,9 @@
 import os
     # If True, backtesting period settings as determined in main.py file will be used and ticker is automatically set as 'APPL'
     # If False, backtesting period settings as determined in this config file will be used
-USE_STORED_DATA = True 
+USE_STORED_DATA = True
 
-TICKERS = 'AMD,NVDA,GOOG'
+TICKERS = 'AAPL'
 #TICKERS =  "JNJ,KO,PG,D"
 #TICKERS =  "MSFT,DIS,UNH,UPS"
 #TICKERS =  "TSLA,NVDA,ARKK,META"
@@ -19,8 +19,8 @@ DATA_API_IS_YFINANCE = True #--> SHOULD BE TRUE AT ALL TIMES!
 
 # Here you can choose from:
 # 'sma' 'ema' 'sma_rsi' 'sma_rsi_macd'  'ema_rsi'
-# 'logistic_regression'
-CHOSEN_STRATEGY = 'logistic_regression'
+# 'logistic_regression' 'perfect_strategy'
+CHOSEN_STRATEGY = 'perfect_strategy'
 
 # Backtesting parameters
 STARTING_BALANCE = 10000  # Starting balance for backtesting
