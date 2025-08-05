@@ -210,7 +210,7 @@ def plotly_plot_strategy_with_indicators_and_save(data, signals, ticker, chosen_
     )
 
     # Update y-axis labels
-    fig.update_yaxes(title_text="Price", row=1, col=1)
+    fig.update_yaxes(title_text="Price [USD]", row=1, col=1)
     if 'rsi' in calculated_indicators:
         fig.update_yaxes(title_text="RSI", row=2, col=1)
     if 'macd' in calculated_indicators:

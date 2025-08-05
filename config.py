@@ -2,6 +2,7 @@ import os
     # If True, backtesting period settings as determined in main.py file will be used and ticker is automatically set as 'APPL'
     # If False, backtesting period settings as determined in this config file will be used
 USE_STORED_DATA = True
+VISUALISE_PLOTTED_SIGNAL_EXECUTIONS =  True 
 
 TICKERS = 'AAPL'
 #TICKERS =  "JNJ,KO,PG,D"
@@ -11,6 +12,8 @@ TICKERS = 'AAPL'
 # leave the following untouched unless the stored data ticker gets changed
 if USE_STORED_DATA:
     TICKERS = 'AAPL'
+    # When changing the following line to use a diffrent file of data for reading change the backtesting dates and period in the main.py file!!!
+    STORED_DATA_TO_BE_READ = '/Users/prakhar/MA_trading_bot/data/stored_data/data_AAPL_2020-2025.csv'
 
 # If true: data will be fetched from yfinance
 # If false: data will be fetched from Alpha Vantage
@@ -20,7 +23,7 @@ DATA_API_IS_YFINANCE = True #--> SHOULD BE TRUE AT ALL TIMES!
 # Here you can choose from:
 # 'sma' 'ema' 'sma_rsi' 'sma_rsi_macd'  'ema_rsi'
 # 'logistic_regression' 'perfect_strategy'
-CHOSEN_STRATEGY = 'perfect_strategy'
+CHOSEN_STRATEGY = 'sma'
 
 # Backtesting parameters
 STARTING_BALANCE = 10000  # Starting balance for backtesting
@@ -66,8 +69,11 @@ MACD_SIGNAL_PERIOD = 9
 
 # If I change/modify this feature column list I need to add/remove that feature to the function calculate_and_add_features_to_data as well!!!
 FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upper', 'bb_lower', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10']
-MINIMUM_PERCENTAGE_THRESHOLD = 0.01 # This minimum percentage threshold is used to determine whether to buy or sell and to reduce unneccesary tiny trades. At the moment this threshold is set to 1% which is reasonable, however this can be adjusted to possibly improve perfromance 
 TRAIN_SIZE = 0.8 # This is the percentage of the data that is used for training and the rest is used for testing.
+
+# Parameters for labeling system  
+MINIMUM_PERCENTAGE_THRESHOLD = 0.02 # This minimum percentage threshold is used to determine whether to buy or sell and to reduce unneccesary tiny trades. At the moment this threshold is set to 1% which is reasonable, however this can be adjusted to possibly improve perfromance 
+LOOKAHEAD_DAYS = 5
 
 
 
@@ -78,20 +84,17 @@ TRAIN_SIZE = 0.8 # This is the percentage of the data that is used for training 
 RISK_FREE_RATE = 0.052 # current risk free rate in the US ==> yield on the 3-month US treasury bill
 TRANSACTION_FEE_PER_STOCK = 0.05
 MINIMUM_TRANSACTION_FEE = 1 
-# Hardcoded folder paths for backtesting and API key
-#The csv folder paths in which the resepctive files should be saved in. 
-FOLDER_PATH_FOR_INDIVIDUAL_BACKTEST_TABLE = '/Users/prakhar/MA_trading_bot/csv_trial_files_backtesting'
-FOLDER_PATH_FOR_SUMMARY_BACKTEST_TABLE = '/Users/prakhar/MA_trading_bot/csv_summary_files_backtesting '
-
-# The folder I want my excel file to be saved in
-FOLDER_PATH_FOR_EXCEL_FILE = '/Users/prakhar/MA_trading_bot/excel_trial_files_backtesting'
-FOLDER_PATH_FOR_CSV_FILE = '/Users/prakhar/MA_trading_bot/csv_trial_files_backtesting'
-
-FOLDER_PATH_FOR_SUMMARIZED_EXCEL_FILE = '/Users/prakhar/MA_trading_bot/excel_summary_files_backtesting'
-
-FOLDER_PATH_FOR_PDF_SUMMARIZED_BACKTESTING_FILE = '/Users/prakhar/MA_trading_bot/pdf_summary_files-backtesting'
-
-#Here the last symbol should be '/' because I am combining this path with the file name and hence creating a new path where the html portly chart gets saved
-OUTPUT_FOLDER_PATH_FOR_PLOTLY_CHART = '/Users/prakhar/MA_trading_bot/charts_plotted_portly' 
 
 ALPHA_VANTAGE_API_KEY = '9VTDPFM0O0LXNZ41'
+
+# Hardcoded folder paths for backtesting and API key
+#The csv folder paths in which the resepctive files should be saved in. 
+FOLDER_PATH_FOR_INDIVIDUAL_BACKTEST_TABLE = '/Users/prakhar/MA_trading_bot/saved_files/csv_trial_files_backtesting'
+FOLDER_PATH_FOR_SUMMARY_BACKTEST_TABLE = '/Users/prakhar/MA_trading_bot/saved_files/csv_summary_files_backtesting'
+# The folder I want my excel file to be saved in
+FOLDER_PATH_FOR_EXCEL_FILE = '/Users/prakhar/MA_trading_bot/saved_files/excel_trial_files_backtesting'
+FOLDER_PATH_FOR_CSV_FILE = '/Users/prakhar/MA_trading_bot/saved_files/csv_trial_files_backtesting'
+FOLDER_PATH_FOR_SUMMARIZED_EXCEL_FILE = '/Users/prakhar/MA_trading_bot/saved_files/excel_summary_files_backtesting'
+FOLDER_PATH_FOR_PDF_SUMMARIZED_BACKTESTING_FILE = '/Users/prakhar/MA_trading_bot/saved_files/pdf_summary_files-backtesting'
+#Here the last symbol should be '/' because I am combining this path with the file name and hence creating a new path where the html portly chart gets saved
+OUTPUT_FOLDER_PATH_FOR_PLOTLY_CHART = '/Users/prakhar/MA_trading_bot/saved_files/charts_plotted_portly' 

@@ -26,7 +26,7 @@ def plotly_plot_portfolio_values(portfolio_values_series, data, ticker):
     fig.update_layout(
         title=f'Portfolio value of {ticker}',
         xaxis_title='Date',
-        yaxis_title='Portfolio Value',
+        yaxis_title='Portfolio Value [USD]',
         template='plotly_white',
         height=500,
         hovermode='x unified'

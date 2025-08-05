@@ -1,10 +1,10 @@
 import pandas as pd 
-from config import USE_STORED_DATA
+from config import USE_STORED_DATA, STORED_DATA_TO_BE_READ
 
 if USE_STORED_DATA:
-    START_OF_BACKTESTING = '2020-01-02'
-    END_OF_BACKTESTING = '2025-05-30'
-    BACKTESTING_PERIOD = '5.41'
+    START_OF_BACKTESTING = '2020'
+    END_OF_BACKTESTING = '2025'
+    BACKTESTING_PERIOD = '5'
     option_1_chosen = False 
 
 else:
@@ -21,7 +21,7 @@ else:
         option_1_chosen = False
     
 
-from config import TICKERS, DATA_API_IS_YFINANCE, STARTING_BALANCE
+from config import TICKERS, DATA_API_IS_YFINANCE, STARTING_BALANCE, VISUALISE_PLOTTED_SIGNAL_EXECUTIONS
 from config import SMA_LONG_PERIOD, SMA_SHORT_PERIOD, EMA_LONG_PERIOD, EMA_SHORT_PERIOD, RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, RSI_OVERBOUGHT_WARNING, RSI_OVERSOLD_WARNING
 from config import CHOSEN_STRATEGY
 from data.fetch_data.fetch_data_from_yfinance import fetch_data_from_yfinance
@@ -72,7 +72,7 @@ def main():
             print('\n',bold_underscore * 200)
 
             if USE_STORED_DATA: 
-                data = pd.read_csv("/Users/prakhar/MA_trading_bot/data/data_AAPL_2020-2025.csv", index_col="Date", parse_dates=True)
+                data = pd.read_csv(STORED_DATA_TO_BE_READ, index_col="Date", parse_dates=True)
                 print('\nSample data of AAPL, which is stored locally is being used')
 
             else:
@@ -128,14 +128,16 @@ def main():
             print(f"✅ backtest table printed successfully\n\n")
 
             print("len(data):", len(data))
-            print("len(signals):", len(signals))
+            print("len(signals):", len(signals), "\n\n")
 
-            print('Visualising the used strategy...')
-            # Plot basic buy/sell signals
-            plotly_plot_universal_strategy_signals_and_save(data, signals, TICKER, CHOSEN_STRATEGY.upper())
-            # Plot strategy with indicators
-            plotly_plot_strategy_with_indicators_and_save(data, signals, TICKER, CHOSEN_STRATEGY.upper(), indicator_parameters)
-            # Plot Portfolio curve
+            if VISUALISE_PLOTTED_SIGNAL_EXECUTIONS:
+                print('Visualising the used strategy...')
+                # Plot basic buy/sell signals
+                plotly_plot_universal_strategy_signals_and_save(data, signals, TICKER, CHOSEN_STRATEGY.upper())
+                # Plot strategy with indicators
+                plotly_plot_strategy_with_indicators_and_save(data, signals, TICKER, CHOSEN_STRATEGY.upper(), indicator_parameters)
+                # Plot Portfolio curve
+
             portfolio_values = return_portfolio_values()
             portfolio_values_series = pd.Series(portfolio_values) # list gets converted into a panda series because the function expects the data type pd.series 
             plotly_plot_portfolio_values(portfolio_values_series, data, TICKER)

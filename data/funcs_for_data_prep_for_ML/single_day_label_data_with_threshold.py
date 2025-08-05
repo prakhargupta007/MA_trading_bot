@@ -28,7 +28,8 @@ def label_data_with_threshold(data):
     # Apply labeling logic
     data['Label'] = pct_change.apply(assign_label)
 
-    # Drop the helper column because not needed anymore, KEEP NaN values in 'Label' column 
+    # If I want to drop the helper column, because not needed anymore, following line can be used...
     #data.drop(columns=['Next_Close'], inplace=True)
+    # KEEP Nan Values in Label Column, because this same function is used to simulate the labels and see their performance in the perfect_strategy.py file
 
     return data
