@@ -23,7 +23,7 @@ DATA_API_IS_YFINANCE = True #--> SHOULD BE TRUE AT ALL TIMES!
 # Here you can choose from:
 # 'sma' 'ema' 'sma_rsi' 'sma_rsi_macd'  'ema_rsi'
 # 'logistic_regression' 'perfect_strategy'
-CHOSEN_STRATEGY = 'sma'
+CHOSEN_STRATEGY = 'logistic_regression'
 
 # Backtesting parameters
 STARTING_BALANCE = 10000  # Starting balance for backtesting

@@ -45,7 +45,7 @@ def plotly_plot_universal_strategy_signals_and_save(data, signals, ticker, chose
         x=buy_x, y=buy_y,
         mode='markers',
         name='BUY',
-        marker=dict(color='orange', size=10, symbol='triangle-up')
+        marker=dict(color='blue', size=10, symbol='triangle-up')
     ))
 
     # Add SELL markers
@@ -53,7 +53,7 @@ def plotly_plot_universal_strategy_signals_and_save(data, signals, ticker, chose
         x=sell_x, y=sell_y,
         mode='markers',
         name='SELL',
-        marker=dict(color='blue', size=10, symbol='triangle-down')
+        marker=dict(color='orange', size=10, symbol='triangle-down')
     ))
 
     # Add shaded regions between BUY and SELL
