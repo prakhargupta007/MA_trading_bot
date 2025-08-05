@@ -80,8 +80,8 @@ LOOKAHEAD_DAYS = 5
 
 
 
-
-RISK_FREE_RATE = 0.052 # current risk free rate in the US ==> yield on the 3-month US treasury bill
+SLIPPAGE_RATE = 0.0005
+RISK_FREE_RATE = 0.052 # current risk free rate in the US ==> yield on the 3-month US treasury bill, used for sharpe ratio calculation 
 TRANSACTION_FEE_PER_STOCK = 0.05
 MINIMUM_TRANSACTION_FEE = 1 
 

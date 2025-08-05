@@ -151,6 +151,8 @@ def main():
             print(f'Profit made: {profit}')
             print(f'Profit made in percentage: {profit_in_percent}')
             cagr = calculate_cagr(STARTING_BALANCE, float(BACKTESTING_PERIOD), end_balance)
+            
+            
             print(f'CAGR: {cagr} %')
             # Calculate Sharpe ratio
             if len(portfolio_values) > 1:

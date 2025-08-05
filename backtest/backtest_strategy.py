@@ -1,4 +1,5 @@
 from backtest.transaction_fee import calculate_transaction_fee, get_accurate_number_of_stocks
+from config import SLIPPAGE_RATE
 
 def backtest_strategy(data, signals, starting_balance):
     # Declare global variables so that they can be accessed in the return_endbalance() function
@@ -52,6 +53,7 @@ def backtest_strategy(data, signals, starting_balance):
                 stay_counter = 0
             
             # Execute buy logic
+            price = (1+SLIPPAGE_RATE) * price 
             n_stocks_bought, fee, cash = get_accurate_number_of_stocks(cash, price)
             list_actions.append('BUY')
             list_dates.append(data.index[i])
@@ -75,6 +77,7 @@ def backtest_strategy(data, signals, starting_balance):
 
 
             # Execute sell logic
+            price = (1-SLIPPAGE_RATE) * price 
             list_actions.append('SELL')
             list_dates.append(data.index[i])
             fee = calculate_transaction_fee(n_stocks_held)
