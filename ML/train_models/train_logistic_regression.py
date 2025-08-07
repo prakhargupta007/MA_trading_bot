@@ -1,7 +1,7 @@
 # Run the following command to run this file on terminal: 
 # python3 -m ML.train_models.train_logistic_regression
 
-from data.prepare_data import prepare_data
+from data.prepare_data_for_LR import prepare_data_for_LR
 from ML.evaluate_model import evaluate_model
 from ML.feature_importance.logistic_coefficient_importance import logistic_coefficient_importance
 from ML.feature_importance.universal_permutation_importance_score import universal_permutation_importance_score
@@ -12,16 +12,16 @@ import pandas as pd
 import joblib
 import os
 
-print('data file as determined in comfig file (including data split) is being used to train model\n\n\n')
+print('data file as determined in the config file (including data split) is being used to train model\n\n\n')
 
 data = pd.read_csv( DATA_FOR_ML_MODEL_TRAINING, index_col="Date", parse_dates=True)
 
 # Prepare data (this now includes cleaning + scaling)
-X_train_scaled, X_test_scaled, y_train, y_test, scaler, feature_names = prepare_data(data)
+X_train_scaled, X_test_scaled, y_train, y_test, scaler, feature_names = prepare_data_for_LR(data)
 
 print('data has been successfully prepared')
 
-# Train a Logistic Regression model on the training data of AAPL stock
+# Train Logistic Regression model
 model = LogisticRegression()
 model.fit(X_train_scaled, y_train) 
 
@@ -43,4 +43,4 @@ evaluate_model(y_test, y_pred)
 os.makedirs('ML/saved_models', exist_ok=True)
 joblib.dump({'model': model, 'scaler': scaler}, MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED)
 
-print('Model has been successfully saved')
+print('Logistic regression model has been successfully saved')

@@ -18,6 +18,8 @@ def perfect_strategy(data, **kwargs):
 
     raw_signals = data_with_labels['Label'].tolist()
     print(f"Length of raw signals: {len(raw_signals)}")
+    # Replace NaN values with 'HOLD' to ensure all signals are valid
+    raw_signals = [signal if pd.notnull(signal) else 'HOLD' for signal in raw_signals]
 
     translated_signals = translate_raw_signals(raw_signals)
     final_signals = apply_positioning_rule_to_translated_signals(translated_signals)

@@ -5,7 +5,7 @@ from data.funcs_for_data_prep_for_ML.label_data_with_future_window import label_
 from data.funcs_for_data_prep_for_ML.split_data_into_train_and_test_data import split_data_into_train_and_test_data
 from data.funcs_for_data_prep_for_ML.scale_features import scale_features
 
-def prepare_data(data):
+def prepare_data_for_LR(data):
     data_with_features = calculate_and_add_features_to_data(data)
     print('features added to data\n', data_with_features.head(), '\n\n\n')
 

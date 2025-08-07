@@ -1,4 +1,5 @@
 def translate_raw_signals(raw_signals):
+    'raw_signals can also contain NaNs, so thes will get translated into HOLD'
     translated_signals = []
     for signal in raw_signals:
         if isinstance(signal, str):
@@ -9,6 +10,5 @@ def translate_raw_signals(raw_signals):
             translated_signals.append('HOLD')
         elif signal == 2:
             translated_signals.append('BUY')
-        else:
-            raise ValueError(f"Unexpected signal: {signal}")
+            
     return translated_signals

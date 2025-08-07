@@ -12,8 +12,8 @@ TICKERS = 'AAPL'
 # leave the following untouched unless the stored data ticker gets changed
 if USE_STORED_DATA:
     TICKERS = 'AAPL'
-    # When changing the following line to use a diffrent file of data for reading change the backtesting dates and period in the main.py file!!!
-    STORED_DATA_TO_BE_READ = '/Users/prakhar/MA_trading_bot/data/stored_data/data_AAPL_2020-2025.csv'
+    'When changing the following line to use a diffrent file of data for reading change the backtesting dates and period in the main.py file!!!'
+    STORED_DATA_TO_BE_READ = '/Users/prakhar/MA_trading_bot/data/stored_data/data_AAPL_2010-2020.csv'
 
 # If true: data will be fetched from yfinance
 # If false: data will be fetched from Alpha Vantage
@@ -22,9 +22,23 @@ DATA_API_IS_YFINANCE = True #--> SHOULD BE TRUE AT ALL TIMES!
 
 # Here you can choose from:
 # 'sma' 'ema' 'sma_rsi' 'sma_rsi_macd'  'ema_rsi'
-# 'logistic_regression' 'perfect_strategy'
-CHOSEN_STRATEGY = 'logistic_regression'
+# 'logistic_regression' 'random_forest' 
+# 'perfect_strategy'
+CHOSEN_STRATEGY = 'perfect_strategy'
 LOG_REG_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/lr_model_with_scaler_AAPL_2.joblib'
+RANDOM_FOREST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/rf_model_AAPL_1.joblib'
+
+'Training parameters for random_forest'
+RF_N_ESTIMATORS = 100   # Number of trees in the forest
+RF_MAX_DEPTH = None     # Maximum depth of the tree, None means no limit
+RF_RANDOM_STATE = 42    # Random state for reproducibility
+RF_N_JOBS = -1          # Use all available cores for training
+
+
+
+
+
+
 # Backtesting parameters
 STARTING_BALANCE = 10000  # Starting balance for backtesting
 
@@ -39,12 +53,19 @@ END_OF_BACKTESTING = '2025-07-09'
 
 # Training model 
 DATA_FOR_ML_MODEL_TRAINING = "/Users/prakhar/MA_trading_bot/data/stored_data/data_AAPL_2010-2020.csv"  # This is the data file that is used for training the model, it should be in the data/stored_data folder
-MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = 'ML/saved_models/lr_model_with_scaler_AAPL_4.joblib'
+MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = 'ML/saved_models/rf_model_AAPL_1.joblib'
 
 OPEN_INDIVIDUAL_PROCESS_EXCEL_FILES_AFTER_SAVING = False
 OPEN_SUMMARY_EXCEL_FILE_AFTER_SAVING = False
 
 INDICATORS_WHICH_ARE_NOT_TO_BE_CHECKED_FOR_LENGTH = ['data','rsi_overbought','rsi_oversold','logistic_regression']
+
+
+
+
+
+
+
 
 
 
@@ -74,7 +95,7 @@ MACD_SIGNAL_PERIOD = 9
 # If I change/modify this feature column list I need to add/remove that feature to/from the function calculate_and_add_features_to_data as well!!!
 #FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upper', 'bb_lower', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10'] #lr_model_2
 #FEATURE_COLUMNS = ['macd', 'macd_signal', 'sma_200', 'bb_percent','volatility_14', 'momentum_10'] #lr_model_3
-FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10'] #lr_model_4
+FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10'] #lr_model_4 #rf_model_1 
 TRAIN_SIZE = 0.8 # This is the percentage of the data that is used for training and the rest is used for testing.
 
 # Parameters for labeling system  
