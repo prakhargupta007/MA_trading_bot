@@ -18,8 +18,12 @@ from config import (
     XGB_RANDOM_STATE,
     XGB_N_JOBS,
     VERBOSITY,
-    EVAL_METRIC
+    EVAL_METRIC,
+    BASE_SCORE,
+    OBJECTIVE
 )
+
+from config import USE_PROBABILITY_THRESHOLD, PROBABILITY_THRESHOLD
 import pandas as pd
 import joblib
 import os
@@ -32,6 +36,7 @@ data = pd.read_csv(DATA_FOR_ML_MODEL_TRAINING, index_col="Date", parse_dates=Tru
 
 # Prepare features and labels
 X_train, X_test, y_train, y_test, feature_names = prepare_data_without_scaling(data)
+num_class = len(y_train.unique())
 
 print('Data has been prepared successfully')
 
@@ -45,13 +50,32 @@ model = XGBClassifier(
     random_state=XGB_RANDOM_STATE,
     n_jobs=XGB_N_JOBS,
     verbosity=VERBOSITY,
-    eval_metric=EVAL_METRIC
+    eval_metric=EVAL_METRIC,
+
+    base_score= BASE_SCORE,   
+    objective=OBJECTIVE,  # multiclass objective
+
+    num_class=num_class,
+
 )
 
 model.fit(X_train, y_train)
 
 # Predict
-y_pred = model.predict(X_test)
+if USE_PROBABILITY_THRESHOLD:
+    print(f"Using probability threshold: {PROBABILITY_THRESHOLD}")
+    probs = model.predict_proba(X_test)
+    y_pred = []
+
+    for p in probs:
+        if p[2] >= PROBABILITY_THRESHOLD:      # Buy probability check
+            y_pred.append(2)
+        elif p[0] >= PROBABILITY_THRESHOLD:    # Sell probability check
+            y_pred.append(0)
+        else:
+            y_pred.append(1)    
+else:
+    y_pred = model.predict(X_test)
 
 # Feature Importances
 print("\nGain-based feature importance:")
@@ -69,5 +93,5 @@ evaluate_model(y_test, y_pred)
 os.makedirs('ML/saved_models', exist_ok=True)
 joblib.dump({'model': model}, MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED)
 
-print('XGBoost model saved successfully')
-print('End of training \n\n')
+print(f'XGBoost model saved successfully as:\n{MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED}\n')
+print('End of training \n')

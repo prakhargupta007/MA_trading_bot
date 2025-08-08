@@ -3,10 +3,10 @@
 import yfinance as yf
 import pandas as pd
 
-start = '2010-01-01'
-end = '2025-06-01'
-ticker = 'AAPL'
-file_path = '/Users/prakhar/MA_trading_bot/data/stored_data/data_AAPL_2020-2025.csv'
+start = '2010-01-04'
+end = '2020-12-31'
+ticker = '^NDX'
+file_path = '/Users/prakhar/MA_trading_bot/data/stored_data/data_^NDX_(QQQ)_2010-2020.csv'
 
 def download_data():
     data = yf.download(ticker, start, end, threads=True)

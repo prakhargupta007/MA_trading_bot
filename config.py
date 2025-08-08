@@ -1,3 +1,34 @@
+MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = '/Users/prakhar/MA_trading_bot/ML/saved_models/rf_model_AAPL_6.joblib'
+
+
+    #lr_8 #rf_6 
+FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upper', 'bb_lower', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10','mom_diff_pct_5d', 'mom_diff_pct_10d', 'mom_diff_pct_20d', 'mom_diff_pct_50d', 'mom_diff_pct_100d','gspc_daily_return', 'gspc_20d_volatility', 'ndx_daily_return', 'ndx_20d_volatility', 'ndx_20d_sma','volume_20d_ma', 'obv']
+    #lr_7 #rf_5 #xgb_4 
+#FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upper', 'bb_lower', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10','mom_diff_pct_5d', 'mom_diff_pct_10d', 'mom_diff_pct_20d', 'mom_diff_pct_50d', 'mom_diff_pct_100d','gspc_daily_return', 'gspc_20d_volatility', 'ndx_daily_return', 'ndx_20d_volatility', 'ndx_20d_sma']
+    #rf_3 #lr_5 #xgb_2 #lr_6 #rf_4 #xgb_3 
+#FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upper', 'bb_lower', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10','mom_diff_pct_5d', 'mom_diff_pct_10d', 'mom_diff_pct_20d', 'mom_diff_pct_50d', 'mom_diff_pct_100d']
+
+#FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upper', 'bb_lower', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10'] #lr_2 #rf_2 #xgb_1
+#FEATURE_COLUMNS = ['macd', 'macd_signal', 'sma_200', 'bb_percent','volatility_14', 'momentum_10'] #lr_3
+#FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10'] #lr_4 #rf_1 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if (input('Did you determine the MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED ?\n')) == 'n':
+    exit()
+
 import os
     # If True, backtesting period settings as determined in main.py file will be used and ticker is automatically set as 'APPL'
     # If False, backtesting period settings as determined in this config file will be used
@@ -9,11 +40,16 @@ TICKERS = 'AAPL'
 #TICKERS =  "MSFT,DIS,UNH,UPS"
 #TICKERS =  "TSLA,NVDA,ARKK,META"
 
+if (input('Does this stock / do these stocks belong to the tech sector?\n'))[0] == 'y':
+    TECH_SECTOR_STOCK = True 
+else: 
+    TECH_SECTOR_STOCK = False 
+
 # leave the following untouched unless the stored data ticker gets changed
 if USE_STORED_DATA:
     TICKERS = 'AAPL'
     'When changing the following line to use a diffrent file of data for reading change the backtesting dates and period in the main.py file!!!'
-    STORED_DATA_TO_BE_READ = '/Users/prakhar/MA_trading_bot/data/stored_data/data_AAPL_2010-2020.csv'
+    STORED_DATA_TO_BE_READ = '/Users/prakhar/MA_trading_bot/data/stored_data/data_AAPL_2010-2020.csv' # START_OF_BACKTESTING = '2010-01-04 , END_OF_BACKTESTING = '2020-12-31'
 
 # If true: data will be fetched from yfinance
 # If false: data will be fetched from Alpha Vantage
@@ -29,12 +65,25 @@ LOG_REG_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models
 RANDOM_FOREST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/rf_model_AAPL_2.joblib'
 XGBOOST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/xgb_model_AAPL_1.joblib'
 
+# Probability of prediction variables:
+USE_PROBABILITY_THRESHOLD = True 
+PROBABILITY_THRESHOLD = 0.4       
+
+'Training parameters for linear_regression'
+MAX_ITER = 1000
+SOLVER = 'saga'
+
 
 'Training parameters for random_forest'
-RF_N_ESTIMATORS = 100   # Number of trees in the forest
-RF_MAX_DEPTH = None     # Maximum depth of the tree, None means no limit
-RF_RANDOM_STATE = 42    # Random state for reproducibility
-RF_N_JOBS = -1          # Use all available cores for training
+RF_N_ESTIMATORS = 300      # more trees → stabler predictions (but slower)
+RF_MAX_DEPTH = 10         # limits complexity; helps reduce overfitting
+RF_MIN_SAMPLES_LEAF = 5   # avoid tiny leaves that overfit noisy patterns
+RF_MIN_SAMPLES_SPLIT = 10 # min samples to split an internal node
+RF_MAX_FEATURES = 'sqrt'  # features considered per split; 'sqrt' often works well
+RF_CLASS_WEIGHT = None    # set to 'balanced' if classes are imbalanced
+RF_OOB_SCORE = True       # out-of-bag estimate for quick validation
+RF_RANDOM_STATE = 42
+RF_N_JOBS = -1
 
 
 'Training parameters for xgboost'
@@ -47,9 +96,11 @@ XGB_COLSAMPLE_BYTREE = 0.8          # Fraction of features used per tree (random
 XGB_RANDOM_STATE = 42               # Seed for reproducibility
 
 # Parameters that are usually kept as default, but are here just for consistency sake 
-XGB_N_JOBS = -1                    # Number of parallel threads (-1 uses all cores)
-VERBOSITY = 1                     # Verbosity level: 0 = silent, 1 = warnings, etc.
-EVAL_METRIC = 'logloss'           # Evaluation metric for training (log loss for classification)
+XGB_N_JOBS = -1                     # Number of parallel threads (-1 uses all cores)
+VERBOSITY = 1                       # Verbosity level: 0 = silent, 1 = warnings, etc.
+EVAL_METRIC = 'logloss'             # Evaluation metric for training (log loss for classification)
+BASE_SCORE=0.5   
+OBJECTIVE='multi:softprob'          # multiclass objective
 
 
 
@@ -70,18 +121,11 @@ END_OF_BACKTESTING = '2025-07-09'
 
 # Training model 
 DATA_FOR_ML_MODEL_TRAINING = "/Users/prakhar/MA_trading_bot/data/stored_data/data_AAPL_2010-2020.csv"  # This is the data file that is used for training the model, it should be in the data/stored_data folder
-MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = '/Users/prakhar/MA_trading_bot/ML/saved_models/xgb_model_AAPL_1.joblib'
 
 OPEN_INDIVIDUAL_PROCESS_EXCEL_FILES_AFTER_SAVING = False
 OPEN_SUMMARY_EXCEL_FILE_AFTER_SAVING = False
 
 INDICATORS_WHICH_ARE_NOT_TO_BE_CHECKED_FOR_LENGTH = ['data','rsi_overbought','rsi_oversold','logistic_regression']
-
-
-
-
-
-
 
 
 
@@ -109,15 +153,21 @@ MACD_SIGNAL_PERIOD = 9
 
 
 
+
+
+
 # If I change/modify this feature column list I need to add/remove that feature to/from the function calculate_and_add_features_to_data as well!!!
-FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upper', 'bb_lower', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10'] #lr_2 #rf_2 #xgb_1
-#FEATURE_COLUMNS = ['macd', 'macd_signal', 'sma_200', 'bb_percent','volatility_14', 'momentum_10'] #lr_3
-#FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10'] #lr_4 #rf_1 
+GSPC_DATA_FILE_PATH = '/Users/prakhar/MA_trading_bot/data/stored_data/data_^GSPC_(SP500)_2010-2020.csv'
+NDX_DATA_FILE_PATH = '/Users/prakhar/MA_trading_bot/data/stored_data/data_^NDX_(QQQ)_2010-2020.csv'
+
 TRAIN_SIZE = 0.8 # This is the percentage of the data that is used for training and the rest is used for testing.
 
 # Parameters for labeling system  
-MINIMUM_PERCENTAGE_THRESHOLD = 0.02 # This minimum percentage threshold is used to determine whether to buy or sell and to reduce unneccesary tiny trades. At the moment this threshold is set to 1% which is reasonable, however this can be adjusted to possibly improve perfromance 
+MINIMUM_PERCENTAGE_THRESHOLD = 0.02 # This minimum percentage threshold is used to determine whether to buy or sell and to reduce unneccesary tiny trades. At the moment this threshold is set to 2% which is reasonable, however this can be adjusted to possibly improve perfromance 
 LOOKAHEAD_DAYS = 5
+
+
+
 
 
 

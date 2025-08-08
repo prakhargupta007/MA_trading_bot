@@ -13,9 +13,9 @@ def prepare_data_with_scaling(data):
     print('labels added to data\n', data_with_labels.head(), '\n\n\n')
 
     X, y = split_data_into_features_and_target(data_with_labels)
-    print('features and labels split\n\nfeatures:\n', X.head(), '\n\n\nlabels:\n', y.head(), '\n\n\n')
-
+    print('features and labels split\nfeatures:\n', X.head(), '\n\n\nlabels:\n', y.head(), '\n\n\n')
     feature_names = list(X.columns)
+    print(f'feature_names:\n{feature_names}')
 
     X_train, X_test, y_train, y_test = split_data_into_train_and_test_data(X, y)
     print('data split into train and test\nX_train:\n', X_train.head(), '\n\n\nX_test:\n', X_test.head(), '\n\n\ny_train:\n', y_train.head(), '\n\n\ny_test\n', y_test.head(), '\n\n\n')

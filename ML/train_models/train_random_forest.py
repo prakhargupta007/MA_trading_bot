@@ -8,7 +8,8 @@ from ML.feature_importance.random_forest_feature_importance import random_forest
 
 from sklearn.ensemble import RandomForestClassifier
 from config import DATA_FOR_ML_MODEL_TRAINING, MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED
-from config import RF_N_ESTIMATORS, RF_MAX_DEPTH, RF_RANDOM_STATE, RF_N_JOBS
+from config import RF_N_ESTIMATORS, RF_MAX_DEPTH, RF_RANDOM_STATE, RF_N_JOBS, RF_MIN_SAMPLES_LEAF, RF_MIN_SAMPLES_SPLIT, RF_CLASS_WEIGHT, RF_OOB_SCORE
+from config import USE_PROBABILITY_THRESHOLD, PROBABILITY_THRESHOLD
 import pandas as pd
 import joblib
 import os
@@ -26,6 +27,11 @@ print('Data has been prepared successfully')
 model = RandomForestClassifier(
     n_estimators=RF_N_ESTIMATORS,
     max_depth=RF_MAX_DEPTH,
+    min_samples_leaf=RF_MIN_SAMPLES_LEAF,
+    min_samples_split=RF_MIN_SAMPLES_SPLIT,
+    max_features=RF_MIN_SAMPLES_LEAF,
+    class_weight=RF_CLASS_WEIGHT,
+    oob_score=RF_OOB_SCORE,
     random_state=RF_RANDOM_STATE,
     n_jobs=RF_N_JOBS
 )
@@ -33,7 +39,20 @@ model = RandomForestClassifier(
 model.fit(X_train, y_train)
 
 # Test
-y_pred = model.predict(X_test)
+if USE_PROBABILITY_THRESHOLD:
+    print(f"Using probability threshold: {PROBABILITY_THRESHOLD}")
+    probs = model.predict_proba(X_test)
+    y_pred = []
+
+    for p in probs:
+        if p[2] >= PROBABILITY_THRESHOLD:      # Buy probability check
+            y_pred.append(2)
+        elif p[0] >= PROBABILITY_THRESHOLD:    # Sell probability check
+            y_pred.append(0)
+        else:
+            y_pred.append(1)                   # Otherwise Hold
+else:
+    y_pred = model.predict(X_test)
 
 # Feature importance
 print("\nGini-based feature importance:")
@@ -48,5 +67,5 @@ evaluate_model(y_test, y_pred)
 os.makedirs('ML/saved_models', exist_ok=True)
 joblib.dump({'model': model}, MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED)
 
-print('Random Forest model saved successfully')
-print('End of training \n\n')
+print(f'Random Forest model saved successfully as:\n{MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED}\n')
+print('End of training \n')
