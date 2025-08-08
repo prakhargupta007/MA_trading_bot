@@ -1,4 +1,4 @@
-MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = '/Users/prakhar/MA_trading_bot/ML/saved_models/rf_model_AAPL_6.joblib'
+MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = '/Users/prakhar/MA_trading_bot/ML/saved_models/xgb_model_AAPL_5.joblib'
 
 
     #lr_8 #rf_6 
@@ -26,7 +26,7 @@ FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upp
 
 
 
-if (input('Did you determine the MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED ?\n')) == 'n':
+if (input('Did you determine the MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED ?\nDid you choose the correct backtesting dates / period\n')) == 'n':
     exit()
 
 import os
@@ -49,7 +49,7 @@ else:
 if USE_STORED_DATA:
     TICKERS = 'AAPL'
     'When changing the following line to use a diffrent file of data for reading change the backtesting dates and period in the main.py file!!!'
-    STORED_DATA_TO_BE_READ = '/Users/prakhar/MA_trading_bot/data/stored_data/data_AAPL_2010-2020.csv' # START_OF_BACKTESTING = '2010-01-04 , END_OF_BACKTESTING = '2020-12-31'
+    STORED_DATA_TO_BE_READ = '/Users/prakhar/MA_trading_bot/data/stored_data/data_AAPL_2020-2025.csv' # START_OF_BACKTESTING = '2010-01-04 , END_OF_BACKTESTING = '2020-12-31'
 
 # If true: data will be fetched from yfinance
 # If false: data will be fetched from Alpha Vantage
@@ -60,10 +60,10 @@ DATA_API_IS_YFINANCE = True #--> SHOULD BE TRUE AT ALL TIMES!
 # 'sma' 'ema' 'sma_rsi' 'sma_rsi_macd'  'ema_rsi'
 # 'logistic_regression' 'random_forest' 'xgboost'
 # 'perfect_strategy'
-CHOSEN_STRATEGY = 'perfect_strategy'
+CHOSEN_STRATEGY = 'xgboost'
 LOG_REG_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/lr_model_with_scaler_AAPL_2.joblib'
 RANDOM_FOREST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/rf_model_AAPL_2.joblib'
-XGBOOST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/xgb_model_AAPL_1.joblib'
+XGBOOST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/xgb_model_AAPL_5.joblib'
 
 # Probability of prediction variables:
 USE_PROBABILITY_THRESHOLD = True 
