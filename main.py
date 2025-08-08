@@ -2,9 +2,9 @@ import pandas as pd
 from config import USE_STORED_DATA, STORED_DATA_TO_BE_READ
 
 if USE_STORED_DATA:
-    START_OF_BACKTESTING = '2020'
-    END_OF_BACKTESTING = '2025'
-    BACKTESTING_PERIOD = '5'
+    START_OF_BACKTESTING = '2010-01-04'
+    END_OF_BACKTESTING = '2020-12-31'
+    BACKTESTING_PERIOD = '11'
     option_1_chosen = False 
 
 else:
@@ -168,7 +168,8 @@ def main():
             print('✅ metrics calculated successfully\n\n')
 
             profit_of_buy_and_hold, cash_at_end_of_buy_and_hold = calculate_profit_if_bought_and_held(data, STARTING_BALANCE)
-            print(f'If bought and hold: {profit_of_buy_and_hold}')
+            print(f'Final balance if bought and held: {cash_at_end_of_buy_and_hold}')
+            print(f'Profit if bought and held: {profit_of_buy_and_hold}')
             cagr_buy_hold = calculate_cagr(STARTING_BALANCE, float(BACKTESTING_PERIOD), cash_at_end_of_buy_and_hold)
             print(f'CAGR of buy and hold: {cagr_buy_hold:.2f} %')
             cagr_strategy_efficiency_in_percent = cagr_strategy_efficiency(cagr, cagr_buy_hold)

@@ -1,7 +1,7 @@
 # Run the following command to run this file on terminal: 
 # python3 -m ML.train_models.train_logistic_regression
 
-from data.prepare_data_for_LR import prepare_data_for_LR
+from data.prepare_data_with_scaling import prepare_data_with_scaling
 from ML.evaluate_model import evaluate_model
 from ML.feature_importance.logistic_coefficient_importance import logistic_coefficient_importance
 from ML.feature_importance.universal_permutation_importance_score import universal_permutation_importance_score
@@ -17,7 +17,7 @@ print('data file as determined in the config file (including data split) is bein
 data = pd.read_csv( DATA_FOR_ML_MODEL_TRAINING, index_col="Date", parse_dates=True)
 
 # Prepare data (this now includes cleaning + scaling)
-X_train_scaled, X_test_scaled, y_train, y_test, scaler, feature_names = prepare_data_for_LR(data)
+X_train_scaled, X_test_scaled, y_train, y_test, scaler, feature_names = prepare_data_with_scaling(data)
 
 print('data has been successfully prepared')
 

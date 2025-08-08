@@ -1,4 +1,4 @@
-While adding a new strategy,consider the following points: 
+While adding a new strategy, make sure of the following points: 
 
 1. Add **kwargs in the arguments section of the strategy function  
 2. Add 'Hold' to the initial signals list while creating it, in order to fix lookahead bias --> signals = ['HOLD']

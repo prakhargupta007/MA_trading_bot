@@ -22,17 +22,34 @@ DATA_API_IS_YFINANCE = True #--> SHOULD BE TRUE AT ALL TIMES!
 
 # Here you can choose from:
 # 'sma' 'ema' 'sma_rsi' 'sma_rsi_macd'  'ema_rsi'
-# 'logistic_regression' 'random_forest' 
+# 'logistic_regression' 'random_forest' 'xgboost'
 # 'perfect_strategy'
 CHOSEN_STRATEGY = 'perfect_strategy'
 LOG_REG_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/lr_model_with_scaler_AAPL_2.joblib'
-RANDOM_FOREST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/rf_model_AAPL_1.joblib'
+RANDOM_FOREST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/rf_model_AAPL_2.joblib'
+XGBOOST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/xgb_model_AAPL_1.joblib'
+
 
 'Training parameters for random_forest'
 RF_N_ESTIMATORS = 100   # Number of trees in the forest
 RF_MAX_DEPTH = None     # Maximum depth of the tree, None means no limit
 RF_RANDOM_STATE = 42    # Random state for reproducibility
 RF_N_JOBS = -1          # Use all available cores for training
+
+
+'Training parameters for xgboost'
+# Core XGBoost parameters (most important to tune)
+XGB_N_ESTIMATORS = 100              # Number of trees in the model
+XGB_MAX_DEPTH = 5                   # Max depth of each tree (controls complexity)
+XGB_LEARNING_RATE = 0.1             # Step size shrinkage (learning rate)
+XGB_SUBSAMPLE = 0.8                 # Fraction of samples used per tree (for randomness)
+XGB_COLSAMPLE_BYTREE = 0.8          # Fraction of features used per tree (random feature selection)
+XGB_RANDOM_STATE = 42               # Seed for reproducibility
+
+# Parameters that are usually kept as default, but are here just for consistency sake 
+XGB_N_JOBS = -1                    # Number of parallel threads (-1 uses all cores)
+VERBOSITY = 1                     # Verbosity level: 0 = silent, 1 = warnings, etc.
+EVAL_METRIC = 'logloss'           # Evaluation metric for training (log loss for classification)
 
 
 
@@ -53,7 +70,7 @@ END_OF_BACKTESTING = '2025-07-09'
 
 # Training model 
 DATA_FOR_ML_MODEL_TRAINING = "/Users/prakhar/MA_trading_bot/data/stored_data/data_AAPL_2010-2020.csv"  # This is the data file that is used for training the model, it should be in the data/stored_data folder
-MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = 'ML/saved_models/rf_model_AAPL_1.joblib'
+MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = '/Users/prakhar/MA_trading_bot/ML/saved_models/xgb_model_AAPL_1.joblib'
 
 OPEN_INDIVIDUAL_PROCESS_EXCEL_FILES_AFTER_SAVING = False
 OPEN_SUMMARY_EXCEL_FILE_AFTER_SAVING = False
@@ -93,9 +110,9 @@ MACD_SIGNAL_PERIOD = 9
 
 
 # If I change/modify this feature column list I need to add/remove that feature to/from the function calculate_and_add_features_to_data as well!!!
-#FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upper', 'bb_lower', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10'] #lr_model_2
-#FEATURE_COLUMNS = ['macd', 'macd_signal', 'sma_200', 'bb_percent','volatility_14', 'momentum_10'] #lr_model_3
-FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10'] #lr_model_4 #rf_model_1 
+FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upper', 'bb_lower', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10'] #lr_2 #rf_2 #xgb_1
+#FEATURE_COLUMNS = ['macd', 'macd_signal', 'sma_200', 'bb_percent','volatility_14', 'momentum_10'] #lr_3
+#FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10'] #lr_4 #rf_1 
 TRAIN_SIZE = 0.8 # This is the percentage of the data that is used for training and the rest is used for testing.
 
 # Parameters for labeling system  
