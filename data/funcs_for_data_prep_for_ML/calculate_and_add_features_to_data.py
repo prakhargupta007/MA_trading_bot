@@ -6,6 +6,7 @@ from config import GSPC_DATA_FILE_PATH
 from config import NDX_DATA_FILE_PATH 
 from config import TECH_SECTOR_STOCK 
 
+from generate_sentiment_score_feature_list import generate_sentiment_score_feature_list
 
 def calculate_and_add_features_to_data(data):
     '''
@@ -58,6 +59,7 @@ def calculate_and_add_features_to_data(data):
     data['gspc_daily_return'] = gspc_returns.reindex(data.index)
     data['gspc_20d_volatility'] = gspc_volatility.reindex(data.index)
 
+    data['sentiment_score'] = generate_sentiment_score_feature_list(data.index)
 
 
     if TECH_SECTOR_STOCK:
@@ -78,5 +80,7 @@ def calculate_and_add_features_to_data(data):
     for w in momentum_windows:
         rolling_mean = data['Close'].rolling(window=w).mean()
         data[f'mom_diff_pct_{w}d'] = ((data['Close'] - rolling_mean) / rolling_mean) * 100
+
+
 
     return data

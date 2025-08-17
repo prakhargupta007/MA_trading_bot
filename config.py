@@ -1,7 +1,7 @@
 MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = '/Users/prakhar/MA_trading_bot/ML/saved_models/xgb_model_AAPL_5.joblib'
 
-
-    #lr_8 #rf_6 
+'sentiment_score'
+    #lr_8 #rf_6 #xgb_5
 FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upper', 'bb_lower', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10','mom_diff_pct_5d', 'mom_diff_pct_10d', 'mom_diff_pct_20d', 'mom_diff_pct_50d', 'mom_diff_pct_100d','gspc_daily_return', 'gspc_20d_volatility', 'ndx_daily_return', 'ndx_20d_volatility', 'ndx_20d_sma','volume_20d_ma', 'obv']
     #lr_7 #rf_5 #xgb_4 
 #FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upper', 'bb_lower', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10','mom_diff_pct_5d', 'mom_diff_pct_10d', 'mom_diff_pct_20d', 'mom_diff_pct_50d', 'mom_diff_pct_100d','gspc_daily_return', 'gspc_20d_volatility', 'ndx_daily_return', 'ndx_20d_volatility', 'ndx_20d_sma']
@@ -11,6 +11,18 @@ FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upp
 #FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upper', 'bb_lower', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10'] #lr_2 #rf_2 #xgb_1
 #FEATURE_COLUMNS = ['macd', 'macd_signal', 'sma_200', 'bb_percent','volatility_14', 'momentum_10'] #lr_3
 #FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10'] #lr_4 #rf_1 
+
+
+# Here you can choose from:
+# 'sma' 'ema' 'sma_rsi' 'sma_rsi_macd'  'ema_rsi'
+# 'logistic_regression' 'random_forest' 'xgboost'
+# 'perfect_strategy'
+CHOSEN_STRATEGY = 'xgboost'
+LOG_REG_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/lr_model_with_scaler_AAPL_2.joblib'
+RANDOM_FOREST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/rf_model_AAPL_2.joblib'
+XGBOOST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/xgb_model_AAPL_5.joblib'
+
+
 
 
 
@@ -55,15 +67,6 @@ if USE_STORED_DATA:
 # If false: data will be fetched from Alpha Vantage
 # reason for prefence for yfinance = I can access the adjusted close price for free whereas Alpha Vantage asks you to buy the premium version to get the adjusted close price
 DATA_API_IS_YFINANCE = True #--> SHOULD BE TRUE AT ALL TIMES! 
-
-# Here you can choose from:
-# 'sma' 'ema' 'sma_rsi' 'sma_rsi_macd'  'ema_rsi'
-# 'logistic_regression' 'random_forest' 'xgboost'
-# 'perfect_strategy'
-CHOSEN_STRATEGY = 'xgboost'
-LOG_REG_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/lr_model_with_scaler_AAPL_2.joblib'
-RANDOM_FOREST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/rf_model_AAPL_2.joblib'
-XGBOOST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/xgb_model_AAPL_5.joblib'
 
 # Probability of prediction variables:
 USE_PROBABILITY_THRESHOLD = True 

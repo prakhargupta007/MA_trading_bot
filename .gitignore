@@ -1,3 +1,7 @@
 __pycache__/
 *.pyc 
 /saved_files/
+/sentiment_analysis/GDELT/daily_output_folder/
+/sentiment_analysis/GDELT/full_output_folder/
+/sentiment_analysis/GDELT/trading_days_daily_output/
+/sentiment_analysis/stock_news_api/output_stocknewsapi/
