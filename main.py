@@ -2,9 +2,9 @@ import pandas as pd
 from config import USE_STORED_DATA, STORED_DATA_TO_BE_READ
 
 if USE_STORED_DATA:
-    START_OF_BACKTESTING = '2010-01-04'
-    END_OF_BACKTESTING = '2020-12-31'
-    BACKTESTING_PERIOD = '11'
+    START_OF_BACKTESTING = '2023-01-03'
+    END_OF_BACKTESTING = '2025-08-15'
+    BACKTESTING_PERIOD = '2.615'
     option_1_chosen = False 
 
 else:
@@ -55,6 +55,8 @@ from metrics.average_cagr_of_list import calculate_average_cagr_of_list
 from metrics.sharpe import calculate_sharpe_ratio
 import traceback 
 
+
+
 def main():
     try:
         TICKER_LIST = TICKERS.split(',')
@@ -65,6 +67,9 @@ def main():
         summary_buy_hold_CAGRs = []
         summary_cagr_strategy_efficiencies = []
         summary_sharpe_ratios = []
+        # NEW lists
+        summary_realized_sharpe_ratios = []
+        summary_realized_cagr_strategy_efficiencies = []
 
         for TICKER in TICKER_LIST: 
             bold_underscore = '\033[1m_\033[0m'
@@ -125,9 +130,6 @@ def main():
             print(backtest_table)
             print(f"✅ backtest table printed successfully\n\n")
 
-            print("len(data):", len(data))
-            print("len(signals):", len(signals), "\n\n")
-
             if VISUALISE_PLOTTED_SIGNAL_EXECUTIONS:
                 print('Visualising the used strategy...')
                 plotly_plot_universal_strategy_signals_and_save(data, signals, TICKER, CHOSEN_STRATEGY.upper())
@@ -135,79 +137,93 @@ def main():
 
             portfolio_values = return_portfolio_values()
             portfolio_values_series = pd.Series(portfolio_values)
-            plotly_plot_portfolio_values(portfolio_values_series, data, TICKER)
 
-            print('✅ plots shown successfully\n\n')
+            if VISUALISE_PLOTTED_SIGNAL_EXECUTIONS:      
+                plotly_plot_portfolio_values(portfolio_values_series, data, TICKER)
+                print('✅ plots shown successfully\n\n')
 
+            # --- Metrics ---
             print('Calculating metrics...')
             final_balance = return_endbalance()
-            print(f'Final balance: {final_balance}')
             profit_in_percent, profit = calculate_profit(STARTING_BALANCE, final_balance)
-            print(f'Profit made: {profit}')
-            print(f'Profit made in percentage: {profit_in_percent}')
             cagr = calculate_cagr(STARTING_BALANCE, float(BACKTESTING_PERIOD), final_balance)
-            print(f'CAGR: {cagr:.2f} %')
 
-            # Calculate Realized CAGR based on last sell balance
-            last_sell_balance = STARTING_BALANCE  # Default to starting balance if no sells
-            sell_indices = [i for i, signal in enumerate(signals) if signal == 'SELL']
-            if sell_indices:
-                # Map the last SELL signal index to the corresponding action in list_actions
-                action_indices = [i for i, action in enumerate(results_of_backtesting[0]) if action == 'SELL']
-                if action_indices:
-                    last_action_index = action_indices[-1]
-                    last_sell_balance = results_of_backtesting[4][last_action_index]  # list_total_cash_flow
-            realized_cagr = calculate_cagr(STARTING_BALANCE, float(BACKTESTING_PERIOD), last_sell_balance)
-            print(f'Realized CAGR: {realized_cagr:.2f} %')
+            # --- Sharpe Ratios ---
+            sharpe_ratio = calculate_sharpe_ratio(portfolio_values_series) if len(portfolio_values) > 1 else None
 
-            if len(portfolio_values) > 1:
-                sharpe_ratio = calculate_sharpe_ratio(portfolio_values_series)
-                print(f'Sharpe Ratio: {sharpe_ratio:.2f}')
+            # --- Realized Sharpe & CAGR ---
+            action_indices = [i for i, action in enumerate(results_of_backtesting[0]) if action == 'SELL']
+
+            last_sell_data_index = None
+            holding = False
+            for i in range(len(signals)):
+                if signals[i] == 'BUY' and not holding:
+                    holding = True
+                elif signals[i] == 'SELL' and holding:
+                    last_sell_data_index = i
+                    holding = False
+
+            realized_sharpe_ratio = None
+            if last_sell_data_index is not None:
+                last_action_index = action_indices[-1]
+                last_sell_balance = results_of_backtesting[4][last_action_index]
+                realized_portfolio_values = portfolio_values_series.copy()
+                realized_portfolio_values.iloc[last_sell_data_index + 1:] = last_sell_balance
+                if len(realized_portfolio_values) > 1:
+                    realized_sharpe_ratio = calculate_sharpe_ratio(realized_portfolio_values)
             else:
-                print('Sharpe Ratio: N/A (not enough data)')
-            print('✅ metrics calculated successfully\n\n')
+                last_sell_balance = STARTING_BALANCE
+                realized_portfolio_values = pd.Series([STARTING_BALANCE] * len(portfolio_values_series), index=portfolio_values_series.index)
+                if len(realized_portfolio_values) > 1:
+                    realized_sharpe_ratio = calculate_sharpe_ratio(realized_portfolio_values)
 
+            realized_cagr = calculate_cagr(STARTING_BALANCE, float(BACKTESTING_PERIOD), last_sell_balance)
+
+            # Handle cases where sharpe might be NaN (e.g., zero volatility)
+            import math
+            if sharpe_ratio is None or math.isnan(sharpe_ratio):
+                sharpe_ratio = 0
+            if realized_sharpe_ratio is None or math.isnan(realized_sharpe_ratio):
+                realized_sharpe_ratio = 0
+
+            # --- Buy & Hold comparison ---
             profit_of_buy_and_hold, cash_at_end_of_buy_and_hold = calculate_profit_if_bought_and_held(data, STARTING_BALANCE)
-            print(f'Final balance if bought and held: {cash_at_end_of_buy_and_hold}')
-            print(f'Profit if bought and held: {profit_of_buy_and_hold}')
             cagr_buy_hold = calculate_cagr(STARTING_BALANCE, float(BACKTESTING_PERIOD), cash_at_end_of_buy_and_hold)
-            print(f'CAGR of buy and hold: {cagr_buy_hold:.2f} %')
             cagr_strategy_efficiency_in_percent = cagr_strategy_efficiency(cagr, cagr_buy_hold)
-            print(f'CAGR strategy efficiency: {cagr_strategy_efficiency_in_percent:.2f}')
-            print('✅ metrics of buy and hold option calculated successfully\n\n')
+            realized_cagr_strategy_efficiency_in_percent = cagr_strategy_efficiency(realized_cagr, cagr_buy_hold)
 
-            print('Converting csv file to excel file and opening it (if desired)...')
-            print(convert_csv_file_to_excel_file_and_open_it(TICKER))
-
+            # --- Append all values (always filled now) ---
             summary_tickers.append(TICKER)
             summary_CAGRs.append(cagr)
             summary_realized_CAGRs.append(realized_cagr)
             summary_buy_hold_CAGRs.append(cagr_buy_hold)
             summary_cagr_strategy_efficiencies.append(cagr_strategy_efficiency_in_percent)
             summary_sharpe_ratios.append(sharpe_ratio)
+            summary_realized_sharpe_ratios.append(realized_sharpe_ratio)
+            summary_realized_cagr_strategy_efficiencies.append(realized_cagr_strategy_efficiency_in_percent)
 
+        # Summary table creation
         summary_table, csv_path_of_summary_table = create_and_save_backtest_summary_table_csv_file(
             summary_tickers, 
             summary_CAGRs, 
             summary_buy_hold_CAGRs, 
             summary_cagr_strategy_efficiencies, 
             summary_sharpe_ratios,
-            summary_realized_CAGRs=summary_realized_CAGRs
+            summary_realized_CAGRs=summary_realized_CAGRs,
+            summary_realized_sharpe_ratios=summary_realized_sharpe_ratios,
+            summary_realized_cagr_strategy_efficiencies=summary_realized_cagr_strategy_efficiencies
         )
+        # Headline + printing
         if option_1_chosen == False or USE_STORED_DATA:
-            summary_table_headline = f'RESULTS OF \033[1m{CHOSEN_STRATEGY.upper()}\033[0m STRATEGY FROM \033[1m{START_OF_BACKTESTING}\033[0m TO \033[1m{END_OF_BACKTESTING}\033[0m --> (\033[1m{round(float(BACKTESTING_PERIOD), 2)}\033[0m years)'
-            print(summary_table_headline)
+            print(f'RESULTS OF \033[1m{CHOSEN_STRATEGY.upper()}\033[0m STRATEGY FROM \033[1m{START_OF_BACKTESTING}\033[0m TO \033[1m{END_OF_BACKTESTING}\033[0m --> (\033[1m{round(float(BACKTESTING_PERIOD), 2)}\033[0m years)')
         else:
-            summary_table_headline = f'RESULTS OF \033[1m{CHOSEN_STRATEGY.upper()}\033[0m STRATEGY OVER PAST \033[1m{round(float(BACKTESTING_PERIOD), 2)}\033[0m years'
-            print(summary_table_headline)
+            print(f'RESULTS OF \033[1m{CHOSEN_STRATEGY.upper()}\033[0m STRATEGY OVER PAST \033[1m{round(float(BACKTESTING_PERIOD), 2)}\033[0m years')
         print(summary_table)
-        print(f'Average CAGR of all tickers of {CHOSEN_STRATEGY.upper()} strategy: \033[1m{calculate_average_cagr_of_list(summary_CAGRs):.2f}% \033[0m')
-        print(f'Average Realized CAGR of all tickers of {CHOSEN_STRATEGY.upper()} strategy: \033[1m{calculate_average_cagr_of_list(summary_realized_CAGRs):.2f}% \033[0m\n\n')
+        print(f'Average CAGR: {calculate_average_cagr_of_list(summary_CAGRs):.2f}%')
+        print(f'Average Realized CAGR: {calculate_average_cagr_of_list(summary_realized_CAGRs):.2f}%')
 
-        print('Converting csv summary file to excel summary file and opening it (if desired)...') 
-        print(convert_summary_csv_file_to_excel_file_and_open_it())
-
-        print('Converting csv summary file to pdf file...')
+        # File conversions
+        convert_summary_csv_file_to_excel_file_and_open_it()
         convert_csv_summarized_backtest_table_to_pdf(
             csv_path_of_summary_table,
             title=f'{CHOSEN_STRATEGY.upper()} STRATEGY RESULTS with Backtesting period from {START_OF_BACKTESTING} to {END_OF_BACKTESTING}'
@@ -219,6 +235,7 @@ def main():
         print("\n❌ An error occurred:")
         traceback.print_exc()
         raise
+
 
 if __name__ == "__main__":
     main()

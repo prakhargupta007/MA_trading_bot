@@ -1,9 +1,66 @@
-MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = '/Users/prakhar/MA_trading_bot/ML/saved_models/xgb_model_AAPL_5.joblib'
+
+MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = '/Users/prakhar/MA_trading_bot/ML/saved_models/lr_model_AAPL_9.joblib'
+
+'When backtesting or training my model that uses features from GSPC and NDX, update these variables with the correct file paths'
+# TRAINING
+GSPC_DATA_FILE_PATH = '/Users/prakhar/MA_trading_bot/data/stored_data/data_^GSPC_train_2017-01-02--2025-08-15.csv'
+NDX_DATA_FILE_PATH = '/Users/prakhar/MA_trading_bot/data/stored_data/data_^NDX_train_2017-01-02--2025-08-15.csv'
+#BACKTESTING
+#GSPC_DATA_FILE_PATH = '/Users/prakhar/MA_trading_bot/data/stored_data/data_^GSPC_backtest_2023-01-03--2025-08-15.csv'
+#NDX_DATA_FILE_PATH = '/Users/prakhar/MA_trading_bot/data/stored_data/data_^NDX_backtest_2023-01-03--2025-08-15.csv'
+
+
+# Here you can choose from:
+# 'sma' 'ema' 'sma_rsi' 'sma_rsi_macd'  'ema_rsi'
+# 'logistic_regression' 'random_forest' 'xgboost'
+# 'perfect_strategy'
+CHOSEN_STRATEGY = 'logistic regression'
+LOG_REG_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/lr_model_with_scaler_AAPL_9.joblib'
+RANDOM_FOREST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/rf_model_AAPL_2.joblib'
+XGBOOST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/xgb_model_AAPL_5.joblib'
+
+
+
+if (input('Did you enter the correct file path of NDX and GSPC depending on training or backtesting if they are being used as features?\n'))[0] == 'n':
+    exit()
 
 'sentiment_score'
+# If I change/modify this feature column list I need to add/remove that feature to/from the function calculate_and_add_features_to_data as well!!!
+
+    # lr_9
+FEATURE_COLUMNS = [
+    # Momentum & Trend
+    'rsi_14',
+    'macd',
+    'mom_diff_pct_10d',
+    'mom_diff_pct_100d',
+
+    # Volatility
+    'volatility_14',
+    'gspc_20d_volatility',  # broad market
+    'ndx_20d_volatility',   # tech sector vol
+
+    # Returns
+    'daily_return',
+    'gspc_daily_return',    # market return
+    'ndx_daily_return',     # tech sector return
+
+    # Volume
+    'obv',
+    'volume_20d_ma',
+
+    # Bands
+    'bb_percent'
+
+    # Sentiment
+    #'sentiment_score'
+]
+
+
+
     #lr_8 #rf_6 #xgb_5
-FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upper', 'bb_lower', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10','mom_diff_pct_5d', 'mom_diff_pct_10d', 'mom_diff_pct_20d', 'mom_diff_pct_50d', 'mom_diff_pct_100d','gspc_daily_return', 'gspc_20d_volatility', 'ndx_daily_return', 'ndx_20d_volatility', 'ndx_20d_sma','volume_20d_ma', 'obv']
-    #lr_7 #rf_5 #xgb_4 
+#FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upper', 'bb_lower', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10','mom_diff_pct_5d', 'mom_diff_pct_10d', 'mom_diff_pct_20d', 'mom_diff_pct_50d', 'mom_diff_pct_100d','gspc_daily_return', 'gspc_20d_volatility', 'ndx_daily_return', 'ndx_20d_volatility', 'ndx_20d_sma','volume_20d_ma', 'obv']
+    #lr_7 #rf_5 #xgb_4 lr_10
 #FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upper', 'bb_lower', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10','mom_diff_pct_5d', 'mom_diff_pct_10d', 'mom_diff_pct_20d', 'mom_diff_pct_50d', 'mom_diff_pct_100d','gspc_daily_return', 'gspc_20d_volatility', 'ndx_daily_return', 'ndx_20d_volatility', 'ndx_20d_sma']
     #rf_3 #lr_5 #xgb_2 #lr_6 #rf_4 #xgb_3 
 #FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upper', 'bb_lower', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10','mom_diff_pct_5d', 'mom_diff_pct_10d', 'mom_diff_pct_20d', 'mom_diff_pct_50d', 'mom_diff_pct_100d']
@@ -13,14 +70,6 @@ FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upp
 #FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10'] #lr_4 #rf_1 
 
 
-# Here you can choose from:
-# 'sma' 'ema' 'sma_rsi' 'sma_rsi_macd'  'ema_rsi'
-# 'logistic_regression' 'random_forest' 'xgboost'
-# 'perfect_strategy'
-CHOSEN_STRATEGY = 'xgboost'
-LOG_REG_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/lr_model_with_scaler_AAPL_2.joblib'
-RANDOM_FOREST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/rf_model_AAPL_2.joblib'
-XGBOOST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/xgb_model_AAPL_5.joblib'
 
 
 
@@ -33,19 +82,17 @@ XGBOOST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models
 
 
 
+if (input('Did you determine the MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED ?\n')) == 'n':
+    exit()
 
-
-
-
-
-if (input('Did you determine the MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED ?\nDid you choose the correct backtesting dates / period\n')) == 'n':
+if (input('Did you choose the correct backtesting dates / period\n')) == 'n':
     exit()
 
 import os
     # If True, backtesting period settings as determined in main.py file will be used and ticker is automatically set as 'APPL'
     # If False, backtesting period settings as determined in this config file will be used
 USE_STORED_DATA = True
-VISUALISE_PLOTTED_SIGNAL_EXECUTIONS =  True 
+VISUALISE_PLOTTED_SIGNAL_EXECUTIONS =  False 
 
 TICKERS = 'AAPL'
 #TICKERS =  "JNJ,KO,PG,D"
@@ -61,7 +108,7 @@ else:
 if USE_STORED_DATA:
     TICKERS = 'AAPL'
     'When changing the following line to use a diffrent file of data for reading change the backtesting dates and period in the main.py file!!!'
-    STORED_DATA_TO_BE_READ = '/Users/prakhar/MA_trading_bot/data/stored_data/data_AAPL_2020-2025.csv' # START_OF_BACKTESTING = '2010-01-04 , END_OF_BACKTESTING = '2020-12-31'
+    STORED_DATA_TO_BE_READ = '/Users/prakhar/MA_trading_bot/data/stored_data/data_AAPL_backtest_2023-01-03--2025-08-15.csv' # START_OF_BACKTESTING = '2010-01-04 , END_OF_BACKTESTING = '2020-12-31'
 
 # If true: data will be fetched from yfinance
 # If false: data will be fetched from Alpha Vantage
@@ -69,13 +116,14 @@ if USE_STORED_DATA:
 DATA_API_IS_YFINANCE = True #--> SHOULD BE TRUE AT ALL TIMES! 
 
 # Probability of prediction variables:
-USE_PROBABILITY_THRESHOLD = True 
+USE_PROBABILITY_THRESHOLD = False 
 PROBABILITY_THRESHOLD = 0.4       
 
-'Training parameters for linear_regression'
+'Training parameters for logistic_regression'
 MAX_ITER = 1000
 SOLVER = 'saga'
-
+CLASS_WEIGHT = 'balanced'
+RANDOM_STATE = 42  # Use balanced class weights to handle class imbalance
 
 'Training parameters for random_forest'
 RF_N_ESTIMATORS = 300      # more trees → stabler predictions (but slower)
@@ -119,16 +167,17 @@ STARTING_BALANCE = 10000  # Starting balance for backtesting
 #    --> If choosing option 1, comment out option 2 and vice versa!
 #BACKTESTING_PERIOD = '10'# in years as a string 
         #Format of the date should be YYYY-MM-DD
+'If USE_STORED_DATA is false, then the following dates will be used'
 START_OF_BACKTESTING = '2010-06-01'
 END_OF_BACKTESTING = '2025-07-09'
 
 # Training model 
-DATA_FOR_ML_MODEL_TRAINING = "/Users/prakhar/MA_trading_bot/data/stored_data/data_AAPL_2010-2020.csv"  # This is the data file that is used for training the model, it should be in the data/stored_data folder
+DATA_FOR_ML_MODEL_TRAINING = "/Users/prakhar/MA_trading_bot/data/stored_data/data_AAPL_train_test_2017-01-02--2022-12-30.csv"  # This is the data file that is used for training the model, it should be in the data/stored_data folder
 
 OPEN_INDIVIDUAL_PROCESS_EXCEL_FILES_AFTER_SAVING = False
 OPEN_SUMMARY_EXCEL_FILE_AFTER_SAVING = False
 
-INDICATORS_WHICH_ARE_NOT_TO_BE_CHECKED_FOR_LENGTH = ['data','rsi_overbought','rsi_oversold','logistic_regression']
+INDICATORS_WHICH_ARE_NOT_TO_BE_CHECKED_FOR_LENGTH = ['data','rsi_overbought','rsi_oversold']
 
 
 
@@ -137,11 +186,11 @@ INDICATORS_WHICH_ARE_NOT_TO_BE_CHECKED_FOR_LENGTH = ['data','rsi_overbought','rs
 
 
 #Strategy parameters for indicators
-SMA_SHORT_PERIOD = 50 
-SMA_LONG_PERIOD = 200
+SMA_SHORT_PERIOD = 25
+SMA_LONG_PERIOD = 70
 
-EMA_SHORT_PERIOD = 50
-EMA_LONG_PERIOD = 200
+EMA_SHORT_PERIOD = 25
+EMA_LONG_PERIOD = 70
 
 RSI_PERIOD = 14  # period for RS (Relative Strength) index
 RSI_OVERBOUGHT_WARNING = 70  
@@ -156,14 +205,7 @@ MACD_SIGNAL_PERIOD = 9
 
 
 
-
-
-
-# If I change/modify this feature column list I need to add/remove that feature to/from the function calculate_and_add_features_to_data as well!!!
-GSPC_DATA_FILE_PATH = '/Users/prakhar/MA_trading_bot/data/stored_data/data_^GSPC_(SP500)_2010-2020.csv'
-NDX_DATA_FILE_PATH = '/Users/prakhar/MA_trading_bot/data/stored_data/data_^NDX_(QQQ)_2010-2020.csv'
-
-TRAIN_SIZE = 0.8 # This is the percentage of the data that is used for training and the rest is used for testing.
+TRAIN_SIZE = 0.6667 # This is the percentage of the data that is used for training and the rest is used for testing.
 
 # Parameters for labeling system  
 MINIMUM_PERCENTAGE_THRESHOLD = 0.02 # This minimum percentage threshold is used to determine whether to buy or sell and to reduce unneccesary tiny trades. At the moment this threshold is set to 2% which is reasonable, however this can be adjusted to possibly improve perfromance 

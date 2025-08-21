@@ -2,11 +2,10 @@ import pandas as pd
 import numpy as np 
 import ta 
 
-from config import GSPC_DATA_FILE_PATH 
-from config import NDX_DATA_FILE_PATH 
 from config import TECH_SECTOR_STOCK 
+from config import GSPC_DATA_FILE_PATH, NDX_DATA_FILE_PATH
 
-from generate_sentiment_score_feature_list import generate_sentiment_score_feature_list
+from data.funcs_for_data_prep_for_ML.generate_sentiment_score_feature_list import generate_sentiment_score_feature_list
 
 def calculate_and_add_features_to_data(data):
     '''

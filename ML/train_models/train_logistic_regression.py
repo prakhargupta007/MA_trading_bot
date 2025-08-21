@@ -7,7 +7,7 @@ from ML.feature_importance.logistic_coefficient_importance import logistic_coeff
 from ML.feature_importance.universal_permutation_importance_score import universal_permutation_importance_score
 
 from sklearn.linear_model import LogisticRegression
-from config import MAX_ITER,SOLVER
+from config import MAX_ITER,SOLVER,CLASS_WEIGHT, RANDOM_STATE
 from config import DATA_FOR_ML_MODEL_TRAINING, MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED
 from config import USE_PROBABILITY_THRESHOLD, PROBABILITY_THRESHOLD
 import pandas as pd
@@ -21,10 +21,15 @@ data = pd.read_csv( DATA_FOR_ML_MODEL_TRAINING, index_col="Date", parse_dates=Tr
 # Prepare data (this now includes cleaning + scaling)
 X_train_scaled, X_test_scaled, y_train, y_test, scaler, feature_names = prepare_data_with_scaling(data)
 
+print("Training class distribution:\n", pd.Series(y_train).value_counts())
+print("Test class distribution:\n", pd.Series(y_test).value_counts())
+
+
+
 print('data has been successfully prepared')
 
 # Train Logistic Regression model
-model = LogisticRegression(max_iter=MAX_ITER, solver=SOLVER)
+model = LogisticRegression(max_iter=MAX_ITER, solver=SOLVER,class_weight=CLASS_WEIGHT, random_state=RANDOM_STATE)
 model.fit(X_train_scaled, y_train) 
 
 # Test model on test data
