@@ -1,25 +1,37 @@
 
-MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = '/Users/prakhar/MA_trading_bot/ML/saved_models/lr_model_AAPL_9.joblib'
+MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = '/Users/prakhar/MA_trading_bot/ML/saved_models/xgb_model_AAPL_7.joblib'
 
 'When backtesting or training my model that uses features from GSPC and NDX, update these variables with the correct file paths'
 # TRAINING
-GSPC_DATA_FILE_PATH = '/Users/prakhar/MA_trading_bot/data/stored_data/data_^GSPC_train_2017-01-02--2025-08-15.csv'
-NDX_DATA_FILE_PATH = '/Users/prakhar/MA_trading_bot/data/stored_data/data_^NDX_train_2017-01-02--2025-08-15.csv'
+#GSPC_DATA_FILE_PATH = '/Users/prakhar/MA_trading_bot/data/stored_data/data_^GSPC_train_2017-01-02--2025-08-15.csv'
+#NDX_DATA_FILE_PATH = '/Users/prakhar/MA_trading_bot/data/stored_data/data_^NDX_train_2017-01-02--2025-08-15.csv'
 #BACKTESTING
-#GSPC_DATA_FILE_PATH = '/Users/prakhar/MA_trading_bot/data/stored_data/data_^GSPC_backtest_2023-01-03--2025-08-15.csv'
-#NDX_DATA_FILE_PATH = '/Users/prakhar/MA_trading_bot/data/stored_data/data_^NDX_backtest_2023-01-03--2025-08-15.csv'
+GSPC_DATA_FILE_PATH = '/Users/prakhar/MA_trading_bot/data/stored_data/data_^GSPC_backtest_2023-01-03--2025-08-15.csv'
+NDX_DATA_FILE_PATH = '/Users/prakhar/MA_trading_bot/data/stored_data/data_^NDX_backtest_2023-01-03--2025-08-15.csv'
 
 
 # Here you can choose from:
 # 'sma' 'ema' 'sma_rsi' 'sma_rsi_macd'  'ema_rsi'
 # 'logistic_regression' 'random_forest' 'xgboost'
 # 'perfect_strategy'
-CHOSEN_STRATEGY = 'logistic regression'
-LOG_REG_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/lr_model_with_scaler_AAPL_9.joblib'
-RANDOM_FOREST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/rf_model_AAPL_2.joblib'
-XGBOOST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/xgb_model_AAPL_5.joblib'
+#CHOSEN_STRATEGY = 'logistic_regression'
+CHOSEN_STRATEGY = 'random_forest'
+#CHOSEN_STRATEGY = 'xgboost'
+LOG_REG_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/lr_model_AAPL_10.joblib'
+RANDOM_FOREST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/rf_model_AAPL_8.joblib'
+XGBOOST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/xgb_model_AAPL_7.joblib'
+
+FEATURES_WITH_SENTIMENT = True # If True, the sentiment score feature will be used in the model training and backtesting, if False, it will not be used
+
+    # If True, backtesting period settings as determined in main.py file will be used and ticker is automatically set as 'APPL'
+    # If False, backtesting period settings as determined in this config file will be used
+USE_STORED_DATA = True
+VISUALISE_PLOTTED_SIGNAL_EXECUTIONS =  False 
 
 
+
+
+# 
 
 if (input('Did you enter the correct file path of NDX and GSPC depending on training or backtesting if they are being used as features?\n'))[0] == 'n':
     exit()
@@ -27,40 +39,69 @@ if (input('Did you enter the correct file path of NDX and GSPC depending on trai
 'sentiment_score'
 # If I change/modify this feature column list I need to add/remove that feature to/from the function calculate_and_add_features_to_data as well!!!
 
-    # lr_9
-FEATURE_COLUMNS = [
-    # Momentum & Trend
-    'rsi_14',
-    'macd',
-    'mom_diff_pct_10d',
-    'mom_diff_pct_100d',
+if FEATURES_WITH_SENTIMENT:
+        # lr_10 #rf_8 #xgb_7
+    FEATURE_COLUMNS = [
+        # Momentum & Trend
+        'rsi_14',
+        'macd',
+        'mom_diff_pct_10d',
+        'mom_diff_pct_100d',
 
-    # Volatility
-    'volatility_14',
-    'gspc_20d_volatility',  # broad market
-    'ndx_20d_volatility',   # tech sector vol
+        # Volatility
+        'volatility_14',
+        'gspc_20d_volatility',  # broad market
+        'ndx_20d_volatility',   # tech sector vol
 
-    # Returns
-    'daily_return',
-    'gspc_daily_return',    # market return
-    'ndx_daily_return',     # tech sector return
+        # Returns
+        'daily_return',
+        'gspc_daily_return',    # market return
+        'ndx_daily_return',     # tech sector return
 
-    # Volume
-    'obv',
-    'volume_20d_ma',
+        # Volume
+        'obv',
+        'volume_20d_ma',
 
-    # Bands
-    'bb_percent'
+        # Bands
+        'bb_percent',
 
-    # Sentiment
-    #'sentiment_score'
-]
+        # Sentiment
+        'sentiment_score'
+    ]
+else:
+        # lr_9 #rf_7 #xgb_6
+    FEATURE_COLUMNS = [
+        # Momentum & Trend
+        'rsi_14',
+        'macd',
+        'mom_diff_pct_10d',
+        'mom_diff_pct_100d',
 
+        # Volatility
+        'volatility_14',
+        'gspc_20d_volatility',  # broad market
+        'ndx_20d_volatility',   # tech sector vol
+
+        # Returns
+        'daily_return',
+        'gspc_daily_return',    # market return
+        'ndx_daily_return',     # tech sector return
+
+        # Volume
+        'obv',
+        'volume_20d_ma',
+
+        # Bands
+        'bb_percent'
+
+        # Sentiment
+        #'sentiment_score'
+    ]
 
 
     #lr_8 #rf_6 #xgb_5
 #FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upper', 'bb_lower', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10','mom_diff_pct_5d', 'mom_diff_pct_10d', 'mom_diff_pct_20d', 'mom_diff_pct_50d', 'mom_diff_pct_100d','gspc_daily_return', 'gspc_20d_volatility', 'ndx_daily_return', 'ndx_20d_volatility', 'ndx_20d_sma','volume_20d_ma', 'obv']
-    #lr_7 #rf_5 #xgb_4 lr_10
+    #lr_7 #rf_5 #xgb_4
 #FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upper', 'bb_lower', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10','mom_diff_pct_5d', 'mom_diff_pct_10d', 'mom_diff_pct_20d', 'mom_diff_pct_50d', 'mom_diff_pct_100d','gspc_daily_return', 'gspc_20d_volatility', 'ndx_daily_return', 'ndx_20d_volatility', 'ndx_20d_sma']
     #rf_3 #lr_5 #xgb_2 #lr_6 #rf_4 #xgb_3 
 #FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upper', 'bb_lower', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10','mom_diff_pct_5d', 'mom_diff_pct_10d', 'mom_diff_pct_20d', 'mom_diff_pct_50d', 'mom_diff_pct_100d']
@@ -87,12 +128,6 @@ if (input('Did you determine the MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED
 
 if (input('Did you choose the correct backtesting dates / period\n')) == 'n':
     exit()
-
-import os
-    # If True, backtesting period settings as determined in main.py file will be used and ticker is automatically set as 'APPL'
-    # If False, backtesting period settings as determined in this config file will be used
-USE_STORED_DATA = True
-VISUALISE_PLOTTED_SIGNAL_EXECUTIONS =  False 
 
 TICKERS = 'AAPL'
 #TICKERS =  "JNJ,KO,PG,D"
@@ -131,7 +166,7 @@ RF_MAX_DEPTH = 10         # limits complexity; helps reduce overfitting
 RF_MIN_SAMPLES_LEAF = 5   # avoid tiny leaves that overfit noisy patterns
 RF_MIN_SAMPLES_SPLIT = 10 # min samples to split an internal node
 RF_MAX_FEATURES = 'sqrt'  # features considered per split; 'sqrt' often works well
-RF_CLASS_WEIGHT = None    # set to 'balanced' if classes are imbalanced
+RF_CLASS_WEIGHT = 'balanced'    # set to 'balanced' if classes are imbalanced
 RF_OOB_SCORE = True       # out-of-bag estimate for quick validation
 RF_RANDOM_STATE = 42
 RF_N_JOBS = -1

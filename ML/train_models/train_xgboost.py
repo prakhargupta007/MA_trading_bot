@@ -6,6 +6,7 @@ from ML.evaluate_model import evaluate_model
 from ML.feature_importance.universal_permutation_importance_score import universal_permutation_importance_score
 from ML.feature_importance.xgboost_gain_importance import xgboost_gain_importance
 
+from sklearn.utils.class_weight import compute_sample_weight
 from xgboost import XGBClassifier
 from config import (
     DATA_FOR_ML_MODEL_TRAINING,
@@ -59,7 +60,12 @@ model = XGBClassifier(
 
 )
 
-model.fit(X_train, y_train)
+# Compute sample weights
+sample_weights = compute_sample_weight(class_weight='balanced', y=y_train)
+
+# Train XGBoost with sample weights
+model.fit(X_train,y_train,sample_weight=sample_weights)
+
 
 # Predict
 if USE_PROBABILITY_THRESHOLD:
