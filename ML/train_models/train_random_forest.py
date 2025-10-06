@@ -8,7 +8,7 @@ from ML.feature_importance.random_forest_feature_importance import random_forest
 
 from sklearn.ensemble import RandomForestClassifier
 from config import DATA_FOR_ML_MODEL_TRAINING, MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED
-from config import RF_N_ESTIMATORS, RF_MAX_DEPTH, RF_RANDOM_STATE, RF_N_JOBS, RF_MIN_SAMPLES_LEAF, RF_MIN_SAMPLES_SPLIT, RF_CLASS_WEIGHT, RF_OOB_SCORE
+from config import RF_N_ESTIMATORS, RF_MAX_DEPTH, RF_RANDOM_STATE, RF_N_JOBS, RF_MIN_SAMPLES_LEAF, RF_MIN_SAMPLES_SPLIT, RF_CLASS_WEIGHT, RF_OOB_SCORE, RF_MAX_FEATURES
 from config import USE_PROBABILITY_THRESHOLD, PROBABILITY_THRESHOLD
 import pandas as pd
 import joblib
@@ -17,9 +17,12 @@ import os
 print('Data file as determined in the config file is being used to train model...\n\n')
 
 data = pd.read_csv(DATA_FOR_ML_MODEL_TRAINING, index_col="Date", parse_dates=True)
+print(data.head())
+print("Before split:", data.shape)
 
 # Prepare data (scaling is optional for RandomForest)
 X_train, X_test, y_train, y_test, feature_names = prepare_data_without_scaling(data)
+print("After cleaning:", X_train.shape, X_test.shape, y_train.shape, y_test.shape)
 
 print('Data has been prepared successfully')
 
@@ -29,7 +32,7 @@ model = RandomForestClassifier(
     max_depth=RF_MAX_DEPTH,
     min_samples_leaf=RF_MIN_SAMPLES_LEAF,
     min_samples_split=RF_MIN_SAMPLES_SPLIT,
-    max_features=RF_MIN_SAMPLES_LEAF,
+    max_features=RF_MAX_FEATURES,
     class_weight=RF_CLASS_WEIGHT,
     oob_score=RF_OOB_SCORE,
     random_state=RF_RANDOM_STATE,

@@ -4,16 +4,15 @@ import yfinance as yf
 import pandas as pd
 # This function downloads data of the period why is exactly in between start and end dates, excluding 
 
-#start = '2017-01-01'
-#end = '2022-12-31'
+#start = '2023-01-01'
+#end = '2025-08-17'
 
-start = '2023-01-02'
-end = '2025-08-16'
+start = '2017-01-01'
+end = '2022-12-31'
 
-
-#ticker = 'AAPL'
-tickers = ['^GSPC','^NDX']
-#ticker = '^NDX'
+#tickers = ['AAPL']
+#tickers = ['^GSPC','^NDX']
+tickers = ['^VIX']
 
 word = 'backtest'
 
