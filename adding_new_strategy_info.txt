@@ -2,6 +2,6 @@ While adding a new strategy, make sure of the following points:
 
 1. Add **kwargs in the arguments section of the strategy function  
 2. Add 'Hold' to the initial signals list while creating it, in order to fix lookahead bias --> signals = ['HOLD']
-3. Signals are generated for every single day of the data including the starting days on which the strategy might even be able to get implemented (for exmp: SMA / EMA crossover strategy)
+3. Signals are generated for every single day of the data including the starting days on which the strategy might not  even be able to get implemented (for exmp: SMA / EMA crossover strategy)
 4. Add strategy's name to the strategy map
 5. Add strategy's name as a commented option in the config file 

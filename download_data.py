@@ -7,12 +7,15 @@ import pandas as pd
 #start = '2023-01-01'
 #end = '2025-08-17'
 
-start = '2017-01-01'
-end = '2022-12-31'
+#start = '2017-01-01'
+#end = '2022-12-31'
 
-#tickers = ['AAPL']
+start = '2017-01-01'
+end = '2025-08-17'
+
+tickers = ['NVDA']
 #tickers = ['^GSPC','^NDX']
-tickers = ['^VIX']
+#tickers = ['^VIX']
 
 word = 'backtest'
 
@@ -30,6 +33,6 @@ def download_data():
         data = data.dropna(subset=["Close"])
 
         data.to_csv(file_path) 
-        print('download complete')
+        print(f'download of {tickers} complete')
 
 download_data()

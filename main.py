@@ -1,10 +1,18 @@
+import traceback 
 import pandas as pd 
+from datetime import datetime
+
 from config import USE_STORED_DATA, STORED_DATA_TO_BE_READ
 
 if USE_STORED_DATA:
-    START_OF_BACKTESTING = '2023-01-03'
+
+    #START_OF_BACKTESTING = '2023-01-03'
+    #END_OF_BACKTESTING = '2025-08-15'
+    
+    START_OF_BACKTESTING = '2017-01-02'
     END_OF_BACKTESTING = '2025-08-15'
-    BACKTESTING_PERIOD = '2.615'
+
+    BACKTESTING_PERIOD = str(round((datetime.strptime(END_OF_BACKTESTING, '%Y-%m-%d') - datetime.strptime(START_OF_BACKTESTING, '%Y-%m-%d')).days / 365.25, 3))
     option_1_chosen = False 
 
 else:
@@ -23,6 +31,7 @@ else:
 
 from config import TICKERS, DATA_API_IS_YFINANCE, STARTING_BALANCE, VISUALISE_PLOTTED_SIGNAL_EXECUTIONS
 from config import SMA_LONG_PERIOD, SMA_SHORT_PERIOD, EMA_LONG_PERIOD, EMA_SHORT_PERIOD, RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, RSI_OVERBOUGHT_WARNING, RSI_OVERSOLD_WARNING
+from config import DATA_PATH_FOR_SENTIMENT_STRATEGY
 from config import CHOSEN_STRATEGY
 from data.fetch_data.fetch_data_from_yfinance import fetch_data_from_yfinance
 from data.fetch_data.fetch_data_from_alpha_vantage import fetch_data_from_alpha_vantage 
@@ -53,7 +62,9 @@ from metrics.buy_hold_profit import calculate_profit_if_bought_and_held
 from metrics.cagr_strategy_efficiency import cagr_strategy_efficiency
 from metrics.average_cagr_of_list import calculate_average_cagr_of_list
 from metrics.sharpe import calculate_sharpe_ratio
-import traceback 
+
+from sentiment_analysis.debug_date_alignment import debug_date_alignment
+
 
 
 
@@ -101,7 +112,8 @@ def main():
                 'macd_slow': MACD_SLOW_PERIOD,
                 'macd_signal': MACD_SIGNAL_PERIOD,
                 'rsi_overbought': RSI_OVERBOUGHT_WARNING,
-                'rsi_oversold': RSI_OVERSOLD_WARNING
+                'rsi_oversold': RSI_OVERSOLD_WARNING,
+                'data_path_for_sentiment_strategy' : DATA_PATH_FOR_SENTIMENT_STRATEGY
             }
 
             message, good_to_go = check_indicator_length(data, indicator_parameters)
@@ -114,7 +126,12 @@ def main():
             print(f'Backtesting strategy:  \033[1m{CHOSEN_STRATEGY.upper()}\033[0m STRATEGY\n')
             print(f'Generating transaction signals based on the strategy ...')
             signals = strategy_map[CHOSEN_STRATEGY](**indicator_parameters) 
+            #signals = strategy_map[CHOSEN_STRATEGY](**indicator_parameters) 
             print('✅ Transaction signals generated successfully\n\n')
+            
+
+            #debug_date_alignment(data, signals)
+
 
             print('Backtesting based on strategy...')
             results_of_backtesting = backtest_strategy(data, signals, STARTING_BALANCE)

@@ -1,48 +1,83 @@
 
-MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = '/Users/prakhar/MA_trading_bot/ML/saved_models/xgb_model_AAPL_18.joblib'
+MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = '/Users/prakhar/MA_trading_bot/ML/saved_models/xgb_model_AAPL_21.joblib'
 
 'When backtesting or training my model that uses features from GSPC and NDX, update the TRAINING variable.'
 TRAINING_MODE = False
 
 # Training model 
-#DATA_FOR_ML_MODEL_TRAINING = "/Users/prakhar/MA_trading_bot/data/stored_data/data_AAPL_train_test_2017-01-02--2022-12-30.csv"      # AAPL
-DATA_FOR_ML_MODEL_TRAINING = '/Users/prakhar/MA_trading_bot/data/stored_data/data_QQQ_train_2017-01-02--2022-12-30.csv'           # QQQ
+DATA_FOR_ML_MODEL_TRAINING = "/Users/prakhar/MA_trading_bot/data/stored_data/data_AAPL_train_test_2017-01-02--2022-12-30.csv"      # AAPL
+#DATA_FOR_ML_MODEL_TRAINING = '/Users/prakhar/MA_trading_bot/data/stored_data/data_QQQ_train_2017-01-02--2022-12-30.csv'           # QQQ
 
-    # If True, backtesting period settings as determined in main.py file will be used and ticker is automatically set as 'APPL'
+    # If True, backtesting period settings as determined in main.py file will be used! SO make sure the correct dates are set!
+    #  and ticker is automatically set as 'AAPL'
     # If False, backtesting period settings as determined in this config file will be used
 USE_STORED_DATA = True
-VISUALISE_PLOTTED_SIGNAL_EXECUTIONS =  False 
+VISUALISE_PLOTTED_SIGNAL_EXECUTIONS =  True 
 # leave the following untouched unless the stored data ticker gets changed
 if USE_STORED_DATA:
-    TICKERS = 'QQQ'
+    # If using stored data, the TICKERS variable can only be one ticker at a time, since the stored data file only contains data for one ticker
+    TICKERS = 'MSFT'
     'When changing the following line to use a diffrent file of data for reading, change the backtesting dates and period in the main.py file!!!'
     #STORED_DATA_TO_BE_READ = '/Users/prakhar/MA_trading_bot/data/stored_data/data_AAPL_backtest_2023-01-03--2025-08-15.csv' # AAPL
-    STORED_DATA_TO_BE_READ = '/Users/prakhar/MA_trading_bot/data/stored_data/data_QQQ_backtest_2023-01-02--2025-08-16.csv' # QQQ
+    #STORED_DATA_TO_BE_READ = '/Users/prakhar/MA_trading_bot/data/stored_data/data_QQQ_backtest_2023-01-02--2025-08-16.csv' # QQQ
+
+    #STORED_DATA_TO_BE_READ = '/Users/prakhar/MA_trading_bot/data/stored_data/data_AAPL_train_test_2017-01-02--2025-08-16.csv'
+    #STORED_DATA_TO_BE_READ = '/Users/prakhar/MA_trading_bot/data/stored_data/data_NVDA_backtest_2017-01-01--2025-08-17.csv'
+    STORED_DATA_TO_BE_READ = '/Users/prakhar/MA_trading_bot/data/stored_data/data_MSFT_backtest_2017-01-01--2025-08-17.csv'
+    
 
 
 # Here you can choose from:
 # 'sma' 'ema' 'sma_rsi' 'sma_rsi_macd'  'ema_rsi'
+# 'sentiment_strategy'
 # 'logistic_regression' 'random_forest' 'xgboost'
 # 'perfect_strategy'
+
 #CHOSEN_STRATEGY = 'logistic_regression'
 #CHOSEN_STRATEGY = 'random_forest'
-CHOSEN_STRATEGY = 'xgboost'
-LOG_REG_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/lr_model_AAPL_18.joblib'
-RANDOM_FOREST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/rf_model_AAPL_18.joblib'
-XGBOOST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/xgb_model_AAPL_18.joblib'
+CHOSEN_STRATEGY = 'sentiment_strategy'
+
+DATA_PATH_FOR_SENTIMENT_STRATEGY = '/Users/prakhar/MA_trading_bot/sentiment_analysis/GDELT/trading_days_daily_output/MSFT_1_sentiment_trading_days.csv'
+
+LOG_REG_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/lr_model_AAPL_19.joblib'
+RANDOM_FOREST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/rf_model_AAPL_19.joblib'
+XGBOOST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/xgb_model_AAPL_19.joblib'
 
 FEATURES_WITH_SENTIMENT = True # If True, the sentiment score feature will be used in the model training and backtesting, if False, it will not be used
 
-    # If True, backtesting period settings as determined in main.py file will be used and ticker is automatically set as 'APPL'
+    # If True, backtesting period settings as determined in main.py file will be used and ticker is automatically set as 'AAPL'
     # If False, backtesting period settings as determined in this config file will be used
 
 if (input('Did you set TRAINING_MODE as per your requirement?\n'))[0] == 'n':
     exit()
 
-'sentiment_score'
+
+
+
+
+
+
+
+
+
+
+
+#(lr_21) #rf_21 #xgb_21
+FEATURE_COLUMNS = ['sma_200', 'sma_50', 'bb_upper', 'bb_lower', 'ndx_20d_sma', 'ndx_20d_volatility', 'volume_20d_ma', 'volatility_14', 'ema_diff_pct_50d', 'mom_diff_pct_50d']
+
+'''
+#lr_20 (#rf_21 #xgb_21)
+FEATURE_COLUMNS = ['volume_20d_ma', 'bb_percent', 'bb_lower', 'vix_mean20', 'rsi_14', 'ndx_20d_volatility', 'sma_50', 'bb_upper', 'sma_200', 'gspc_20d_volatility']
+'''
+'''
+#lr_19 #rf_19 #xgb_19
+FEATURE_COLUMNS = ['volume_20d_ma', 'bb_percent', 'bb_lower', 'vix_mean20', 'rsi_14']
+'''
 # If I change/modify this feature column list I need to add/remove that feature to/from the function calculate_and_add_features_to_data as well!!!
 #lr_17 #rf_17 #xgb_17
 #lr_18 #rf_18 #xgb_18
+
+'''
 FEATURE_COLUMNS = [
         # Momentum & Trend
         'ema_diff_pct_10d',
@@ -53,7 +88,7 @@ FEATURE_COLUMNS = [
         'vix_mean20',
         'vix_std20'
     ] 
-
+'''
 
 
 '''
@@ -278,7 +313,7 @@ END_OF_BACKTESTING = '2025-07-09'
 OPEN_INDIVIDUAL_PROCESS_EXCEL_FILES_AFTER_SAVING = False
 OPEN_SUMMARY_EXCEL_FILE_AFTER_SAVING = False
 
-INDICATORS_WHICH_ARE_NOT_TO_BE_CHECKED_FOR_LENGTH = ['data','rsi_overbought','rsi_oversold']
+INDICATORS_WHICH_ARE_NOT_TO_BE_CHECKED_FOR_LENGTH = ['data','rsi_overbought','rsi_oversold','data_path_for_sentiment_strategy']
 
 
 

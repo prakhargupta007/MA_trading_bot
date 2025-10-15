@@ -5,11 +5,11 @@ from ML.ML_strategy.processing_steps_for_signal_generation.translate_raw_signals
 from ML.ML_strategy.processing_steps_for_signal_generation.apply_positioning_rule_to_translated_signals import apply_positioning_rule_to_translated_signals
 from ML.ML_strategy.processing_steps_for_signal_generation.load_model_and_scaler_if_existant import load_model_and_scaler_if_existant
 from config import FEATURE_COLUMNS, XGBOOST_MODEL_PATH_FOR_STRATEGY
-
+from config import GSPC_DATA_FILE_PATH, NDX_DATA_FILE_PATH, VIX_DATA_FILE_PATH
 def xgboost_strategy(data, **kwargs):
     model, scaler = load_model_and_scaler_if_existant(XGBOOST_MODEL_PATH_FOR_STRATEGY)
 
-    data_with_features = calculate_and_add_features_to_data(data)
+    data_with_features = calculate_and_add_features_to_data(data,GSPC_DATA_FILE_PATH, NDX_DATA_FILE_PATH, VIX_DATA_FILE_PATH)
     data_with_features = data_with_features[FEATURE_COLUMNS]
     print(f"len(data_with_features): {len(data_with_features)}")
 

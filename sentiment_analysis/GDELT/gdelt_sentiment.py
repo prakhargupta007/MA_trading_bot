@@ -9,9 +9,13 @@ import time
 
 
 # ===================== CONFIGURATION =====================
-TICKER = 'NVDA'
+TICKER = 'MSFT'
+
 #TICKER_KEYWORDS = ["Apple", "AAPL", "Apple Inc"]
-TICKER_KEYWORDS = ["Nvidia", "NVDA", "Nvidia Corp", "Nvidia Corporation"]
+#TICKER_KEYWORDS = ["Nvidia", "NVDA", "Nvidia Corp", "Nvidia Corporation"]
+#TICKER_KEYWORDS = ["QQQ", "Invesco QQQ", "Nasdaq-100", "Nasdaq 100", "NDX", "Nasdaq ETF"]
+TICKER_KEYWORDS = ["MSFT", "Microsoft", "microsoft"]
+
 NUMBER = "1"      # For file naming
 
 DATE_START = "20100101"

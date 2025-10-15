@@ -1,9 +1,8 @@
 from config import MINIMUM_PERCENTAGE_THRESHOLD
-from config import LOOKAHEAD_DAYS
 import pandas as pd
 import numpy as np
 
-def label_data_with_future_window(data, lookahead_days=5):
+def label_data_with_future_window(data, lookahead_days):
     """
     Adds a 'Label' column to the input DataFrame based on whether the stock moves up or down 
     by at least MINIMUM_PERCENTAGE_THRESHOLD within the next 'lookahead_days' days.
