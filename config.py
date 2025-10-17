@@ -1,8 +1,25 @@
 
 MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = '/Users/prakhar/MA_trading_bot/ML/saved_models/xgb_model_AAPL_21.joblib'
+MODEL_PATH_WHERE_MLP_MODEL_SHOULD_GET_SAVED = "/Users/prakhar/MA_trading_bot/ML/saved_models/mlp_1.keras"
+PATH_FOR_SAVING_MLP_SCALAR = '/Users/prakhar/MA_trading_bot/ML/saved_models/mlp_scaler_1.pkl'
 
 'When backtesting or training my model that uses features from GSPC and NDX, update the TRAINING variable.'
-TRAINING_MODE = False
+TRAINING_MODE = True
+
+USE_STOP_LOSS = True 
+
+    # Here you can choose from:
+    # 'static'
+    # 'trailing'
+    # 'atr'
+    # 'trailing_atr' 
+CHOSEN_STOP_LOSS = 'trailing_atr'
+
+COLUMN_NAME = 'Close'
+STOP_LOSS_THRESHOLD = 0.05
+ATR_PERIOD = 14
+ATR_MULTIPLIER = 2.0
+
 
 # Training model 
 DATA_FOR_ML_MODEL_TRAINING = "/Users/prakhar/MA_trading_bot/data/stored_data/data_AAPL_train_test_2017-01-02--2022-12-30.csv"      # AAPL
@@ -12,11 +29,11 @@ DATA_FOR_ML_MODEL_TRAINING = "/Users/prakhar/MA_trading_bot/data/stored_data/dat
     #  and ticker is automatically set as 'AAPL'
     # If False, backtesting period settings as determined in this config file will be used
 USE_STORED_DATA = True
-VISUALISE_PLOTTED_SIGNAL_EXECUTIONS =  True 
+VISUALISE_PLOTTED_SIGNAL_EXECUTIONS =  False 
 # leave the following untouched unless the stored data ticker gets changed
 if USE_STORED_DATA:
     # If using stored data, the TICKERS variable can only be one ticker at a time, since the stored data file only contains data for one ticker
-    TICKERS = 'MSFT'
+    TICKERS = 'AAPL'
     'When changing the following line to use a diffrent file of data for reading, change the backtesting dates and period in the main.py file!!!'
     #STORED_DATA_TO_BE_READ = '/Users/prakhar/MA_trading_bot/data/stored_data/data_AAPL_backtest_2023-01-03--2025-08-15.csv' # AAPL
     #STORED_DATA_TO_BE_READ = '/Users/prakhar/MA_trading_bot/data/stored_data/data_QQQ_backtest_2023-01-02--2025-08-16.csv' # QQQ
@@ -30,18 +47,23 @@ if USE_STORED_DATA:
 # Here you can choose from:
 # 'sma' 'ema' 'sma_rsi' 'sma_rsi_macd'  'ema_rsi'
 # 'sentiment_strategy'
-# 'logistic_regression' 'random_forest' 'xgboost'
+# 'logistic_regression' 'random_forest' 'xgboost' 'mlp'
 # 'perfect_strategy'
 
 #CHOSEN_STRATEGY = 'logistic_regression'
 #CHOSEN_STRATEGY = 'random_forest'
-CHOSEN_STRATEGY = 'sentiment_strategy'
+CHOSEN_STRATEGY = 'mlp'
+
+if (input('Did you choose correct DATA_PATH_FOR_SENTIMENT_STRATEGY if using sentiment_strategy?\n'))[0] == 'n':
+    exit()
 
 DATA_PATH_FOR_SENTIMENT_STRATEGY = '/Users/prakhar/MA_trading_bot/sentiment_analysis/GDELT/trading_days_daily_output/MSFT_1_sentiment_trading_days.csv'
 
 LOG_REG_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/lr_model_AAPL_19.joblib'
 RANDOM_FOREST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/rf_model_AAPL_19.joblib'
 XGBOOST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/xgb_model_AAPL_19.joblib'
+MLP_MODEL_PATH_FOR_STRATEGY = "/Users/prakhar/MA_trading_bot/ML/saved_models/mlp_1.keras"
+MLP_SCALAR_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/mlp_scaler_1.pkl'
 
 FEATURES_WITH_SENTIMENT = True # If True, the sentiment score feature will be used in the model training and backtesting, if False, it will not be used
 

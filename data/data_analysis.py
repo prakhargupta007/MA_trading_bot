@@ -9,8 +9,8 @@ from data.funcs_for_data_prep_for_ML.calculate_and_add_features_to_data import c
 from sklearn.feature_selection import f_classif, mutual_info_classif
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from config import LOOKAHEAD_DAYS
-from config2 import DATA_FOR_DATA_ANALYSIS, ALL_FEATURES
-from config2 import DA_GSPC_DATA_FILE_PATH, DA_NDX_DATA_FILE_PATH, DA_VIX_DATA_FILE_PATH
+from config_for_data_analysis import DATA_FOR_DATA_ANALYSIS, ALL_FEATURES
+from config_for_data_analysis import DA_GSPC_DATA_FILE_PATH, DA_NDX_DATA_FILE_PATH, DA_VIX_DATA_FILE_PATH
 
 
 def clean_data_for_feature_analysis(df, feature_list, target_col='Label'):

@@ -9,6 +9,7 @@ from ML.ML_strategy.logistic_regression_strategy import logistic_regression_stra
 from ML.ML_strategy.random_forest_classification_strategy import random_forest_strategy
 from ML.ML_strategy.xgboost_strategy import xgboost_strategy 
 from ML.ML_strategy.perfect_strategy import perfect_strategy
+from ML.ML_strategy.mlp_strategy import mlp_strategy
 
 
 # Here every new startegy must be added
@@ -25,6 +26,7 @@ strategy_map = {
     'logistic_regression': logistic_regression_strategy,
     'random_forest': random_forest_strategy,
     'xgboost' : xgboost_strategy,
+    'mlp' : mlp_strategy,
 
     'perfect_strategy': perfect_strategy
 }

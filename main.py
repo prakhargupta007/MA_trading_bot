@@ -33,12 +33,15 @@ from config import TICKERS, DATA_API_IS_YFINANCE, STARTING_BALANCE, VISUALISE_PL
 from config import SMA_LONG_PERIOD, SMA_SHORT_PERIOD, EMA_LONG_PERIOD, EMA_SHORT_PERIOD, RSI_PERIOD, MACD_FAST_PERIOD, MACD_SLOW_PERIOD, MACD_SIGNAL_PERIOD, RSI_OVERBOUGHT_WARNING, RSI_OVERSOLD_WARNING
 from config import DATA_PATH_FOR_SENTIMENT_STRATEGY
 from config import CHOSEN_STRATEGY
+from config import USE_STOP_LOSS, CHOSEN_STOP_LOSS
+from config import COLUMN_NAME, STOP_LOSS_THRESHOLD, ATR_PERIOD, ATR_MULTIPLIER
 from data.fetch_data.fetch_data_from_yfinance import fetch_data_from_yfinance
 from data.fetch_data.fetch_data_from_alpha_vantage import fetch_data_from_alpha_vantage 
 
 from indicators.check_indicator_length import check_indicator_length
 
 from strategy_map import strategy_map
+from stop_loss_map import stop_loss_map
 
 from backtest.backtest_strategy import backtest_strategy
 from backtest.backtest_strategy import return_endbalance
@@ -48,6 +51,7 @@ from backtest.convert_csv_file_to_excel_file_and_open_it import convert_csv_file
 from backtest.create_and_save_backtest_summary_table_csv_file import create_and_save_backtest_summary_table_csv_file
 from backtest.convert_summary_csv_file_to_excel_file_and_open_it import convert_summary_csv_file_to_excel_file_and_open_it 
 from backtest.convert_csv_file_to_pdf import convert_csv_summarized_backtest_table_to_pdf
+from backtest.enforce_signal_consistency import enforce_signal_consistency
 
 from matplotlib_plot_backtesting.matplotlib_plot_universal_backtest_signals import matplotlib_plot_universal_strategy_signals
 from matplotlib_plot_backtesting.matplotlib_plot_sma_rsi_macd_strategy import matplotlib_plot_sma_rsi_macd_strategy
@@ -116,6 +120,14 @@ def main():
                 'data_path_for_sentiment_strategy' : DATA_PATH_FOR_SENTIMENT_STRATEGY
             }
 
+            stop_loss_parameters = {
+                'column_name': COLUMN_NAME,
+                'threshold': STOP_LOSS_THRESHOLD,
+                'atr_period': ATR_PERIOD,
+                'atr_mult': ATR_MULTIPLIER,
+            }
+
+
             message, good_to_go = check_indicator_length(data, indicator_parameters)
             if not good_to_go:
                 print(f'❌ {message}')
@@ -126,14 +138,21 @@ def main():
             print(f'Backtesting strategy:  \033[1m{CHOSEN_STRATEGY.upper()}\033[0m STRATEGY\n')
             print(f'Generating transaction signals based on the strategy ...')
             signals = strategy_map[CHOSEN_STRATEGY](**indicator_parameters) 
-            #signals = strategy_map[CHOSEN_STRATEGY](**indicator_parameters) 
             print('✅ Transaction signals generated successfully\n\n')
             
 
             #debug_date_alignment(data, signals)
-
+            if USE_STOP_LOSS:
+                signals = stop_loss_map[CHOSEN_STOP_LOSS](data, signals, **stop_loss_parameters)
+                signals = enforce_signal_consistency(signals) # Fix so that so that no Nan Vaues occur in summar backtest table
+                #signals = static_stop_loss(data, signals, STOP_LOSS_THRESHOLD)
+                print('✅ Stop-loss applied successfully\n\n')
 
             print('Backtesting based on strategy...')
+
+            # diagnostic step for quick check 
+            print("Last 10 signals:", signals[-10:])
+            print("Last action in signals:", signals[-1])
             results_of_backtesting = backtest_strategy(data, signals, STARTING_BALANCE)
             print('✅ Results of backtesting generated successfully\n\n')
 
@@ -169,14 +188,15 @@ def main():
             sharpe_ratio = calculate_sharpe_ratio(portfolio_values_series) if len(portfolio_values) > 1 else None
 
             # --- Realized Sharpe & CAGR ---
-            action_indices = [i for i, action in enumerate(results_of_backtesting[0]) if action == 'SELL']
+            action_indices = [i for i, action in enumerate(results_of_backtesting[0]) if action in ['SELL', 'SELL (forced at end)']]
+
 
             last_sell_data_index = None
             holding = False
             for i in range(len(signals)):
                 if signals[i] == 'BUY' and not holding:
                     holding = True
-                elif signals[i] == 'SELL' and holding:
+                elif signals[i] in ['SELL', 'SELL (forced at end)'] and holding:
                     last_sell_data_index = i
                     holding = False
 
