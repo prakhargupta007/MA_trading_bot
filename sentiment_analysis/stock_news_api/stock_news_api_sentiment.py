@@ -11,7 +11,7 @@ END_DATE = "2025-08-15"
 
 STOCK_NEWS_API_KEY = 'wpqforq8df93rtio5njvfmw8lv4mqjujaakrxmdk'
 FILE_NAME = f"{TICKER}_stocknewsapi_sentiment.csv"
-OUTPUT_FOLDER = "/Users/prakhar/MA_trading_bot/sentiment_analysis/stock_news_api/output_stocknewsapi"
+OUTPUT_FOLDER = "/Users/prakhar/Desktop/MA_trading_bot/sentiment_analysis/stock_news_api/output_stocknewsapi"
 
 def stock_news_api_sentiment(ticker, start_date, end_date):
     """
@@ -114,7 +114,7 @@ END_DATE = "2025-08-15"
 
 STOCK_NEWS_API_KEY = 'wpqforq8df93rtio5njvfmw8lv4mqjujaakrxmdk'
 FILE_NAME = f"{TICKER}_stocknewsapi_sentiment.csv"
-OUTPUT_FOLDER = "/Users/prakhar/MA_trading_bot/sentiment_analysis/stock_news_api/output_stocknewsapi"
+OUTPUT_FOLDER = "/Users/prakhar/Desktop/MA_trading_bot/sentiment_analysis/stock_news_api/output_stocknewsapi"
 
 def stock_news_api_sentiment(ticker, start_date, end_date):
     """

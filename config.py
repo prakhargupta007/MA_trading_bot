@@ -1,12 +1,18 @@
 
-MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = '/Users/prakhar/MA_trading_bot/ML/saved_models/xgb_model_AAPL_21.joblib'
-MODEL_PATH_WHERE_MLP_MODEL_SHOULD_GET_SAVED = "/Users/prakhar/MA_trading_bot/ML/saved_models/mlp_1.keras"
-PATH_FOR_SAVING_MLP_SCALAR = '/Users/prakhar/MA_trading_bot/ML/saved_models/mlp_scaler_1.pkl'
+MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = '/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/xgb_model_21.joblib'
+MODEL_PATH_WHERE_MLP_MODEL_SHOULD_GET_SAVED = "/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/mlp_1.keras"
+PATH_FOR_SAVING_MLP_SCALAR = '/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/mlp_scaler_1.pkl'
+
+
+
+if (input('If using sentiment_score feature in model training, has the SENTIMENT_DATA_PATH_FOR_ML_MODEL_TRAINING_FEATURE path been set to the correct sentiment data file path?\n'))[0] == 'n':
+    exit()
+SENTIMENT_DATA_PATH_FOR_ML_MODEL_TRAINING_FEATURE = '/Users/prakhar/Desktop/MA_trading_bot/sentiment_analysis/GDELT/trading_days_daily_output/AAPL_1_sentiment_trading_days.csv'
 
 'When backtesting or training my model that uses features from GSPC and NDX, update the TRAINING variable.'
-TRAINING_MODE = True
+TRAINING_MODE = False 
 
-USE_STOP_LOSS = True 
+USE_STOP_LOSS = False  
 
     # Here you can choose from:
     # 'static'
@@ -22,8 +28,8 @@ ATR_MULTIPLIER = 2.0
 
 
 # Training model 
-DATA_FOR_ML_MODEL_TRAINING = "/Users/prakhar/MA_trading_bot/data/stored_data/data_AAPL_train_test_2017-01-02--2022-12-30.csv"      # AAPL
-#DATA_FOR_ML_MODEL_TRAINING = '/Users/prakhar/MA_trading_bot/data/stored_data/data_QQQ_train_2017-01-02--2022-12-30.csv'           # QQQ
+DATA_FOR_ML_MODEL_TRAINING = "/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_AAPL_train_test_2017-01-02--2022-12-30.csv"      # AAPL
+#DATA_FOR_ML_MODEL_TRAINING = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_QQQ_train_2017-01-02--2022-12-30.csv'           # QQQ
 
     # If True, backtesting period settings as determined in main.py file will be used! SO make sure the correct dates are set!
     #  and ticker is automatically set as 'AAPL'
@@ -31,16 +37,18 @@ DATA_FOR_ML_MODEL_TRAINING = "/Users/prakhar/MA_trading_bot/data/stored_data/dat
 USE_STORED_DATA = True
 VISUALISE_PLOTTED_SIGNAL_EXECUTIONS =  False 
 # leave the following untouched unless the stored data ticker gets changed
+
+# FOR BACKTESTING USING STORED DATA
 if USE_STORED_DATA:
     # If using stored data, the TICKERS variable can only be one ticker at a time, since the stored data file only contains data for one ticker
     TICKERS = 'AAPL'
     'When changing the following line to use a diffrent file of data for reading, change the backtesting dates and period in the main.py file!!!'
-    #STORED_DATA_TO_BE_READ = '/Users/prakhar/MA_trading_bot/data/stored_data/data_AAPL_backtest_2023-01-03--2025-08-15.csv' # AAPL
-    #STORED_DATA_TO_BE_READ = '/Users/prakhar/MA_trading_bot/data/stored_data/data_QQQ_backtest_2023-01-02--2025-08-16.csv' # QQQ
+    #STORED_DATA_TO_BE_READ = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_AAPL_backtest_2023-01-03--2025-08-15.csv' # AAPL
+    #STORED_DATA_TO_BE_READ = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_QQQ_backtest_2023-01-02--2025-08-16.csv' # QQQ
 
-    #STORED_DATA_TO_BE_READ = '/Users/prakhar/MA_trading_bot/data/stored_data/data_AAPL_train_test_2017-01-02--2025-08-16.csv'
-    #STORED_DATA_TO_BE_READ = '/Users/prakhar/MA_trading_bot/data/stored_data/data_NVDA_backtest_2017-01-01--2025-08-17.csv'
-    STORED_DATA_TO_BE_READ = '/Users/prakhar/MA_trading_bot/data/stored_data/data_MSFT_backtest_2017-01-01--2025-08-17.csv'
+    STORED_DATA_TO_BE_READ = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_AAPL_train_test_2017-01-02--2025-08-16.csv'
+    #STORED_DATA_TO_BE_READ = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_NVDA_backtest_2017-01-01--2025-08-17.csv'
+    #STORED_DATA_TO_BE_READ = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_MSFT_backtest_2017-01-01--2025-08-17.csv'
     
 
 
@@ -56,14 +64,14 @@ CHOSEN_STRATEGY = 'mlp'
 
 if (input('Did you choose correct DATA_PATH_FOR_SENTIMENT_STRATEGY if using sentiment_strategy?\n'))[0] == 'n':
     exit()
+# this path is goven to strategy while backtesting 'sentiment strategy'
+DATA_PATH_FOR_SENTIMENT_STRATEGY = '/Users/prakhar/Desktop/MA_trading_bot/sentiment_analysis/GDELT/trading_days_daily_output/AAPL_1_sentiment_trading_days.csv'
 
-DATA_PATH_FOR_SENTIMENT_STRATEGY = '/Users/prakhar/MA_trading_bot/sentiment_analysis/GDELT/trading_days_daily_output/MSFT_1_sentiment_trading_days.csv'
-
-LOG_REG_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/lr_model_AAPL_19.joblib'
-RANDOM_FOREST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/rf_model_AAPL_19.joblib'
-XGBOOST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/xgb_model_AAPL_19.joblib'
-MLP_MODEL_PATH_FOR_STRATEGY = "/Users/prakhar/MA_trading_bot/ML/saved_models/mlp_1.keras"
-MLP_SCALAR_PATH_FOR_STRATEGY = '/Users/prakhar/MA_trading_bot/ML/saved_models/mlp_scaler_1.pkl'
+LOG_REG_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/lr_model_19.joblib'
+RANDOM_FOREST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/rf_model_19.joblib'
+XGBOOST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/xgb_model_19.joblib'
+MLP_MODEL_PATH_FOR_STRATEGY = "/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/mlp_1.keras"
+MLP_SCALAR_PATH_FOR_STRATEGY = '/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/mlp_scaler_1.pkl'
 
 FEATURES_WITH_SENTIMENT = True # If True, the sentiment score feature will be used in the model training and backtesting, if False, it will not be used
 
@@ -234,13 +242,13 @@ else:
 
 
 if TRAINING_MODE:
-    GSPC_DATA_FILE_PATH = '/Users/prakhar/MA_trading_bot/data/stored_data/data_^GSPC_train_2017-01-02--2022-12-30.csv'
-    NDX_DATA_FILE_PATH = '/Users/prakhar/MA_trading_bot/data/stored_data/data_^NDX_train_2017-01-02--2022-12-30.csv'
-    VIX_DATA_FILE_PATH = '/Users/prakhar/MA_trading_bot/data/stored_data/data_^VIX_train_2017-01-01--2022-12-31.csv'
+    GSPC_DATA_FILE_PATH = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_^GSPC_train_2017-01-02--2022-12-30.csv'
+    NDX_DATA_FILE_PATH = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_^NDX_train_2017-01-02--2022-12-30.csv'
+    VIX_DATA_FILE_PATH = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_^VIX_train_2017-01-01--2022-12-31.csv'
 else:
-    GSPC_DATA_FILE_PATH = '/Users/prakhar/MA_trading_bot/data/stored_data/data_^GSPC_backtest_2023-01-03--2025-08-15.csv'
-    NDX_DATA_FILE_PATH = '/Users/prakhar/MA_trading_bot/data/stored_data/data_^NDX_backtest_2023-01-03--2025-08-15.csv'
-    VIX_DATA_FILE_PATH = '/Users/prakhar/MA_trading_bot/data/stored_data/data_^VIX_backtest_2023-01-01--2025-08-17.csv'
+    GSPC_DATA_FILE_PATH = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_^GSPC_backtest_2023-01-03--2025-08-15.csv'
+    NDX_DATA_FILE_PATH = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_^NDX_backtest_2023-01-03--2025-08-15.csv'
+    VIX_DATA_FILE_PATH = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_^VIX_backtest_2023-01-01--2025-08-17.csv'
 
 
 
@@ -312,8 +320,10 @@ EVAL_METRIC = 'logloss'             # Evaluation metric for training (log loss f
 BASE_SCORE=0.5   
 OBJECTIVE='multi:softprob'          # multiclass objective
 
-
-
+'Training parameters for mlp'
+RANDOM_STATE = 42
+ML_EPOCHS = 100
+ML_BATCH_SIZE = 32
 
 
 
@@ -386,12 +396,12 @@ ALPHA_VANTAGE_API_KEY = '9VTDPFM0O0LXNZ41'
 
 # Hardcoded folder paths for backtesting and API key
 #The csv folder paths in which the resepctive files should be saved in. 
-FOLDER_PATH_FOR_INDIVIDUAL_BACKTEST_TABLE = '/Users/prakhar/MA_trading_bot/saved_files/csv_trial_files_backtesting'
-FOLDER_PATH_FOR_SUMMARY_BACKTEST_TABLE = '/Users/prakhar/MA_trading_bot/saved_files/csv_summary_files_backtesting'
+FOLDER_PATH_FOR_INDIVIDUAL_BACKTEST_TABLE = '/Users/prakhar/Desktop/MA_trading_bot/saved_files/csv_trial_files_backtesting'
+FOLDER_PATH_FOR_SUMMARY_BACKTEST_TABLE = '/Users/prakhar/Desktop/MA_trading_bot/saved_files/csv_summary_files_backtesting'
 # The folder I want my excel file to be saved in
-FOLDER_PATH_FOR_EXCEL_FILE = '/Users/prakhar/MA_trading_bot/saved_files/excel_trial_files_backtesting'
-FOLDER_PATH_FOR_CSV_FILE = '/Users/prakhar/MA_trading_bot/saved_files/csv_trial_files_backtesting'
-FOLDER_PATH_FOR_SUMMARIZED_EXCEL_FILE = '/Users/prakhar/MA_trading_bot/saved_files/excel_summary_files_backtesting'
-FOLDER_PATH_FOR_PDF_SUMMARIZED_BACKTESTING_FILE = '/Users/prakhar/MA_trading_bot/saved_files/pdf_summary_files-backtesting'
+FOLDER_PATH_FOR_EXCEL_FILE = '/Users/prakhar/Desktop/MA_trading_bot/saved_files/excel_trial_files_backtesting'
+FOLDER_PATH_FOR_CSV_FILE = '/Users/prakhar/Desktop/MA_trading_bot/saved_files/csv_trial_files_backtesting'
+FOLDER_PATH_FOR_SUMMARIZED_EXCEL_FILE = '/Users/prakhar/Desktop/MA_trading_bot/saved_files/excel_summary_files_backtesting'
+FOLDER_PATH_FOR_PDF_SUMMARIZED_BACKTESTING_FILE = '/Users/prakhar/Desktop/MA_trading_bot/saved_files/pdf_summary_files-backtesting'
 #Here the last symbol should be '/' because I am combining this path with the file name and hence creating a new path where the html portly chart gets saved
-OUTPUT_FOLDER_PATH_FOR_PLOTLY_CHART = '/Users/prakhar/MA_trading_bot/saved_files/charts_plotted_portly' 
+OUTPUT_FOLDER_PATH_FOR_PLOTLY_CHART = '/Users/prakhar/Desktop/MA_trading_bot/saved_files/charts_plotted_portly' 

@@ -21,7 +21,7 @@ word = 'backtest'
 
 def download_data():
     for ticker in tickers:
-        file_path = f'/Users/prakhar/MA_trading_bot/data/stored_data/data_{ticker}_{word}_{start}--{end}.csv'
+        file_path = f'/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_{ticker}_{word}_{start}--{end}.csv'
         data = yf.download(ticker, start, end, threads=True)
         if data is None or data.empty:
                 raise ValueError(f"❌ No data was fetched for ticker {ticker}. Please check the ticker symbol or your internet connection.")

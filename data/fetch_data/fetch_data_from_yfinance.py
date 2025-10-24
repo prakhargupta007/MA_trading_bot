@@ -28,7 +28,7 @@ def fetch_data_from_yfinance(ticker, option_1_chosen, backtesting_period, end_of
         data = data.dropna(subset=["Close"])
 
         # Following line was just used for downloading test data instead of new fresh data, which would lead to limit error.
-        #data.to_csv('/Users/prakhar/MA_trading_bot/data/test_data_AAPL.csv') 
+        #data.to_csv('/Users/prakhar/Desktop/MA_trading_bot/data/test_data_AAPL.csv') 
 
         return data
     except Exception as e:

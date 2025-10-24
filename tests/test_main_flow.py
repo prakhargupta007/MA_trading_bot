@@ -12,9 +12,9 @@ class TestMainFlow(unittest.TestCase):
         os.environ['AAPL_STOCK_TEST_MODE'] = 'True'
         
         # Define output paths
-        self.csv_output = '/Users/prakhar/MA_trading_bot/csv_trial_files_backtesting'
-        self.excel_output = '/Users/prakhar/MA_trading_bot/excel_trial_files_backtesting'
-        self.plotly_output = '/Users/prakhar/MA_trading_bot/charts_plotted_portly'
+        self.csv_output = '/Users/prakhar/Desktop/MA_trading_bot/csv_trial_files_backtesting'
+        self.excel_output = '/Users/prakhar/Desktop/MA_trading_bot/excel_trial_files_backtesting'
+        self.plotly_output = '/Users/prakhar/Desktop/MA_trading_bot/charts_plotted_portly'
 
     def tearDown(self):
         """Clean up after tests"""
@@ -58,7 +58,7 @@ class TestMainFlow(unittest.TestCase):
         main()
         
         # Check for plot files in the expected directory
-        plot_dir = '/Users/prakhar/MA_trading_bot/charts_plotted_portly'
+        plot_dir = '/Users/prakhar/Desktop/MA_trading_bot/charts_plotted_portly'
         self.assertTrue(os.path.exists(plot_dir), f"Plot directory {plot_dir} does not exist")
         
         plot_files = [f for f in os.listdir(plot_dir) if f.endswith('.html')]

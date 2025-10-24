@@ -26,9 +26,9 @@ DATE_END = "20250815"
 
 CHUNK_DAYS = 30  # Fetch articles in chunks of 30 days
 
-FULL_OUTPUT_FOLDER = "/Users/prakhar/MA_trading_bot/sentiment_analysis/GDELT/full_output_folder"
-DAILY_OUTPUT_FOLDER = "/Users/prakhar/MA_trading_bot/sentiment_analysis/GDELT/daily_output_folder"
-TRADING_DAYS_OUTPUT_FOLDER = "/Users/prakhar/MA_trading_bot/sentiment_analysis/GDELT/trading_days_daily_output"
+FULL_OUTPUT_FOLDER = "/Users/prakhar/Desktop/MA_trading_bot/sentiment_analysis/GDELT/full_output_folder"
+DAILY_OUTPUT_FOLDER = "/Users/prakhar/Desktop/MA_trading_bot/sentiment_analysis/GDELT/daily_output_folder"
+TRADING_DAYS_OUTPUT_FOLDER = "/Users/prakhar/Desktop/MA_trading_bot/sentiment_analysis/GDELT/trading_days_daily_output"
 
 FULL_OUTPUT_FILE = f"{FULL_OUTPUT_FOLDER}/{TICKER}_{NUMBER}_sentiment_full.csv"
 DAILY_OUTPUT_FILE = f"{DAILY_OUTPUT_FOLDER}/{TICKER}_{NUMBER}_sentiment_daily.csv"

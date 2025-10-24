@@ -1,4 +1,4 @@
-DATA_FOR_DATA_ANALYSIS = '/Users/prakhar/MA_trading_bot/data/stored_data/data_AAPL_train_test_2017-01-02--2025-08-16.csv'
+DATA_FOR_DATA_ANALYSIS = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_AAPL_train_test_2017-01-02--2025-08-16.csv'
 
 ALL_FEATURES = [
     # --- Price-based features ---
@@ -46,6 +46,6 @@ ALL_FEATURES = [
     'vix_std20'
 ]
 
-DA_GSPC_DATA_FILE_PATH = '/Users/prakhar/MA_trading_bot/data/stored_data/data_^GSPC_(SP500)_2017-01-02--2025-08-16.csv'
-DA_NDX_DATA_FILE_PATH = '/Users/prakhar/MA_trading_bot/data/stored_data/data_^NDX_(QQQ)_2017-01-02--2025-08-16.csv'
-DA_VIX_DATA_FILE_PATH = '/Users/prakhar/MA_trading_bot/data/stored_data/data_^VIX_2017-01-02--2025-08-16.csv'
+DA_GSPC_DATA_FILE_PATH = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_^GSPC_(SP500)_2017-01-02--2025-08-16.csv'
+DA_NDX_DATA_FILE_PATH = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_^NDX_(QQQ)_2017-01-02--2025-08-16.csv'
+DA_VIX_DATA_FILE_PATH = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_^VIX_2017-01-02--2025-08-16.csv'

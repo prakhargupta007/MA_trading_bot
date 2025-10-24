@@ -23,5 +23,5 @@ def find_duplicate_dates(csv_path):
     return duplicates_df, duplicate_counts
 
 
-path = '/Users/prakhar/MA_trading_bot/sentiment_analysis/GDELT/trading_days_daily_output/NVDA_1_sentiment_trading_days.csv'
+path = '/Users/prakhar/Desktop/MA_trading_bot/sentiment_analysis/GDELT/trading_days_daily_output/NVDA_1_sentiment_trading_days.csv'
 print(find_duplicate_dates(path))

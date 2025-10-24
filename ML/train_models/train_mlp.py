@@ -1,5 +1,5 @@
 # Run the following command to run this file on terminal:
-# python3 -m ML.train_models.train_mlp_classifier
+# python3 -m ML.train_models.train_mlp
 
 import pandas as pd
 import os
