@@ -9,8 +9,8 @@ if USE_STORED_DATA:
     #START_OF_BACKTESTING = '2023-01-03'
     #END_OF_BACKTESTING = '2025-08-15'
     
-    START_OF_BACKTESTING = '2017-01-02'
-    END_OF_BACKTESTING = '2025-08-15'
+    START_OF_BACKTESTING = '2021-01-04'
+    END_OF_BACKTESTING = '2025-10-23'
 
     BACKTESTING_PERIOD = str(round((datetime.strptime(END_OF_BACKTESTING, '%Y-%m-%d') - datetime.strptime(START_OF_BACKTESTING, '%Y-%m-%d')).days / 365.25, 3))
     option_1_chosen = False 

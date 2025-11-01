@@ -7,7 +7,7 @@ from data.funcs_for_data_prep_for_ML.calculate_and_add_features_to_data import c
 from ML.ML_strategy.processing_steps_for_signal_generation.translate_raw_signals import translate_raw_signals
 from ML.ML_strategy.processing_steps_for_signal_generation.apply_positioning_rule_to_translated_signals import apply_positioning_rule_to_translated_signals
 from config import FEATURE_COLUMNS, GSPC_DATA_FILE_PATH, NDX_DATA_FILE_PATH, VIX_DATA_FILE_PATH
-from config import MODEL_PATH_FOR_STRATEGY, MLP_SCALAR_PATH_FOR_STRATEGY
+from config import MLP_MODEL_PATH_FOR_STRATEGY, MLP_SCALAR_PATH_FOR_STRATEGY
 
 
 # Paths to model/scaler

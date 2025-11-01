@@ -10,18 +10,21 @@ import pandas as pd
 #start = '2017-01-01'
 #end = '2022-12-31'
 
-start = '2017-01-01'
-end = '2025-08-17'
+#start = '2010-01-01'
+#end = '2020-12-31'
 
-tickers = ['NVDA']
+start = '2021-01-01'
+end = '2025-10-24'
+
+tickers = ['AAPL','NVDA','MSFT','QQQ','^VIX']
 #tickers = ['^GSPC','^NDX']
 #tickers = ['^VIX']
 
-word = 'backtest'
+word = 'backtest' 
 
 def download_data():
     for ticker in tickers:
-        file_path = f'/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_{ticker}_{word}_{start}--{end}.csv'
+        file_path = f'/Users/prakhar/Desktop/MA_trading_bot/data/stored_data2/data_{ticker}_{word}_{start}--{end}.csv'
         data = yf.download(ticker, start, end, threads=True)
         if data is None or data.empty:
                 raise ValueError(f"❌ No data was fetched for ticker {ticker}. Please check the ticker symbol or your internet connection.")
