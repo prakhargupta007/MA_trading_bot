@@ -1,24 +1,6 @@
 # =================================== CONFIG FOR TRAINING AND BACKTESTING ====================================
-model_number = '37'
-
-# =================================== TRAINING CONFIG ====================================
-TRAINING_MODE = True 
-
-model_name = 'lr' # 'lr' 'rf' 'xgb' 'mlp'
-MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = f'/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/{model_name}_model_{model_number}.joblib'
-MODEL_PATH_WHERE_MLP_MODEL_SHOULD_GET_SAVED = f"/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/mlp_{model_number}.keras"
-PATH_FOR_SAVING_MLP_SCALAR = f'/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/mlp_scaler_{model_number}.pkl'
-
-TICKER = 'AAPL' \
-''
-DATA_FOR_ML_MODEL_TRAINING = f"/Users/prakhar/Desktop/MA_trading_bot/data/stored_data2/data_{TICKER}_train_test_2010-01-01--2020-12-31.csv"      # AAPL
-#DATA_FOR_ML_MODEL_TRAINING = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_QQQ_train_2017-01-02--2022-12-30.csv'           # QQQ
-
-SENTIMENT_DATA_PATH_FOR_ML_MODEL_TRAINING_FEATURE = '/Users/prakhar/Desktop/MA_trading_bot/sentiment_analysis/GDELT/trading_days_daily_output/AAPL_1_sentiment_trading_days.csv'
-
-
-
-
+model_number = '52'
+TRAINING_MODE = False  
 
 # =================================== BACKTESTING WITH SAVED LOCAL DATA CONFIG ====================================
 USE_STOP_LOSS = False  
@@ -34,20 +16,23 @@ USE_STORED_DATA = True
 # FOR BACKTESTING USING STORED DATA
 if USE_STORED_DATA:
     # If using stored data, the TICKERS variable can only be one ticker at a time, since the stored data file only contains data for one ticker
-    TICKERS = 'NVDA'
+    TICKERS = 'MSFT'
     'When changing the following line to use a diffrent file of data for reading, change the backtesting dates and period in the main.py file!!!'
-
     STORED_DATA_TO_BE_READ = f'/Users/prakhar/Desktop/MA_trading_bot/data/stored_data2/data_{TICKERS}_backtest_2021-01-01--2025-10-24.csv'
     
 # 'sma' 'ema' 'sma_rsi' 'sma_rsi_macd'  'ema_rsi'
 # 'sentiment_strategy'
 # 'logistic_regression' 'random_forest' 'xgboost' 'mlp'
 # 'perfect_strategy'
-#CHOSEN_STRATEGY = 'logistic_regression'
-#CHOSEN_STRATEGY = 'random_forest'
-CHOSEN_STRATEGY = 'sma'
 
-DATA_PATH_FOR_SENTIMENT_STRATEGY = '/Users/prakhar/Desktop/MA_trading_bot/sentiment_analysis/GDELT/trading_days_daily_output/AAPL_1_sentiment_trading_days.csv'
+CHOSEN_STRATEGY = 'logistic_regression'
+#CHOSEN_STRATEGY = 'random_forest'
+#CHOSEN_STRATEGY = 'xgboost'
+
+#CH#OSEN_STRATEGY = 'mlp'
+
+
+DATA_PATH_FOR_SENTIMENT_STRATEGY = f'/Users/prakhar/Desktop/MA_trading_bot/sentiment_analysis/GDELT/trading_days_daily_output/{TICKERS}_1_sentiment_trading_days.csv'
 
 LOG_REG_MODEL_PATH_FOR_STRATEGY = f'/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/lr_model_{model_number}.joblib'
 RANDOM_FOREST_MODEL_PATH_FOR_STRATEGY = f'/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/rf_model_{model_number}.joblib'
@@ -60,7 +45,31 @@ MLP_SCALAR_PATH_FOR_STRATEGY = f'/Users/prakhar/Desktop/MA_trading_bot/ML/saved_
 
 
 
+# =================================== TRAINING CONFIG ====================================
+
+model_name = 'lr' # 'lr' 'rf' 'xgb' 'mlp'
+MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = f'/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/{model_name}_model_{model_number}.joblib'
+MODEL_PATH_WHERE_MLP_MODEL_SHOULD_GET_SAVED = f"/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/mlp_{model_number}.keras"
+PATH_FOR_SAVING_MLP_SCALAR = f'/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/mlp_scaler_{model_number}.pkl'
+
+TICKER = 'NVDA' 
+DATA_FOR_ML_MODEL_TRAINING = f"/Users/prakhar/Desktop/MA_trading_bot/data/stored_data2/data_{TICKER}_train_test_2010-01-01--2020-12-31.csv"      # AAPL
+#DATA_FOR_ML_MODEL_TRAINING = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_QQQ_train_2017-01-02--2022-12-30.csv'           # QQQ
+
+SENTIMENT_DATA_PATH_FOR_ML_MODEL_TRAINING_FEATURE = '/Users/prakhar/Desktop/MA_trading_bot/sentiment_analysis/GDELT/trading_days_daily_output/AAPL_1_sentiment_trading_days.csv'
+
+
+
+
+
+
 # =================================== FEATURE COLUMNS ====================================
+
+#FEATURE_COLUMNS = ['volume_20d_ma', 'bb_percent', 'bb_lower', 'vix_mean20', 'rsi_14', 'ndx_20d_volatility', 'sma_50', 'bb_upper', 'sma_200', 'gspc_20d_volatility']
+
+FEATURE_COLUMNS = ['sma_200', 'sma_50', 'bb_upper', 'bb_lower', 'ndx_20d_sma', 'ndx_20d_volatility', 'volume_20d_ma', 'volatility_14', 'ema_diff_pct_50d', 'mom_diff_pct_50d']
+
+
 
 #(lr_21) #rf_21 #xgb_21
 #FEATURE_COLUMNS = ['sma_200', 'sma_50', 'bb_upper', 'bb_lower', 'ndx_20d_sma', 'ndx_20d_volatility', 'volume_20d_ma', 'volatility_14', 'ema_diff_pct_50d', 'mom_diff_pct_50d']
@@ -89,8 +98,7 @@ FEATURE_COLUMNS = [
         'vix_std20'
     ] 
 '''
-
-
+'''
 #lr_15 #rf_15 #xgb_15
 #lr_16 #rf_16 #xgb_16
 FEATURE_COLUMNS = [
@@ -101,10 +109,10 @@ FEATURE_COLUMNS = [
         'rsi_14'
     ] 
 
+'''
 
 
 '''
-
 #lr_13 #rf_11 #xgb_10
 #lr_14 #rf_12 #xgb_11
 FEATURE_COLUMNS = [
@@ -116,7 +124,6 @@ FEATURE_COLUMNS = [
 '''
 
 '''
-
 FEATURE_COLUMNS = [
         # Momentum & Trend
         'sma_diff_pct_10d',
@@ -124,7 +131,6 @@ FEATURE_COLUMNS = [
         'sma_diff_pct_200d'
     ]
 '''
-
 
 '''
 #lr_11 #rf_9 #xgb_8 
@@ -137,7 +143,7 @@ FEATURE_COLUMNS = [
         'ema_diff_pct_200d'
     ]
 '''
-    
+
 '''
 FEATURE_COLUMNS = [
         # Momentum & Trend
@@ -207,7 +213,7 @@ else:
         # Sentiment
         #'sentiment_score'
     ]
-    '''
+'''
 
 
     #lr_8 #rf_6 #xgb_5

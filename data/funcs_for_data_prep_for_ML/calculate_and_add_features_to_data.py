@@ -147,9 +147,10 @@ def calculate_and_add_features_to_data(data, gspc_data_file_path, ndx_data_file_
         if 'macd_signal' in FEATURE_COLUMNS:
             data['macd_signal'] = macd.macd_signal()
 
-   
-    
-
+    if 'sma_50' in FEATURE_COLUMNS:
+        data['sma_50'] = ta.trend.SMAIndicator(close=data['Close'], window=50).sma_indicator()
+    if 'sma_200' in FEATURE_COLUMNS:
+        data['sma_200'] = ta.trend.SMAIndicator(close=data['Close'], window=200).sma_indicator()
 
     # --- SMA differences (percentage) ---
     if 'sma_diff_pct_50d' in FEATURE_COLUMNS:

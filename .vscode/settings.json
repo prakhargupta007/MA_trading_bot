@@ -1,6 +1,4 @@
 {
-
-    "python.defaultInterpreterPath": "/path/to/MA_trading_bot/.venv/bin/python"
-
-    
+    "python.defaultInterpreterPath": "/path/to/MA_trading_bot/.venv/bin/python",
+    "github.copilot.chat.experimental.codeGeneration.useInstructionFiles": false
 }

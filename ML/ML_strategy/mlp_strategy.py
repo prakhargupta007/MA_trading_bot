@@ -11,15 +11,13 @@ from config import MLP_MODEL_PATH_FOR_STRATEGY, MLP_SCALAR_PATH_FOR_STRATEGY
 
 
 # Paths to model/scaler
-MLP_MODEL_PATH = 'ML/saved_models/mlp_classifier.keras'
-MLP_SCALER_PATH = 'ML/saved_models/mlp_scaler.pkl'
 
 
 def mlp_strategy(data, **kwargs):
     # Load model + scaler
     print("Loading trained MLP model and scaler...")
-    model = tf.keras.models.load_model(MLP_MODEL_PATH)
-    scaler = joblib.load(MLP_SCALER_PATH)
+    model = tf.keras.models.load_model(MLP_MODEL_PATH_FOR_STRATEGY)
+    scaler = joblib.load(MLP_SCALAR_PATH_FOR_STRATEGY)
     print("Model and scaler loaded successfully.\n")
 
     # Add features
