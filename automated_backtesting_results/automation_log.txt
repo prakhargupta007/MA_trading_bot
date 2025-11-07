@@ -1,0 +1,431 @@
+=== Automation started: 2025-11-06T15:58:18.267135 ===
+Set FEATURE_COLUMNS → fs_test
+$ python3 -m ML.train_models.train_logistic_regression
+[WARN] Training failed for AAPL lr_60: Command failed with exit code 1: python3 -m ML.train_models.train_logistic_regression
+$ python3 -m ML.train_models.train_random_forest
+[WARN] Training failed for AAPL rf_60: Command failed with exit code 1: python3 -m ML.train_models.train_random_forest
+$ python3 -m ML.train_models.train_xgboost
+[WARN] Training failed for AAPL xgb_60: Command failed with exit code 1: python3 -m ML.train_models.train_xgboost
+$ python3 main.py
+[WARN] Backtest failed for AAPL logistic_regression: Command failed with exit code 1: python3 main.py
+Incremented model_number → 61
+[ERROR] No results collected — nothing to write to Excel.
+=== Automation started: 2025-11-06T16:01:01.748013 ===
+Set FEATURE_COLUMNS → fs_test
+$ python3 -m ML.train_models.train_logistic_regression
+[WARN] Training failed for AAPL lr_60: Command failed with exit code 1: python3 -m ML.train_models.train_logistic_regression
+$ python3 -m ML.train_models.train_random_forest
+[WARN] Training failed for AAPL rf_60: Command failed with exit code 1: python3 -m ML.train_models.train_random_forest
+$ python3 -m ML.train_models.train_xgboost
+[WARN] Training failed for AAPL xgb_60: Command failed with exit code 1: python3 -m ML.train_models.train_xgboost
+$ python3 main.py
+[WARN] Backtest failed for AAPL logistic_regression: Command failed with exit code 1: python3 main.py
+Incremented model_number → 61
+[ERROR] No results collected — nothing to write to Excel.
+=== Automation started: 2025-11-06T16:11:42.887936 ===
+Set FEATURE_COLUMNS → fs_test
+$ python3 -m ML.train_models.train_logistic_regression
+[WARN] Training failed for AAPL lr_60: Command failed with exit code 1: python3 -m ML.train_models.train_logistic_regression
+$ python3 -m ML.train_models.train_random_forest
+[WARN] Training failed for AAPL rf_60: Command failed with exit code 1: python3 -m ML.train_models.train_random_forest
+$ python3 -m ML.train_models.train_xgboost
+[WARN] Training failed for AAPL xgb_60: Command failed with exit code 1: python3 -m ML.train_models.train_xgboost
+$ python3 main.py
+[WARN] Backtest failed for AAPL logistic_regression: Command failed with exit code 1: python3 main.py
+Incremented model_number → 61
+[ERROR] No results collected — nothing to write to Excel.
+=== Automation started: 2025-11-06T16:14:14.567067 ===
+Set FEATURE_COLUMNS → fs_test
+$ python3 -m ML.train_models.train_logistic_regression
+$ python3 -m ML.train_models.train_random_forest
+$ python3 -m ML.train_models.train_xgboost
+$ python3 main.py
+[WARN] Backtest failed for AAPL logistic_regression: Command failed with exit code 1: python3 main.py
+Incremented model_number → 61
+[ERROR] No results collected — nothing to write to Excel.
+=== Automation started: 2025-11-06T16:18:56.407308 ===
+Set FEATURE_COLUMNS → fs_test
+$ python3 -m ML.train_models.train_logistic_regression
+$ python3 -m ML.train_models.train_random_forest
+$ python3 -m ML.train_models.train_xgboost
+$ python3 main.py
+[WARN] Backtest failed for AAPL logistic_regression: Command failed with exit code 1: python3 main.py
+Incremented model_number → 61
+[ERROR] No results collected — nothing to write to Excel.
+=== Automation started: 2025-11-06T16:25:04.186614 ===
+Set FEATURE_COLUMNS → fs_test
+$ python3 -m ML.train_models.train_logistic_regression
+$ python3 -m ML.train_models.train_random_forest
+$ python3 -m ML.train_models.train_xgboost
+$ python3 main.py
+[WARN] Backtest failed for AAPL logistic_regression: Command failed with exit code 1: python3 main.py
+Incremented model_number → 61
+[ERROR] No results collected — nothing to write to Excel.
+=== Automation started: 2025-11-06T16:33:28.194917 ===
+Set FEATURE_COLUMNS → fs_test
+$ python3 -m ML.train_models.train_logistic_regression
+$ python3 -m ML.train_models.train_random_forest
+$ python3 -m ML.train_models.train_xgboost
+$ python3 main.py
+[WARN] Backtest failed for AAPL logistic_regression: Command failed with exit code 1: python3 main.py
+Incremented model_number → 61
+[ERROR] No results collected — nothing to write to Excel.
+=== Automation started: 2025-11-06T16:34:53.407637 ===
+Set FEATURE_COLUMNS → fs_test
+$ python3 -m ML.train_models.train_logistic_regression
+$ python3 -m ML.train_models.train_random_forest
+$ python3 -m ML.train_models.train_xgboost
+$ python3 main.py
+[WARN] Backtest failed for AAPL logistic_regression: Command failed with exit code 1: python3 main.py
+Incremented model_number → 61
+[ERROR] No results collected — nothing to write to Excel.
+=== Automation started: 2025-11-06T16:37:27.993658 ===
+Set FEATURE_COLUMNS → fs_test
+$ python3 -m ML.train_models.train_logistic_regression
+$ python3 -m ML.train_models.train_random_forest
+$ python3 -m ML.train_models.train_xgboost
+$ python3 main.py
+[WARN] Backtest failed for AAPL logistic_regression: Command failed with exit code 1: python3 main.py
+Incremented model_number → 61
+[ERROR] No results collected — nothing to write to Excel.
+=== Automation started: 2025-11-06T16:38:04.184634 ===
+Set FEATURE_COLUMNS → fs_test
+$ python3 -m ML.train_models.train_logistic_regression
+$ python3 -m ML.train_models.train_random_forest
+$ python3 -m ML.train_models.train_xgboost
+$ python3 main.py
+[WARN] Backtest failed for AAPL logistic_regression: Command failed with exit code 1: python3 main.py
+Incremented model_number → 61
+[ERROR] No results collected — nothing to write to Excel.
+=== Automation started: 2025-11-06T16:40:29.340902 ===
+Set FEATURE_COLUMNS → fs_test
+$ python3 -m ML.train_models.train_logistic_regression
+$ python3 -m ML.train_models.train_random_forest
+$ python3 -m ML.train_models.train_xgboost
+$ python3 main.py
+[WARN] Backtest failed for AAPL logistic_regression: Command failed with exit code 1: python3 main.py
+Incremented model_number → 61
+[ERROR] No results collected — nothing to write to Excel.
+=== Automation started: 2025-11-06T16:41:43.909368 ===
+Set FEATURE_COLUMNS → fs_test
+$ python3 -m ML.train_models.train_logistic_regression
+$ python3 -m ML.train_models.train_random_forest
+$ python3 -m ML.train_models.train_xgboost
+$ python3 main.py
+[WARN] Backtest failed for AAPL logistic_regression: Command failed with exit code 1: python3 main.py
+Incremented model_number → 61
+[ERROR] No results collected — nothing to write to Excel.
+=== Automation started: 2025-11-06T16:54:48.758370 ===
+Set FEATURE_COLUMNS → fs_60
+$ python3 -m ML.train_models.train_logistic_regression
+$ python3 -m ML.train_models.train_random_forest
+$ python3 -m ML.train_models.train_xgboost
+$ python3 main.py
+[WARN] Backtest failed for AAPL logistic_regression: Command failed with exit code 1: python3 main.py
+Incremented model_number → 61
+[ERROR] No results collected — nothing to write to Excel.
+=== Automation started: 2025-11-06T16:59:16.137824 ===
+Set FEATURE_COLUMNS → fs_60
+$ python3 -m ML.train_models.train_logistic_regression
+$ python3 -m ML.train_models.train_random_forest
+$ python3 -m ML.train_models.train_xgboost
+$ python3 main.py
+[WARN] Backtest failed for AAPL logistic_regression: Command failed with exit code 1: python3 main.py
+Incremented model_number → 61
+[ERROR] No results collected — nothing to write to Excel.
+=== Automation started: 2025-11-06T17:11:51.511304 ===
+Set FEATURE_COLUMNS → fs_60
+$ python3 -m ML.train_models.train_logistic_regression
+$ python3 -m ML.train_models.train_random_forest
+$ python3 -m ML.train_models.train_xgboost
+$ python3 main.py
+[WARN] Backtest failed for AAPL logistic_regression: Command failed with exit code 1: python3 main.py
+Incremented model_number → 61
+[ERROR] No results collected — nothing to write to Excel.
+=== Automation started: 2025-11-06T17:29:28.792354 ===
+Set FEATURE_COLUMNS → fs_60
+$ python3 -m ML.train_models.train_logistic_regression
+$ python3 -m ML.train_models.train_random_forest
+$ python3 -m ML.train_models.train_xgboost
+$ python3 main.py
+[WARN] Backtest failed for AAPL logistic_regression: Command failed with exit code 1: python3 main.py
+Incremented model_number → 61
+[ERROR] No results collected — nothing to write to Excel.
+=== Automation started: 2025-11-06T17:32:38.560626 ===
+Set FEATURE_COLUMNS → fs_60
+$ python3 -m ML.train_models.train_logistic_regression
+$ python3 -m ML.train_models.train_random_forest
+$ python3 -m ML.train_models.train_xgboost
+$ python3 main.py
+Incremented model_number → 61
+✅ Combined Excel written: /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/Backtest_Summary_All_20251106_173254.xlsx
+=== Automation finished: 2025-11-06T17:32:54.578472 ===
+=== Automation started: 2025-11-06T18:07:58.093477 ===
+=== Automation started: 2025-11-06T18:08:10.471975 ===
+Set FEATURE_COLUMNS → fs_60
+$ python3 -m ML.train_models.train_logistic_regression
+[WARN] Training failed for AAPL lr_60: Command failed with exit code -8: python3 -m ML.train_models.train_logistic_regression
+$ python3 -m ML.train_models.train_random_forest
+[WARN] Training failed for AAPL rf_60: Command failed with exit code -8: python3 -m ML.train_models.train_random_forest
+$ python3 -m ML.train_models.train_xgboost
+[WARN] Training failed for AAPL xgb_60: Command failed with exit code -8: python3 -m ML.train_models.train_xgboost
+$ python3 main.py
+[WARN] Backtest failed for AAPL logistic_regression: Command failed with exit code -8: python3 main.py
+Incremented model_number → 61
+=== Automation started: 2025-11-06T18:52:52.904508 ===
+Set FEATURE_COLUMNS → fs_60
+$ python3 -m ML.train_models.train_logistic_regression
+$ python3 -m ML.train_models.train_random_forest
+$ python3 -m ML.train_models.train_xgboost
+$ python3 main.py
+Incremented model_number → 61
+✅ Combined Excel written: /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/Backtest_Summary_All_20251106_185312.xlsx
+=== Automation finished: 2025-11-06T18:53:12.788859 ===
+=== Automation started: 2025-11-06T19:08:28.735992 ===
+Set FEATURE_COLUMNS → fs_60
+$ python3 -m ML.train_models.train_logistic_regression
+[WARN] Training failed for AAPL lr_60: Command failed with exit code -8: python3 -m ML.train_models.train_logistic_regression
+$ python3 -m ML.train_models.train_random_forest
+[WARN] Training failed for AAPL rf_60: Command failed with exit code -8: python3 -m ML.train_models.train_random_forest
+$ python3 -m ML.train_models.train_xgboost
+[WARN] Training failed for AAPL xgb_60: Command failed with exit code -8: python3 -m ML.train_models.train_xgboost
+$ python3 main.py
+[WARN] Backtest failed for AAPL logistic_regression: Command failed with exit code -8: python3 main.py
+Incremented model_number → 61
+[ERROR] No results collected — nothing to write to Excel.
+=== Automation started: 2025-11-06T19:08:50.512492 ===
+Set FEATURE_COLUMNS → fs_60
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python -m ML.train_models.train_logistic_regression
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python -m ML.train_models.train_random_forest
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python -m ML.train_models.train_xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python main.py
+Incremented model_number → 61
+✅ Combined Excel written: /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/Backtest_Summary_All_20251106_190916.xlsx
+=== Automation finished: 2025-11-06T19:09:16.568071 ===
+=== Automation started: 2025-11-06T19:25:50.198859 ===
+Set FEATURE_COLUMNS → fs_60
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python -m ML.train_models.train_logistic_regression
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python -m ML.train_models.train_random_forest
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python -m ML.train_models.train_xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python main.py
+Incremented model_number → 61
+✅ Combined Excel written: /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/Backtest_Summary_All_20251106_192615.xlsx
+=== Automation finished: 2025-11-06T19:26:15.599767 ===
+=== Automation started: 2025-11-06T19:26:58.913457 ===
+Set FEATURE_COLUMNS → fs_60
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 -m ML.train_models.train_logistic_regression
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 -m ML.train_models.train_random_forest
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 -m ML.train_models.train_xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+Incremented model_number → 61
+✅ Combined Excel written: /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/Backtest_Summary_All_20251106_192716.xlsx
+=== Automation finished: 2025-11-06T19:27:16.853359 ===
+=== Automation started: 2025-11-06T19:36:59.847073 ===
+Set FEATURE_COLUMNS → fs_60
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python -m ML.train_models.train_logistic_regression
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python -m ML.train_models.train_random_forest
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python -m ML.train_models.train_xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python main.py
+Incremented model_number → 61
+✅ Combined Excel written: /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/Backtest_Summary_All_20251106_193736.xlsx
+=== Automation finished: 2025-11-06T19:37:36.253510 ===
+=== Automation started: 2025-11-06T19:39:53.847058 ===
+Set FEATURE_COLUMNS → fs_60
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 -m ML.train_models.train_logistic_regression
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 -m ML.train_models.train_random_forest
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 -m ML.train_models.train_xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+Incremented model_number → 61
+✅ Combined Excel written: /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/Backtest_Summary_All_20251106_194010.xlsx
+=== Automation finished: 2025-11-06T19:40:11.033038 ===
+=== Automation started: 2025-11-06T19:43:36.311628 ===
+Set FEATURE_COLUMNS → fs_60
+[INFO] Training ML model for strategy: logistic_regression
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python -m ML.train_models.train_logistic_regression
+[INFO] Backtesting strategy: sma
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python main.py
+[INFO] Backtesting strategy: logistic_regression
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python main.py
+Incremented model_number → 61
+✅ Combined Excel written: /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/Backtest_Summary_All_20251106_194353.xlsx
+=== Automation finished: 2025-11-06T19:43:53.456533 ===
+=== Automation started: 2025-11-06T19:52:13.140765 ===
+Set FEATURE_COLUMNS → fs_60
+[INFO] Training ML model for strategy: logistic_regression
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python -m ML.train_models.train_logistic_regression
+[INFO] Backtesting strategy: logistic_regression
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python main.py
+Incremented model_number → 61
+✅ Combined Excel written: /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/Backtest_Summary_All_20251106_195225.xlsx
+=== Automation finished: 2025-11-06T19:52:25.343868 ===
+=== Automation started: 2025-11-06T20:06:36.390334 ===
+Set FEATURE_COLUMNS → fs_60
+[INFO] Training ML model for strategy: logistic_regression
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python -m ML.train_models.train_logistic_regression
+[INFO] Backtesting strategy: sentiment_strategy
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python main.py
+[INFO] Backtesting strategy: logistic_regression
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python main.py
+[INFO] Training ML model for strategy: logistic_regression
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python -m ML.train_models.train_logistic_regression
+[INFO] Backtesting strategy: sentiment_strategy
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python main.py
+[INFO] Backtesting strategy: logistic_regression
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python main.py
+[INFO] Training ML model for strategy: logistic_regression
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python -m ML.train_models.train_logistic_regression
+[INFO] Backtesting strategy: sentiment_strategy
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python main.py
+[INFO] Backtesting strategy: logistic_regression
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python main.py
+[INFO] Training ML model for strategy: logistic_regression
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python -m ML.train_models.train_logistic_regression
+[INFO] Backtesting strategy: sentiment_strategy
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python main.py
+[INFO] Backtesting strategy: logistic_regression
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python main.py
+Incremented model_number → 61
+✅ Combined Excel written: /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/Backtest_Summary_All_20251106_200723.xlsx
+=== Automation finished: 2025-11-06T20:07:23.141088 ===
+=== Automation started: 2025-11-06T22:39:32.497499 ===
+Set FEATURE_COLUMNS → fs_60
+[INFO] Training ML model for strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 -m ML.train_models.train_xgboost
+[INFO] Backtesting strategy: sma
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[INFO] Backtesting strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[WARN] Backtest failed for AAPL xgboost: Command failed with exit code 1: /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[INFO] Training ML model for strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 -m ML.train_models.train_xgboost
+[INFO] Backtesting strategy: sma
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[INFO] Backtesting strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[WARN] Backtest failed for MSFT xgboost: Command failed with exit code 1: /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[INFO] Training ML model for strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 -m ML.train_models.train_xgboost
+[INFO] Backtesting strategy: sma
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[INFO] Backtesting strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[INFO] Training ML model for strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 -m ML.train_models.train_xgboost
+[INFO] Backtesting strategy: sma
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[INFO] Backtesting strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+Incremented model_number → 61
+✅ Combined Excel written: /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/Backtest_Summary_All_20251106_224019.xlsx
+=== Automation finished: 2025-11-06T22:40:19.363237 ===
+=== Automation started: 2025-11-06T22:46:09.349113 ===
+Set FEATURE_COLUMNS → fs_60
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] Backtesting strategy: sma
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] Backtesting strategy: sma
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] Backtesting strategy: sma
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+[INFO] Backtesting strategy: sma
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+Incremented model_number → 61
+✅ Combined Excel written: /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/Backtest_Summary_All_20251106_224616.xlsx
+=== Automation finished: 2025-11-06T22:46:16.940983 ===
+=== Automation started: 2025-11-07T08:37:51.898053 ===
+Set FEATURE_COLUMNS → fs_60
+[INFO] Training ML model for strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 -m ML.train_models.train_xgboost
+[INFO] Backtesting strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[WARN] Backtest failed for AAPL xgboost: Command failed with exit code 1: /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[INFO] Training ML model for strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 -m ML.train_models.train_xgboost
+[INFO] Backtesting strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+=== Automation started: 2025-11-07T08:56:31.971698 ===
+Set FEATURE_COLUMNS → fs_60
+[INFO] Training ML model for strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 -m ML.train_models.train_xgboost
+[INFO] Backtesting strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[WARN] Backtest failed for AAPL xgboost: Command failed with exit code 1: /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[INFO] Training ML model for strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 -m ML.train_models.train_xgboost
+[INFO] Backtesting strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[WARN] Backtest failed for MSFT xgboost: Command failed with exit code 1: /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[INFO] Training ML model for strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 -m ML.train_models.train_xgboost
+=== Automation started: 2025-11-07T09:08:13.868382 ===
+Set FEATURE_COLUMNS → fs_60
+[INFO] Training ML model for strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 -m ML.train_models.train_xgboost
+[INFO] Backtesting strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[INFO] Training ML model for strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 -m ML.train_models.train_xgboost
+[INFO] Backtesting strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[INFO] Training ML model for strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 -m ML.train_models.train_xgboost
+[INFO] Backtesting strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[INFO] Training ML model for strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 -m ML.train_models.train_xgboost
+[INFO] Backtesting strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+Incremented model_number → 61
+✅ Combined Excel written: /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/Backtest_Summary_All_20251107_090900.xlsx
+=== Automation finished: 2025-11-07T09:09:00.587699 ===
+=== Automation started: 2025-11-07T09:13:21.380441 ===
+Set FEATURE_COLUMNS → fs_60
+[INFO] Training ML model for strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 -m ML.train_models.train_xgboost
+[INFO] Backtesting strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[INFO] Training ML model for strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 -m ML.train_models.train_xgboost
+[INFO] Backtesting strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[INFO] Training ML model for strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 -m ML.train_models.train_xgboost
+[INFO] Backtesting strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[INFO] Training ML model for strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 -m ML.train_models.train_xgboost
+[INFO] Backtesting strategy: xgboost
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+Incremented model_number → 61
+✅ Combined Excel written: /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/Backtest_Summary_All_20251107_091412.xlsx
+=== Automation finished: 2025-11-07T09:14:12.641670 ===
+=== Automation started: 2025-11-07T09:35:20.962604 ===
+Set FEATURE_COLUMNS → fs_60
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] Backtesting strategy: sentiment_strategy
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[INFO] Skipping feature set ID for rule-based strategy: sentiment_strategy
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] Backtesting strategy: sentiment_strategy
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[INFO] Skipping feature set ID for rule-based strategy: sentiment_strategy
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] Backtesting strategy: sentiment_strategy
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[INFO] Skipping feature set ID for rule-based strategy: sentiment_strategy
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+[INFO] Backtesting strategy: sentiment_strategy
+$ /Users/prakhar/Desktop/MA_trading_bot/.venv/bin/python3 main.py
+[INFO] Skipping feature set ID for rule-based strategy: sentiment_strategy
+Incremented model_number → 61
+✅ Combined Excel written: /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/Backtest_Summary_All_20251107_093528.xlsx
+=== Automation finished: 2025-11-07T09:35:28.450364 ===
+
+
+
+
+Start: 2021‑01‑01
+End: 2025‑10‑24

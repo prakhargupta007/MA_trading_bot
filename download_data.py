@@ -10,17 +10,17 @@ import pandas as pd
 #start = '2017-01-01'
 #end = '2022-12-31'
 
-#start = '2010-01-01'
-#end = '2020-12-31'
+start = '2010-01-01'
+end = '2020-12-31'
 
-start = '2021-01-01'
-end = '2025-10-24'
+#start = '2021-01-01'
+#end = '2025-10-24'
 
-tickers = ['AAPL','NVDA','MSFT','QQQ','^VIX']
-#tickers = ['^GSPC','^NDX']
+#tickers = ['AAPL','NVDA','MSFT','QQQ','^VIX']
+tickers = ['^GSPC','^NDX']
 #tickers = ['^VIX']
 
-word = 'backtest' 
+word = 'train_test' 
 
 def download_data():
     for ticker in tickers:

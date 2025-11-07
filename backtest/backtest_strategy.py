@@ -1,3 +1,4 @@
+'''
 from backtest.transaction_fee import calculate_transaction_fee, get_accurate_number_of_stocks
 from config import SLIPPAGE_RATE
 
@@ -131,3 +132,210 @@ def return_endbalance():
     end_balance = list_total_cash_flow[last_index]
 
     return end_balance
+'''
+
+
+import pandas as pd
+from backtest.transaction_fee import calculate_transaction_fee, get_accurate_number_of_stocks
+from config import SLIPPAGE_RATE
+
+# --- global state for plotting / summaries ---
+list_portfolio_values = []
+list_actions = []
+list_dates = []
+list_number_of_stocks = []
+list_price_per_stock = []
+list_total_cash_flow = []
+_end_cash = None  # final cash at end of backtest
+
+def _align_signals_to_data_index(data, signals_list):
+    """
+    Align a list of signals to the DataFrame index:
+    last len(signals_list) rows get the signals; earlier rows are HOLD.
+    Returns a list of length len(data).
+    """
+    n = len(data)
+    m = len(signals_list)
+    aligned = ['HOLD'] * max(0, n - m) + list(signals_list[-min(m, n):])
+    return aligned[:n]
+
+def backtest_strategy(data, signals, starting_balance):
+    """
+    Runs backtest and fills global lists for table output.
+    Also constructs and returns a trades_df (only BUY/SELL rows) with Profit per closed round-trip.
+    """
+    global list_portfolio_values, list_actions, list_dates, list_number_of_stocks, list_price_per_stock, list_total_cash_flow, _end_cash
+
+    # reset globals
+    list_actions = []
+    list_dates = []
+    list_number_of_stocks = []
+    list_price_per_stock = []
+    list_total_cash_flow = []
+    list_portfolio_values = []
+
+    # align signals to data index to avoid index mismatches
+    signals_aligned = _align_signals_to_data_index(data, signals)
+
+    cash = float(starting_balance)
+    position = False
+    n_stocks_held = 0.0
+    last_buy_cost = None  # total cash out on the last BUY (including fee)
+    last_buy_qty = 0.0
+
+    trade_rows = []  # rows for trades_df with Profit computed on SELLs
+
+    for i in range(len(data)):
+        date_i = data.index[i]
+        close_i = float(data['Close'].iloc[i])
+        sig = signals_aligned[i] if i < len(signals_aligned) else 'HOLD'
+
+        if sig == 'HOLD':
+            # No change in holdings
+            portfolio_value = cash + (n_stocks_held * close_i if position else 0.0)
+            list_portfolio_values.append(round(portfolio_value, 2))
+            continue
+
+        if sig == 'BUY':
+            # Price with slippage
+            px = (1.0 + SLIPPAGE_RATE) * close_i
+            qty, fee, cash = get_accurate_number_of_stocks(cash, px)
+            total_cost = qty * px + fee  # positive number; cash already reduced in helper
+
+            # record table row
+            list_actions.append('BUY')
+            list_dates.append(date_i)
+            list_number_of_stocks.append(round(qty, 6))
+            list_price_per_stock.append(round(px, 6))
+            list_total_cash_flow.append(round(-total_cost, 2))  # negative cash flow
+
+            # set position state
+            position = True
+            n_stocks_held = qty
+            last_buy_qty = qty
+            last_buy_cost = total_cost  # store positive cost
+
+            # trades_df row (profit N/A at buy)
+            trade_rows.append({
+                "Action": "BUY",
+                "Date": pd.to_datetime(date_i),
+                "Number of Stocks": round(qty, 6),
+                "Price per Stock": round(px, 6),
+                "Cash Flow": round(-total_cost, 2),
+                "Profit": float("nan")
+            })
+
+        elif sig == 'SELL':
+            px = (1.0 - SLIPPAGE_RATE) * close_i
+            fee = calculate_transaction_fee(n_stocks_held)
+            proceeds = n_stocks_held * px - fee
+            cash += proceeds
+
+            # record table row
+            list_actions.append('SELL')
+            list_dates.append(date_i)
+            list_number_of_stocks.append(round(-n_stocks_held, 6))
+            list_price_per_stock.append(round(px, 6))
+            list_total_cash_flow.append(round(proceeds, 2))
+
+            # compute realized profit for this round-trip if we had a prior BUY
+            realized_profit = float("nan")
+            if last_buy_cost is not None:
+                # buy cash flow was -last_buy_cost; sell cash flow is +proceeds
+                realized_profit = round(proceeds - last_buy_cost, 2)
+
+            trade_rows.append({
+                "Action": "SELL",
+                "Date": pd.to_datetime(date_i),
+                "Number of Stocks": round(-n_stocks_held, 6),
+                "Price per Stock": round(px, 6),
+                "Cash Flow": round(proceeds, 2),
+                "Profit": realized_profit
+            })
+
+            # reset position
+            position = False
+            n_stocks_held = 0.0
+            last_buy_qty = 0.0
+            last_buy_cost = None
+
+        # end-of-day portfolio (AFTER the action)
+        portfolio_value = cash + (n_stocks_held * close_i if position else 0.0)
+        list_portfolio_values.append(round(portfolio_value, 2))
+
+    # force close at end if still in position (so we always realize a SELL)
+    if position and n_stocks_held > 0:
+        date_i = data.index[-1]
+        close_i = float(data['Close'].iloc[-1])
+        px = close_i  # no slippage on forced close, or apply if you prefer
+        fee = calculate_transaction_fee(n_stocks_held)
+        proceeds = n_stocks_held * px - fee
+        cash += proceeds
+
+        list_actions.append('SELL (forced at end)')
+        list_dates.append(date_i)
+        list_number_of_stocks.append(round(-n_stocks_held, 6))
+        list_price_per_stock.append(round(px, 6))
+        list_total_cash_flow.append(round(proceeds, 2))
+
+        realized_profit = float("nan")
+        if last_buy_cost is not None:
+            realized_profit = round(proceeds - last_buy_cost, 2)
+
+        trade_rows.append({
+            "Action": "SELL (forced at end)",
+            "Date": pd.to_datetime(date_i),
+            "Number of Stocks": round(-n_stocks_held, 6),
+            "Price per Stock": round(px, 6),
+            "Cash Flow": round(proceeds, 2),
+            "Profit": realized_profit
+        })
+
+        position = False
+        n_stocks_held = 0.0
+        last_buy_qty = 0.0
+        last_buy_cost = None
+
+        # final portfolio after forced close
+        portfolio_value = cash
+        list_portfolio_values[-1] = round(portfolio_value, 2)
+
+    # store final cash for return_endbalance()
+    _end_cash = round(cash, 2)
+
+    # Build trades_df (only BUY/SELL rows), ensure correct dtypes
+    trades_df = pd.DataFrame(trade_rows, columns=[
+        "Action", "Date", "Number of Stocks", "Price per Stock", "Cash Flow", "Profit"
+    ])
+    if not trades_df.empty:
+        trades_df = trades_df.sort_values("Date").reset_index(drop=True)
+        numeric_cols = ["Number of Stocks", "Price per Stock", "Cash Flow", "Profit"]
+        for col in numeric_cols:
+            trades_df[col] = pd.to_numeric(trades_df[col], errors="coerce")
+
+    # return old tuple PLUS trades_df for downstream summary code
+    return (
+        list_actions,
+        list_dates,
+        list_number_of_stocks,
+        list_price_per_stock,
+        list_total_cash_flow,
+        trades_df
+    )
+
+def return_portfolio_values():
+    global list_portfolio_values
+    return list_portfolio_values
+
+def return_endbalance():
+    """
+    Return the true end balance (cash after final day).
+    Never returns None; if the engine never traded, returns starting cash reflected in list_portfolio_values.
+    """
+    global _end_cash, list_portfolio_values
+    if _end_cash is not None:
+        return _end_cash
+    # fallback if something odd happens
+    if list_portfolio_values:
+        return list_portfolio_values[-1]
+    return None

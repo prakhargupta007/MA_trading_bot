@@ -6,6 +6,11 @@ import plotly.io as pio
 pio.renderers.default = "browser"
 
 def plotly_plot_universal_strategy_signals_and_save(data, signals, ticker, chosen_strategy):
+    """
+    Signals are shifted by +1 trading day (prediction on t -> execution on t+1).
+    Inputs assume len(signals) == len(data) after trimming the unexecuted tail.
+    """
+    assert len(signals) == len(data), f"Signals ({len(signals)}) and data ({len(data)}) mismatch."
 
     fig = go.Figure()
 
@@ -76,11 +81,12 @@ def plotly_plot_universal_strategy_signals_and_save(data, signals, ticker, chose
     )
 
     # Show the figure
-    fig.show()
+    #fig.show()
 
     # Save the interactive chart as HTML
     file_name = f"{ticker}_{chosen_strategy}_strategy_plot.html"
     full_path = os.path.join(OUTPUT_FOLDER_PATH_FOR_PLOTLY_CHART, file_name)
     fig.write_html(full_path)
 
+    return full_path
 

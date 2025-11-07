@@ -1,5 +1,6 @@
 '''
 #FUNC TO FIX DATA_ANALYSIS PROBLEM 
+import os
 import pandas as pd
 import numpy as np
 import ta
@@ -54,6 +55,7 @@ def calculate_and_add_features_to_data(data, gspc_data_file_path, ndx_data_file_
 
     # --- Market indices ---
     gspc_data = pd.read_csv(gspc_data_file_path, parse_dates=['Date'], index_col='Date')
+    print(f"[DEBUG] Loaded {os.path.basename(gspc_data_file_path)} (len={len(gspc_data)})")
     gspc_data.index = pd.to_datetime(gspc_data.index, errors='coerce')
     gspc_returns = gspc_data['Close'].pct_change()
     gspc_volatility = gspc_returns.rolling(window=20).std()
@@ -69,6 +71,7 @@ def calculate_and_add_features_to_data(data, gspc_data_file_path, ndx_data_file_
     # --- Optional Nasdaq features ---
     if TECH_SECTOR_STOCK:
         ndx_data = pd.read_csv(ndx_data_file_path, parse_dates=['Date'], index_col='Date')
+        print(f"[DEBUG] Loaded {os.path.basename(ndx_data_file_path)} (len={len(ndx_data)})")
         ndx_data.index = pd.to_datetime(ndx_data.index, errors='coerce')
         ndx_returns = ndx_data['Close'].pct_change()
         ndx_volatility = ndx_returns.rolling(window=20).std()
@@ -115,6 +118,7 @@ def calculate_and_add_features_to_data(data, gspc_data_file_path, ndx_data_file_
 
 
 
+import os
 import pandas as pd
 import numpy as np
 import ta
@@ -188,6 +192,7 @@ def calculate_and_add_features_to_data(data, gspc_data_file_path, ndx_data_file_
     # --- Market indices ---
     if any(f.startswith('gspc') for f in FEATURE_COLUMNS):
         gspc_data = pd.read_csv(gspc_data_file_path, parse_dates=['Date'], index_col='Date')
+        print(f"[DEBUG] Loaded {os.path.basename(gspc_data_file_path)} (len={len(gspc_data)})")
         gspc_data.index = pd.to_datetime(gspc_data.index, errors='coerce')
         gspc_returns = gspc_data['Close'].pct_change()
         gspc_volatility = gspc_returns.rolling(window=20).std()
@@ -205,6 +210,7 @@ def calculate_and_add_features_to_data(data, gspc_data_file_path, ndx_data_file_
     # --- Optional Nasdaq features ---
     if TECH_SECTOR_STOCK and any(f.startswith('ndx') for f in FEATURE_COLUMNS):
         ndx_data = pd.read_csv(ndx_data_file_path, parse_dates=['Date'], index_col='Date')
+        print(f"[DEBUG] Loaded {os.path.basename(ndx_data_file_path)} (len={len(ndx_data)})")
         ndx_data.index = pd.to_datetime(ndx_data.index, errors='coerce')
         ndx_returns = ndx_data['Close'].pct_change()
         ndx_volatility = ndx_returns.rolling(window=20).std()

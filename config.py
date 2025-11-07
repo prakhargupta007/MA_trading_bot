@@ -1,6 +1,9 @@
+import os
+
 # =================================== CONFIG FOR TRAINING AND BACKTESTING ====================================
-model_number = '52'
+model_number = '60'
 TRAINING_MODE = False  
+TECH_SECTOR_STOCK = True
 
 # =================================== BACKTESTING WITH SAVED LOCAL DATA CONFIG ====================================
 USE_STOP_LOSS = False  
@@ -10,29 +13,41 @@ STOP_LOSS_THRESHOLD = 0.05
 ATR_PERIOD = 14
 ATR_MULTIPLIER = 2.0
 
-VISUALISE_PLOTTED_SIGNAL_EXECUTIONS =  False 
+VISUALISE_PLOTTED_SIGNAL_EXECUTIONS = True
 
 USE_STORED_DATA = True
 # FOR BACKTESTING USING STORED DATA
 if USE_STORED_DATA:
     # If using stored data, the TICKERS variable can only be one ticker at a time, since the stored data file only contains data for one ticker
-    TICKERS = 'MSFT'
+    TICKERS = 'QQQ'
     'When changing the following line to use a diffrent file of data for reading, change the backtesting dates and period in the main.py file!!!'
-    STORED_DATA_TO_BE_READ = f'/Users/prakhar/Desktop/MA_trading_bot/data/stored_data2/data_{TICKERS}_backtest_2021-01-01--2025-10-24.csv'
+    STORED_DATA_TO_BE_READ = 'data/stored_data2/data_QQQ_backtest_2021-01-01--2025-10-24.csv'
     
 # 'sma' 'ema' 'sma_rsi' 'sma_rsi_macd'  'ema_rsi'
 # 'sentiment_strategy'
 # 'logistic_regression' 'random_forest' 'xgboost' 'mlp'
 # 'perfect_strategy'
 
-CHOSEN_STRATEGY = 'logistic_regression'
+CHOSEN_STRATEGY = 'sentiment_strategy'
 #CHOSEN_STRATEGY = 'random_forest'
 #CHOSEN_STRATEGY = 'xgboost'
 
 #CH#OSEN_STRATEGY = 'mlp'
 
 
-DATA_PATH_FOR_SENTIMENT_STRATEGY = f'/Users/prakhar/Desktop/MA_trading_bot/sentiment_analysis/GDELT/trading_days_daily_output/{TICKERS}_1_sentiment_trading_days.csv'
+DATA_PATH_FOR_SENTIMENT_STRATEGY = '/Users/prakhar/Desktop/MA_trading_bot/sentiment_analysis/GDELT/trading_days_daily_output'
+
+STORED_DATA2_DIR = os.path.join('data', 'stored_data2')
+PATH_GSPC = os.path.join(STORED_DATA2_DIR, 'gspc.csv')
+PATH_NDX = os.path.join(STORED_DATA2_DIR, 'ndx.csv')
+
+
+def _resolve_data_path(*candidates):
+    for candidate in candidates:
+        if os.path.exists(candidate):
+            return candidate
+    # Fall back to the first candidate even if it does not exist
+    return candidates[0]
 
 LOG_REG_MODEL_PATH_FOR_STRATEGY = f'/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/lr_model_{model_number}.joblib'
 RANDOM_FOREST_MODEL_PATH_FOR_STRATEGY = f'/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/rf_model_{model_number}.joblib'
@@ -46,14 +61,12 @@ MLP_SCALAR_PATH_FOR_STRATEGY = f'/Users/prakhar/Desktop/MA_trading_bot/ML/saved_
 
 
 # =================================== TRAINING CONFIG ====================================
-
-model_name = 'lr' # 'lr' 'rf' 'xgb' 'mlp'
+model_name = 'xgb'
 MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = f'/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/{model_name}_model_{model_number}.joblib'
 MODEL_PATH_WHERE_MLP_MODEL_SHOULD_GET_SAVED = f"/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/mlp_{model_number}.keras"
 PATH_FOR_SAVING_MLP_SCALAR = f'/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/mlp_scaler_{model_number}.pkl'
-
-TICKER = 'NVDA' 
-DATA_FOR_ML_MODEL_TRAINING = f"/Users/prakhar/Desktop/MA_trading_bot/data/stored_data2/data_{TICKER}_train_test_2010-01-01--2020-12-31.csv"      # AAPL
+TICKER = 'QQQ'
+DATA_FOR_ML_MODEL_TRAINING = 'data/stored_data2/data_QQQ_train_test_2010-01-01--2020-12-31.csv'
 #DATA_FOR_ML_MODEL_TRAINING = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_QQQ_train_2017-01-02--2022-12-30.csv'           # QQQ
 
 SENTIMENT_DATA_PATH_FOR_ML_MODEL_TRAINING_FEATURE = '/Users/prakhar/Desktop/MA_trading_bot/sentiment_analysis/GDELT/trading_days_daily_output/AAPL_1_sentiment_trading_days.csv'
@@ -66,8 +79,7 @@ SENTIMENT_DATA_PATH_FOR_ML_MODEL_TRAINING_FEATURE = '/Users/prakhar/Desktop/MA_t
 # =================================== FEATURE COLUMNS ====================================
 
 #FEATURE_COLUMNS = ['volume_20d_ma', 'bb_percent', 'bb_lower', 'vix_mean20', 'rsi_14', 'ndx_20d_volatility', 'sma_50', 'bb_upper', 'sma_200', 'gspc_20d_volatility']
-
-FEATURE_COLUMNS = ['sma_200', 'sma_50', 'bb_upper', 'bb_lower', 'ndx_20d_sma', 'ndx_20d_volatility', 'volume_20d_ma', 'volatility_14', 'ema_diff_pct_50d', 'mom_diff_pct_50d']
+FEATURE_COLUMNS = ["sma_diff_pct_10d", "sma_diff_pct_50d", "sma_diff_pct_200d"]
 
 
 
@@ -76,38 +88,23 @@ FEATURE_COLUMNS = ['sma_200', 'sma_50', 'bb_upper', 'bb_lower', 'ndx_20d_sma', '
 
 '''
 #lr_20 (#rf_21 #xgb_21)
-FEATURE_COLUMNS = ['volume_20d_ma', 'bb_percent', 'bb_lower', 'vix_mean20', 'rsi_14', 'ndx_20d_volatility', 'sma_50', 'bb_upper', 'sma_200', 'gspc_20d_volatility']
+FEATURE_COLUMNS = ["sma_diff_pct_10d", "sma_diff_pct_50d", "sma_diff_pct_200d"]
 '''
 '''
 #lr_19 #rf_19 #xgb_19
-FEATURE_COLUMNS = ['volume_20d_ma', 'bb_percent', 'bb_lower', 'vix_mean20', 'rsi_14']
+FEATURE_COLUMNS = ["sma_diff_pct_10d", "sma_diff_pct_50d", "sma_diff_pct_200d"]
 '''
 # If I change/modify this feature column list I need to add/remove that feature to/from the function calculate_and_add_features_to_data as well!!!
 #lr_17 #rf_17 #xgb_17
 #lr_18 #rf_18 #xgb_18
 
 '''
-FEATURE_COLUMNS = [
-        # Momentum & Trend
-        'ema_diff_pct_10d',
-        'ema_diff_pct_50d',
-        'ema_diff_pct_200d',
-        'rsi_14',
-        'vix_roc1',
-        'vix_mean20',
-        'vix_std20'
-    ] 
+FEATURE_COLUMNS = ["sma_diff_pct_10d", "sma_diff_pct_50d", "sma_diff_pct_200d"] 
 '''
 '''
 #lr_15 #rf_15 #xgb_15
 #lr_16 #rf_16 #xgb_16
-FEATURE_COLUMNS = [
-        # Momentum & Trend
-        'ema_diff_pct_10d',
-        'ema_diff_pct_50d',
-        'ema_diff_pct_200d',
-        'rsi_14'
-    ] 
+FEATURE_COLUMNS = ["sma_diff_pct_10d", "sma_diff_pct_50d", "sma_diff_pct_200d"] 
 
 '''
 
@@ -115,21 +112,11 @@ FEATURE_COLUMNS = [
 '''
 #lr_13 #rf_11 #xgb_10
 #lr_14 #rf_12 #xgb_11
-FEATURE_COLUMNS = [
-        # Momentum & Trend
-        'ema_diff_pct_10d',
-        'ema_diff_pct_50d',
-        'ema_diff_pct_200d'
-    ]
+FEATURE_COLUMNS = ["sma_diff_pct_10d", "sma_diff_pct_50d", "sma_diff_pct_200d"]
 '''
 
 '''
-FEATURE_COLUMNS = [
-        # Momentum & Trend
-        'sma_diff_pct_10d',
-        'sma_diff_pct_50d',
-        'sma_diff_pct_200d'
-    ]
+FEATURE_COLUMNS = ["sma_diff_pct_10d", "sma_diff_pct_50d", "sma_diff_pct_200d"]
 '''
 
 '''
@@ -137,82 +124,21 @@ FEATURE_COLUMNS = [
 #lr_12 #rf_10 #xgb_9
 #lr_22 rf_22 xgb_22 mlp_22
 #lr_23 rf_23 xgb_23 mlp_23
-FEATURE_COLUMNS = [
-        # Momentum & Trend
-        'ema_diff_pct_50d',
-        'ema_diff_pct_200d'
-    ]
+FEATURE_COLUMNS = ["sma_diff_pct_10d", "sma_diff_pct_50d", "sma_diff_pct_200d"]
 '''
 
 '''
-FEATURE_COLUMNS = [
-        # Momentum & Trend
-        'sma_diff_pct_50d',
-        'sma_diff_pct_200d'
-    ]
+FEATURE_COLUMNS = ["sma_diff_pct_10d", "sma_diff_pct_50d", "sma_diff_pct_200d"]
 '''
 
-FEATURES_WITH_SENTIMENT = True
 
 '''
-if FEATURES_WITH_SENTIMENT:
+
         # lr_10 #rf_8 #xgb_7
-    FEATURE_COLUMNS = [
-        # Momentum & Trend
-        'rsi_14',
-        'macd',
-        'mom_diff_pct_10d',
-        'mom_diff_pct_100d',
-
-        # Volatility
-        'volatility_14',
-        'gspc_20d_volatility',  # broad market
-        'ndx_20d_volatility',   # tech sector vol
-
-        # Returns
-        'daily_return',
-        'gspc_daily_return',    # market return
-        'ndx_daily_return',     # tech sector return
-
-        # Volume
-        'obv',
-        'volume_20d_ma',
-
-        # Bands
-        'bb_percent',
-
-        # Sentiment
-        'sentiment_score'
-    ]
+FEATURE_COLUMNS = ["sma_diff_pct_10d", "sma_diff_pct_50d", "sma_diff_pct_200d"]
 else:
         # lr_9 #rf_7 #xgb_6
-    FEATURE_COLUMNS = [
-        # Momentum & Trend
-        'rsi_14',
-        'macd',
-        'mom_diff_pct_10d',
-        'mom_diff_pct_100d',
-
-        # Volatility
-        'volatility_14',
-        'gspc_20d_volatility',  # broad market
-        'ndx_20d_volatility',   # tech sector vol
-
-        # Returns
-        'daily_return',
-        'gspc_daily_return',    # market return
-        'ndx_daily_return',     # tech sector return
-
-        # Volume
-        'obv',
-        'volume_20d_ma',
-
-        # Bands
-        'bb_percent'
-
-        # Sentiment
-        #'sentiment_score'
-    ]
+FEATURE_COLUMNS = ["sma_diff_pct_10d", "sma_diff_pct_50d", "sma_diff_pct_200d"]
 '''
 
 
@@ -231,12 +157,26 @@ else:
 
 
 if TRAINING_MODE:
-    GSPC_DATA_FILE_PATH = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_^GSPC_train_2017-01-02--2022-12-30.csv'
-    NDX_DATA_FILE_PATH = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_^NDX_train_2017-01-02--2022-12-30.csv'
+    GSPC_DATA_FILE_PATH = _resolve_data_path(
+        PATH_GSPC,
+        os.path.join(STORED_DATA2_DIR, 'data_^GSPC_train_test_2010-01-01--2020-12-31.csv')
+    )
+    NDX_DATA_FILE_PATH = _resolve_data_path(
+        PATH_NDX,
+        os.path.join(STORED_DATA2_DIR, 'data_^NDX_train_test_2010-01-01--2020-12-31.csv')
+    )
     VIX_DATA_FILE_PATH = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data2/data_^VIX_train_test_2010-01-01--2020-12-31.csv'
 else:
-    GSPC_DATA_FILE_PATH = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_^GSPC_backtest_2023-01-03--2025-08-15.csv'
-    NDX_DATA_FILE_PATH = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_^NDX_backtest_2023-01-03--2025-08-15.csv'
+    GSPC_DATA_FILE_PATH = _resolve_data_path(
+        PATH_GSPC,
+        os.path.join(STORED_DATA2_DIR, 'data_^GSPC_backtest_2021-01-01--2025-08-15.csv'),
+        os.path.join(STORED_DATA2_DIR, 'data_^GSPC_backtest_2021-01-01--2025-10-24.csv')
+    )
+    NDX_DATA_FILE_PATH = _resolve_data_path(
+        PATH_NDX,
+        os.path.join(STORED_DATA2_DIR, 'data_^NDX_backtest_2021-01-01--2025-08-15.csv'),
+        os.path.join(STORED_DATA2_DIR, 'data_^NDX_backtest_2021-01-01--2025-10-24.csv')
+    )
     VIX_DATA_FILE_PATH = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data2/data_^VIX_backtest_2021-01-01--2025-10-24.csv'
 
 
@@ -291,7 +231,7 @@ ML_BATCH_SIZE = 32
 
 # =================================== BACKTESTING WITH FRESHLY NEW DOWNLOADED DATA ====================================
 if not USE_STORED_DATA:
-    TICKERS = 'AAPL'
+    TICKERS = 'QQQ'
     #TICKERS =  "JNJ,KO,PG,D"
     #TICKERS =  "MSFT,DIS,UNH,UPS"
     #TICKERS =  "TSLA,NVDA,ARKK,META"
@@ -320,7 +260,7 @@ RISK_FREE_RATE = 0.052 # current risk free rate in the US ==> yield on the 3-mon
 TRANSACTION_FEE_PER_STOCK = 0.05
 MINIMUM_TRANSACTION_FEE = 1 
 
-INDICATORS_WHICH_ARE_NOT_TO_BE_CHECKED_FOR_LENGTH = ['data','rsi_overbought','rsi_oversold','data_path_for_sentiment_strategy']
+INDICATORS_WHICH_ARE_NOT_TO_BE_CHECKED_FOR_LENGTH = ['data','rsi_overbought','rsi_oversold','data_path_for_sentiment_strategy','ticker','start_date','end_date']
 
 # If true: data will be fetched from yfinance
 # If false: data will be fetched from Alpha Vantage
@@ -339,10 +279,11 @@ FOLDER_PATH_FOR_CSV_FILE = '/Users/prakhar/Desktop/MA_trading_bot/saved_files/cs
 FOLDER_PATH_FOR_SUMMARIZED_EXCEL_FILE = '/Users/prakhar/Desktop/MA_trading_bot/saved_files/excel_summary_files_backtesting'
 FOLDER_PATH_FOR_PDF_SUMMARIZED_BACKTESTING_FILE = '/Users/prakhar/Desktop/MA_trading_bot/saved_files/pdf_summary_files-backtesting'
 #Here the last symbol should be '/' because I am combining this path with the file name and hence creating a new path where the html portly chart gets saved
-OUTPUT_FOLDER_PATH_FOR_PLOTLY_CHART = '/Users/prakhar/Desktop/MA_trading_bot/saved_files/charts_plotted_portly' 
+#OUTPUT_FOLDER_PATH_FOR_PLOTLY_CHART = '/Users/prakhar/Desktop/MA_trading_bot/saved_files/charts_plotted_portly' 
+OUTPUT_FOLDER_PATH_FOR_PLOTLY_CHART = '/Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/backtesting_plots'
 
 
-
+'''
 # ===================================== CORRECT CONFIGS DOUBLE CHECKING ====================================
 if (input('Did you determine the MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED ?\n')) == 'n':
     exit()
@@ -359,7 +300,7 @@ if (input('Does this stock / do these stocks belong to the tech sector?\n'))[0] 
     TECH_SECTOR_STOCK = True 
 else: 
     TECH_SECTOR_STOCK = False 
-
+'''
 
 
 
@@ -379,4 +320,3 @@ RSI_OVERSOLD_WARNING = 30
 MACD_SLOW_PERIOD = 12  
 MACD_FAST_PERIOD = 26  
 MACD_SIGNAL_PERIOD = 9  
-

@@ -1,26 +1,29 @@
+import os
 import plotly.graph_objects as go
 import plotly.io as pio
 
+# disable browser auto-open
 pio.renderers.default = "browser"
 
 def plotly_plot_portfolio_values(portfolio_values_series, data, ticker):
-    '''
-    Plots the portfolio values over time using Plotly and opens the chart in the browser.
+    """
+    Plots and saves the portfolio value over time using Plotly.
 
-    Arguments:
-        portfolio_values_series (list or pd.Series): Portfolio values (must be in time order)
-        data (pd.DataFrame): The same DataFrame used in the backtest, to extract the correct date index
-        hex_color (str): Hex color code for the line (default is Plotly blue)
-    '''
+    Args:
+        portfolio_values_series (list or pd.Series): Portfolio values in time order.
+        data (pd.DataFrame): The DataFrame used in backtesting (for date index).
+        ticker (str): Stock ticker, used in chart title and filename.
+    """
+
     fig = go.Figure()
     fig.add_trace(go.Scatter(
-        x=data.index,  # Dates on x-axis
+        x=data.index,
         y=portfolio_values_series,
         mode='lines+markers',
         name='Portfolio Value',
         line=dict(color='#2E04D4', width=2),
-        marker=dict(size=1),  # Small dots
-        hovertemplate='Date: %{x}<br>Value: %{y}<extra></extra>'  # Clean hoverbox
+        marker=dict(size=1),
+        hovertemplate='Date: %{x}<br>Value: %{y}<extra></extra>'
     ))
 
     fig.update_layout(
@@ -32,4 +35,14 @@ def plotly_plot_portfolio_values(portfolio_values_series, data, ticker):
         hovermode='x unified'
     )
 
-    fig.show()
+    # ✅ define and create the output folder
+    output_dir = "/Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/backtesting_portfolio_plots"
+    os.makedirs(output_dir, exist_ok=True)
+
+    # ✅ create file path per ticker
+    output_path = os.path.join(output_dir, f"{ticker}_portfolio_value.html")
+
+    # ✅ save without opening in browser
+    fig.write_html(output_path, auto_open=False)
+
+    print(f"✅ Portfolio plot saved at: {output_path}")

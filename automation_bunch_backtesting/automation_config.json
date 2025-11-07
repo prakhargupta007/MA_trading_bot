@@ -1,0 +1,32 @@
+{
+  "model_number": "60",
+
+  "tickers": ["AAPL", "MSFT", "NVDA", "QQQ"],
+
+  "strategies": [
+    "sentiment_strategy"
+  ],
+
+  "feature_sets": [
+    {
+      "feature_set_id": "fs_60",
+      "feature_columns": [
+        "sma_diff_pct_10d",
+        "sma_diff_pct_50d",
+        "sma_diff_pct_200d"
+      ]
+    }
+  ],
+
+  "paths": {
+    "project_root": ".",
+    "final_root": "/Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results",
+    "final_excel_dir": "/Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel",
+    "final_plots_dir": "/Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/backtesting_plots",
+    "stored_data_dir": "data/stored_data2",
+    "ml_saved_models_dir": "ML/saved_models"
+  }
+}
+
+
+

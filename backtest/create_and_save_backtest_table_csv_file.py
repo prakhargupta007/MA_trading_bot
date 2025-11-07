@@ -7,7 +7,8 @@ from config import FOLDER_PATH_FOR_INDIVIDUAL_BACKTEST_TABLE
 FOLDER_PATH = FOLDER_PATH_FOR_INDIVIDUAL_BACKTEST_TABLE
 
 def create_and_save_backtest_table_csv_file(backtesting_results, ticker):
-    actions, dates, numbers, prices, cash_flows = backtesting_results
+    actions, dates, numbers, prices, cash_flows, trades_df = backtesting_results
+
 
     os.makedirs(FOLDER_PATH, exist_ok=True)
 
