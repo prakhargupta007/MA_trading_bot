@@ -12,6 +12,8 @@ def prepare_data_without_scaling(data):
     data_with_labels = label_data_with_future_window(data_with_features,LOOKAHEAD_DAYS)
 
     # Drop any rows that have NaNs anywhere, so training data is clean
+    print("NaN ratio per feature column before dropna:")
+    print(data_with_labels.isna().mean().sort_values(ascending=False).head(15))
     data_clean = data_with_labels.dropna()
 
     # Split clean data into features (X) and target labels (y)
@@ -27,4 +29,10 @@ def prepare_data_without_scaling(data):
     if len(X_test) < 50:
         print(f"[WARNING]!! Test set size is suspiciously small: {len(X_test)}")
 
-    return X_train, X_test, y_train, y_test, feature_names
+    if len(X_train) == 0 or len(X_test) == 0:
+        raise ValueError(
+            f"[ERROR] After cleaning, dataset is empty (X_train={len(X_train)}, X_test={len(X_test)}). "
+            "Check your feature generation logic or external data alignment."
+        )
+
+    return X_train, X_test, y_train.astype(int), y_test.astype(int), feature_names

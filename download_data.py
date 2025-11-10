@@ -4,23 +4,19 @@ import yfinance as yf
 import pandas as pd
 # This function downloads data of the period why is exactly in between start and end dates, excluding 
 
-#start = '2023-01-01'
-#end = '2025-08-17'
 
-#start = '2017-01-01'
-#end = '2022-12-31'
+#start = '2010-01-01'
+#end = '2020-12-31'
 
-start = '2010-01-01'
-end = '2020-12-31'
-
-#start = '2021-01-01'
-#end = '2025-10-24'
+start = '2021-01-01'
+end = '2025-10-24'
 
 #tickers = ['AAPL','NVDA','MSFT','QQQ','^VIX']
-tickers = ['^GSPC','^NDX']
+#tickers = ['^GSPC','^NDX']
 #tickers = ['^VIX']
+tickers = ["ADBE", "CRM", "NFLX", "AMZN"]
 
-word = 'train_test' 
+word = 'backtest' 
 
 def download_data():
     for ticker in tickers:

@@ -12,6 +12,7 @@ from backtest.create_and_save_backtest_summary_table_csv_file import (
     format_confusion_matrix_string,
     apply_summary_excel_formatting,
 )
+from automation_bunch_backtesting.config_utils import patch_config_values
 
 ML_STRATEGIES = {
     "logistic_regression": {
@@ -41,6 +42,15 @@ RULE_STRATEGIES = {
     "sentiment_strategy",
 }
 
+MODEL_PATH_KEYS = {
+    "logistic_regression": "LOG_REG_MODEL_PATH_FOR_STRATEGY",
+    "random_forest": "RANDOM_FOREST_MODEL_PATH_FOR_STRATEGY",
+    "xgboost": "XGBOOST_MODEL_PATH_FOR_STRATEGY",
+    "mlp": "MLP_MODEL_PATH_FOR_STRATEGY",
+}
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
 # Detect the project root (directory that contains config.py)
 project_root = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.abspath(os.path.join(project_root, ".."))
@@ -62,32 +72,15 @@ def log(msg, log_path):
         f.write(msg + "\n")
 
 def file_url(path_str):
-    # Convert to clickable file:// URL for Excel
+    """Return a project-relative path for display in Excel/CSV."""
+    if not path_str:
+        return ""
     p = Path(path_str).resolve()
-    return f"file://{p}"
-
-def patch_config_values(updates: dict):
-    """Safely patch values in config.py while preserving indentation."""
-    config_path = os.path.join(project_root, "config.py")
-    with open(config_path, "r") as f:
-        lines = f.readlines()
-
-    new_lines = []
-    for line in lines:
-        stripped = line.strip()
-        replaced = False
-        for key, value in updates.items():
-            if stripped.startswith(f"{key} =") or stripped.startswith(f"{key}="):
-                indent = len(line) - len(line.lstrip(" "))  # count spaces
-                new_lines.append(" " * indent + f"{key} = {value}\n")
-                replaced = True
-                break
-        if not replaced:
-            new_lines.append(line)
-
-    with open(config_path, "w") as f:
-        f.writelines(new_lines)
-
+    try:
+        rel = p.relative_to(PROJECT_ROOT)
+    except ValueError:
+        rel = p
+    return str(rel)
 
 def set_feature_columns(columns):
     """
@@ -102,6 +95,11 @@ def set_feature_columns(columns):
     text = re.sub(pattern, replacement, text, flags=re.S)
 
     cfg_path.write_text(text)
+
+
+def build_model_path(model_prefix: str, ticker: str, model_number: str, base_dir: Path) -> str:
+    filename = f"{model_prefix}_model_{ticker}_{model_number}.joblib"
+    return str((base_dir / filename).resolve())
 
 def build_training_data_path(ticker):
     # Uses your existing pattern for training CSVs
@@ -132,7 +130,9 @@ def run_cmd(cmd, log_path):
     log(f"$ {adjusted_cmd}", log_path)
     result = subprocess.run(adjusted_cmd, shell=True)
     if result.returncode != 0:
-        raise RuntimeError(f"Command failed with exit code {result.returncode}: {adjusted_cmd}")
+        log(f"[WARN] Command failed with exit code {result.returncode}: {adjusted_cmd}", log_path)
+        return False
+    return True
 
 def latest_summary_csv(summary_dir, ticker):
     # Your summary function writes: summary_backtest_table_{TICKERS}.csv
@@ -152,6 +152,81 @@ def infer_plot_path(final_plots_dir, ticker, strategy):
     # We will use the lower-case strategy string you pass in.
     return str(Path(final_plots_dir) / f"{ticker}_{strategy}_strategy_plot.html")
 
+
+def collect_summary_row(
+    ticker,
+    strategy,
+    feature_set_id,
+    model_number,
+    summary_dir,
+    final_plots_dir,
+    log_path,
+):
+    try:
+        import pandas as pd
+
+        summary_csv_path = latest_summary_csv(summary_dir, ticker)
+        df = pd.read_csv(summary_csv_path)
+        row = df[df["Ticker"] == ticker].tail(1)
+        if row.empty:
+            row = df.tail(1)
+
+        row_dict = row.iloc[0].to_dict()
+
+        if strategy in ML_STRATEGIES:
+            assigned_feature_set = feature_set_id
+            assigned_model_number = model_number
+        else:
+            assigned_feature_set = ""
+            assigned_model_number = ""
+
+        row_dict.update({
+            "Ticker": ticker,
+            "Strategy": strategy,
+            "Model_Number": assigned_model_number,
+            "Model_Name": ML_STRATEGIES.get(strategy, {}).get("model_name", ""),
+            "Feature_Set_ID": assigned_feature_set,
+        })
+
+        signal_plot_raw = row_dict.get("Signal Execution Plot Link") or infer_plot_path(
+            final_plots_dir, ticker, strategy
+        )
+        portfolio_plot_raw = row_dict.get("Portfolio Value Plot Link", "")
+
+        row_dict["_SignalPlotAbsPath"] = signal_plot_raw
+        row_dict["_PortfolioPlotAbsPath"] = portfolio_plot_raw
+        row_dict["Signal Execution Plot Link"] = "Open Signal Plot" if signal_plot_raw else ""
+        row_dict["Portfolio Value Plot Link"] = "Open Portfolio Plot" if portfolio_plot_raw else ""
+
+        if strategy in ML_STRATEGIES:
+            try:
+                from automation_bunch_backtesting.ml_metrics_eval import compute_ml_metrics_condensed
+                ml_metrics = compute_ml_metrics_condensed(strategy, ticker)
+                row_dict.update(ml_metrics)
+            except Exception as ml_err:
+                log(f"[WARN] ML metrics failed for {ticker} {strategy}: {ml_err}", log_path)
+                row_dict.update({
+                    "Accuracy": "",
+                    "Precision": "",
+                    "Recall": "",
+                    "F1": "",
+                    "Confusion_Matrix": ""
+                })
+        else:
+            row_dict.update({
+                "Accuracy": "",
+                "Precision": "",
+                "Recall": "",
+                "F1": "",
+                "Confusion_Matrix": ""
+            })
+
+        return row_dict
+
+    except Exception as err:
+        log(f"[WARN] Could not collect summary for {ticker} {strategy}: {err}", log_path)
+        return None
+
 # ----------------------------
 # Main
 # ----------------------------
@@ -160,6 +235,8 @@ def main():
     model_number = cfg["model_number"]
     tickers = cfg["tickers"]
     strategies = cfg["strategies"]
+    selected_ml_strategies = [s for s in strategies if s in ML_STRATEGIES]
+    selected_rule_strategies = [s for s in strategies if s not in ML_STRATEGIES]
     feature_sets = cfg["feature_sets"]
     paths = cfg["paths"]
 
@@ -167,6 +244,10 @@ def main():
     final_root = Path(paths["final_root"])
     final_excel_dir = Path(paths["final_excel_dir"])
     final_plots_dir = Path(paths["final_plots_dir"])
+    ml_saved_models_dir = Path(paths.get("ml_saved_models_dir", "ML/saved_models"))
+    if not ml_saved_models_dir.is_absolute():
+        ml_saved_models_dir = project_root / ml_saved_models_dir
+    ml_saved_models_dir = ml_saved_models_dir.resolve()
     sentiment_data_dir = paths.get("sentiment_data_dir")
     if sentiment_data_dir:
         sentiment_data_dir = Path(sentiment_data_dir)
@@ -174,7 +255,7 @@ def main():
             sentiment_data_dir = project_root / sentiment_data_dir
         sentiment_data_dir = sentiment_data_dir.resolve()
 
-    ensure_dirs(final_root, final_excel_dir, final_plots_dir)
+    ensure_dirs(final_root, final_excel_dir, final_plots_dir, ml_saved_models_dir)
 
     # Log file
     log_path = str(final_root / "automation_log.txt")
@@ -203,7 +284,9 @@ def main():
 
 
 
-    # 1) Loop over feature sets (you currently have one; this scales later)
+    failure_log = []
+
+    # 1) Loop over feature sets (ML strategies only)
     for fs in feature_sets:
         fs_id = fs["feature_set_id"]
         fs_cols = fs["feature_columns"]
@@ -224,34 +307,135 @@ def main():
                 backtest_csv = build_backtest_data_path(ticker)
 
                 # 2a) Train ML models only for ML strategies listed in config
-                selected_ml_strategies = [s for s in strategies if s in ML_STRATEGIES]
                 if not selected_ml_strategies:
                     log(f"[INFO] No ML strategies selected for {ticker}; skipping training phase.", log_path)
                 else:
                     for ml_strategy in selected_ml_strategies:
                         ml_config = ML_STRATEGIES[ml_strategy]
+                        model_path = build_model_path(
+                            ml_config["model_name"], ticker, model_number, ml_saved_models_dir
+                        )
+                        strategy_path_key = MODEL_PATH_KEYS.get(ml_strategy)
                         patch_config_values({
                             "TICKER": f"'{ticker}'",
                             "DATA_FOR_ML_MODEL_TRAINING": f"'{training_csv}'",
                             "model_name": f"'{ml_config['model_name']}'",
                             "model_number": f"'{model_number}'",
+                            "MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED": f"'{model_path}'",
+                            "TRAINING_MODE": "True",
+                            **(
+                                {strategy_path_key: f"'{model_path}'"}
+                                if strategy_path_key
+                                else {}
+                            ),
                             **(
                                 {"DATA_PATH_FOR_SENTIMENT_STRATEGY": f"'{sentiment_data_dir}'"}
                                 if sentiment_data_dir
                                 else {}
                             ),
                         })
-                        try:
-                            log(f"[INFO] Training ML model for strategy: {ml_strategy}", log_path)
-                            run_cmd(ml_config["train_cmd"], log_path)
-                        except Exception as e:
-                            log(f"[WARN] Training failed for {ticker} {ml_strategy}_{model_number}: {e}", log_path)
+                        log(f"[INFO] Training ML model for strategy: {ml_strategy}", log_path)
+                        if not run_cmd(ml_config["train_cmd"], log_path):
+                            msg = f"[WARN] Training failed for {ticker} {ml_strategy}_{model_number}. Skipping this model."
+                            log(msg, log_path)
+                            failure_log.append({
+                                "phase": "training",
+                                "ticker": ticker,
+                                "strategy": ml_strategy,
+                                "feature_set": fs_id,
+                                "model_number": model_number,
+                                "reason": "training command failed"
+                            })
                             continue
 
-                # 2b) Backtest all requested strategies for this ticker
-                for strategy in strategies:
+                # 2b) Backtest only ML strategies for this ticker/feature set
+                for strategy in selected_ml_strategies:
+                    model_path_patch = {}
+                    strategy_model_path = None
+                    if strategy in ML_STRATEGIES:
+                        strategy_config = ML_STRATEGIES[strategy]
+                        strategy_model_path = build_model_path(
+                            strategy_config["model_name"], ticker, model_number, ml_saved_models_dir
+                        )
+                        if not Path(strategy_model_path).exists():
+                            log(
+                                f"[WARN] Model file missing for {ticker} {strategy}: {strategy_model_path}. "
+                                "Skipping backtest for this combination.",
+                                log_path,
+                            )
+                            continue
+                        strategy_key = MODEL_PATH_KEYS.get(strategy)
+                        if strategy_key:
+                            model_path_patch[strategy_key] = f"'{strategy_model_path}'"
+
                     patch_config_values({
                         "USE_STORED_DATA": "True",
+                        "TRAINING_MODE": "False",
+                        "TICKERS": f"'{ticker}'",
+                        "STORED_DATA_TO_BE_READ": f"'{backtest_csv}'",
+                        "CHOSEN_STRATEGY": f"'{strategy}'",
+                        "VISUALISE_PLOTTED_SIGNAL_EXECUTIONS": "True",
+                        **model_path_patch,
+                        **(
+                            {"DATA_PATH_FOR_SENTIMENT_STRATEGY": f"'{sentiment_data_dir}'"}
+                            if sentiment_data_dir
+                            else {}
+                        ),
+                    })
+                    log(f"[INFO] Backtesting strategy: {strategy}", log_path)
+                    if not run_cmd("python3 main.py", log_path):
+                        msg = f"[WARN] Backtest failed for {ticker} {strategy}. Continuing."
+                        log(msg, log_path)
+                        failure_log.append({
+                            "phase": "backtest",
+                            "ticker": ticker,
+                            "strategy": strategy,
+                            "feature_set": fs_id,
+                            "model_number": model_number,
+                            "reason": "backtest command failed"
+                        })
+                        continue
+
+                    row_dict = collect_summary_row(
+                        ticker=ticker,
+                        strategy=strategy,
+                        feature_set_id=fs_id,
+                        model_number=model_number,
+                        summary_dir=summary_dir,
+                        final_plots_dir=final_plots_dir,
+                        log_path=log_path,
+                    )
+                    if row_dict:
+                        combined_rows.append(row_dict)
+                    else:
+                        failure_log.append({
+                            "phase": "summary",
+                            "ticker": ticker,
+                            "strategy": strategy,
+                            "feature_set": fs_id,
+                            "model_number": model_number,
+                            "reason": "summary row missing"
+                        })
+
+            except Exception as e:
+                log(f"[WARN] Outer loop failure for ticker {ticker}: {e}", log_path)
+                traceback.print_exc()
+                continue
+
+        # ✅ Increment model_number after all tickers in this feature set are done
+        model_number = str(int(model_number) + 1)
+        log(f"Incremented model_number → {model_number}", log_path)
+
+    # Separate pass for rule-based strategies (feature-set agnostic)
+    if selected_rule_strategies:
+        log("=== Running rule-based strategies (feature-set agnostic phase) ===", log_path)
+        for ticker in tickers:
+            try:
+                backtest_csv = build_backtest_data_path(ticker)
+                for strategy in selected_rule_strategies:
+                    patch_config_values({
+                        "USE_STORED_DATA": "True",
+                        "TRAINING_MODE": "False",
                         "TICKERS": f"'{ticker}'",
                         "STORED_DATA_TO_BE_READ": f"'{backtest_csv}'",
                         "CHOSEN_STRATEGY": f"'{strategy}'",
@@ -262,81 +446,45 @@ def main():
                             else {}
                         ),
                     })
-                    try:
-                        log(f"[INFO] Backtesting strategy: {strategy}", log_path)
-                        run_cmd("python3 main.py", log_path)
-                    except Exception as e:
-                        log(f"[WARN] Backtest failed for {ticker} {strategy}: {e}", log_path)
+                    log(f"[INFO] Backtesting rule-based strategy: {strategy}", log_path)
+                    if not run_cmd("python3 main.py", log_path):
+                        msg = f"[WARN] Backtest failed for {ticker} {strategy}. Continuing."
+                        log(msg, log_path)
+                        failure_log.append({
+                            "phase": "backtest",
+                            "ticker": ticker,
+                            "strategy": strategy,
+                            "feature_set": "",
+                            "model_number": "",
+                            "reason": "backtest command failed"
+                        })
                         continue
 
-                    # 2c) Read the summary CSV for this run
-                    try:
-                        summary_csv_path = latest_summary_csv(summary_dir, ticker)
-                        import pandas as pd
-                        df = pd.read_csv(summary_csv_path)
-                        row = df[df["Ticker"] == ticker].tail(1)
-                        if row.empty:
-                            row = df.tail(1)
-
-                        row_dict = row.iloc[0].to_dict()
-
-                        # 2d) Add identifiers
-                        if strategy in ML_STRATEGIES:
-                            feature_set_id = fs_id
-                        else:
-                            feature_set_id = ""
-                            log(f"[INFO] Skipping feature set ID for rule-based strategy: {strategy}", log_path)
-
-                        row_dict.update({
-                            "Ticker": ticker,
-                            "Strategy": strategy,
-                            "Model_Number": model_number if strategy in ML_STRATEGIES else "",
-                            "Model_Name": ML_STRATEGIES.get(strategy, {}).get("model_name", ""),
-                            "Feature_Set_ID": feature_set_id
+                    row_dict = collect_summary_row(
+                        ticker=ticker,
+                        strategy=strategy,
+                        feature_set_id="",
+                        model_number="",
+                        summary_dir=summary_dir,
+                        final_plots_dir=final_plots_dir,
+                        log_path=log_path,
+                    )
+                    if row_dict:
+                        combined_rows.append(row_dict)
+                    else:
+                        failure_log.append({
+                            "phase": "summary",
+                            "ticker": ticker,
+                            "strategy": strategy,
+                            "feature_set": "",
+                            "model_number": "",
+                            "reason": "summary row missing"
                         })
 
-                        # 2e) Add clickable Plotly link
-                        plot_path = infer_plot_path(final_plots_dir, ticker, strategy)
-                        row_dict["Plot Link"] = file_url(plot_path)
-
-                        # 2f) ML metrics (only for ML-based strategies)
-                        if strategy in ML_STRATEGIES:
-                            try:
-                                from automation_bunch_backtesting.ml_metrics_eval import compute_ml_metrics_condensed
-                                ml_metrics = compute_ml_metrics_condensed(strategy, ticker)
-                                row_dict.update(ml_metrics)
-                            except Exception as e:
-                                log(f"[WARN] ML metrics failed for {ticker} {strategy}: {e}", log_path)
-                                row_dict.update({
-                                    "Accuracy": "",
-                                    "Precision": "",
-                                    "Recall": "",
-                                    "F1": "",
-                                    "Confusion_Matrix": ""
-                                })
-                        else:
-                            row_dict.update({
-                                "Accuracy": "",
-                                "Precision": "",
-                                "Recall": "",
-                                "F1": "",
-                                "Confusion_Matrix": ""
-                            })
-
-                        combined_rows.append(row_dict)
-
-                    except Exception as e:
-                        log(f"[WARN] Could not collect summary for {ticker} {strategy}: {e}", log_path)
-                        continue
-
             except Exception as e:
-                log(f"[WARN] Outer loop failure for ticker {ticker}: {e}", log_path)
+                log(f"[WARN] Rule-based loop failure for ticker {ticker}: {e}", log_path)
                 traceback.print_exc()
                 continue
-
-        # ✅ Increment model_number after all tickers in this feature set are done
-        model_number = str(int(model_number) + 1)
-        log(f"Incremented model_number → {model_number}", log_path)
 
 
 
@@ -364,9 +512,17 @@ def main():
             # ML metrics (condensed)
             "Accuracy", "Precision", "Recall", "F1", "Confusion_Matrix",
             # Plot link
-            "Plot Link"
+            "Signal Execution Plot Link", "Portfolio Value Plot Link"
         ]
         df_all = pd.DataFrame(combined_rows)
+
+        signal_abs = df_all["_SignalPlotAbsPath"] if "_SignalPlotAbsPath" in df_all.columns else None
+        portfolio_abs = df_all["_PortfolioPlotAbsPath"] if "_PortfolioPlotAbsPath" in df_all.columns else None
+        if signal_abs is not None:
+            df_all.drop(columns=["_SignalPlotAbsPath"], inplace=True)
+        if portfolio_abs is not None:
+            df_all.drop(columns=["_PortfolioPlotAbsPath"], inplace=True)
+
         if "Number_of_Trades" not in df_all.columns:
             df_all["Number_of_Trades"] = [
                 row.get("Number_of_Trades", "") for row in combined_rows
@@ -389,11 +545,39 @@ def main():
         with pd.ExcelWriter(excel_path, engine="openpyxl") as writer:
             df_all.to_excel(writer, index=False, sheet_name="Summary")
             ws = writer.sheets["Summary"]
+
+            def _apply_hyperlinks(col_name, paths, label):
+                if paths is None or col_name not in df_all.columns:
+                    return
+                col_idx = df_all.columns.get_loc(col_name) + 1
+                for row_idx, path in enumerate(paths.tolist(), start=2):
+                    if not path:
+                        continue
+                    cell = ws.cell(row=row_idx, column=col_idx)
+                    cell.value = label
+                    cell.hyperlink = str(Path(path).resolve())
+                    cell.style = "Hyperlink"
+
+            _apply_hyperlinks("Signal Execution Plot Link", signal_abs, "Open Signal Plot")
+            _apply_hyperlinks("Portfolio Value Plot Link", portfolio_abs, "Open Portfolio Plot")
+
             apply_summary_excel_formatting(ws)
 
         log(f"✅ Combined Excel written: {excel_path}", log_path)
     except Exception as e:
         log(f"[ERROR] Writing Excel failed: {e}", log_path)
+
+    if failure_log:
+        log("\n--- SUMMARY OF FAILED RUNS ---", log_path)
+        for entry in failure_log:
+            log(
+                f"{entry['phase'].upper()}: ticker={entry['ticker']}, "
+                f"strategy={entry['strategy']}, feature_set={entry['feature_set']}, "
+                f"model_number={entry['model_number']}, reason={entry['reason']}",
+                log_path,
+            )
+    else:
+        log("All training/backtest tasks completed successfully.", log_path)
 
     log(f"=== Automation finished: {datetime.now().isoformat()} ===", log_path)
 

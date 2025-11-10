@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 import plotly.graph_objects as go
 import plotly.io as pio
 
@@ -40,9 +41,11 @@ def plotly_plot_portfolio_values(portfolio_values_series, data, ticker):
     os.makedirs(output_dir, exist_ok=True)
 
     # ✅ create file path per ticker
-    output_path = os.path.join(output_dir, f"{ticker}_portfolio_value.html")
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    output_path = os.path.join(output_dir, f"{ticker}_portfolio_value_{timestamp}.html")
 
     # ✅ save without opening in browser
     fig.write_html(output_path, auto_open=False)
 
     print(f"✅ Portfolio plot saved at: {output_path}")
+    return output_path

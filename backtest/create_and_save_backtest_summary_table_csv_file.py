@@ -396,7 +396,7 @@ def _sortino_ratio(equity_curve: pd.Series, rf_annual: float = 0.0, periods_per_
     excess = rets - rf
     downside = excess[excess < 0]
     denom = downside.std(ddof=1)
-    if denom == 0 or np.isnan(denom):
+    if np.isnan(denom) or np.isclose(denom, 0.0):
         return 0.0
     return float((excess.mean() / denom) * np.sqrt(periods_per_year))
 
@@ -540,15 +540,16 @@ def _equity_from_prices(close: pd.Series) -> pd.Series:
 
 def _sharpe_from_equity(equity_curve: pd.Series, rf_annual: float = 0.0, periods_per_year: int = 252) -> float:
     eq = pd.Series(equity_curve).astype(float).reset_index(drop=True)
-    rets = eq.pct_change().dropna()
-    if len(rets) < 2:
+    returns = eq.pct_change().dropna()
+    if returns.empty:
         return 0.0
     rf = rf_annual / periods_per_year
-    excess = rets - rf
-    denom = excess.std(ddof=1)
-    if denom == 0 or np.isnan(denom):
+    excess = returns - rf
+    mean = excess.mean()
+    std = excess.std(ddof=1)
+    if np.isnan(std) or np.isclose(std, 0.0):
         return 0.0
-    return float((excess.mean() / denom) * np.sqrt(periods_per_year))
+    return float((mean / std) * np.sqrt(periods_per_year))
 
 # ---------------- Main Summary Writer ---------------- #
 def create_and_save_backtest_summary_table_csv_file(
@@ -561,7 +562,8 @@ def create_and_save_backtest_summary_table_csv_file(
     strategy_names=None,                  # list[str]
     model_numbers=None,                   # list[str] or list[int]
     feature_set_ids=None,                 # list[str]
-    plot_links=None,                      # list[str] (file paths)
+    signal_plot_links=None,               # list[str] (file paths)
+    portfolio_plot_links=None,            # list[str] (file paths)
     portfolio_values_dict=None,           # dict[ticker]-> pd.Series (strategy equity curve)
     trade_tables_dict=None,               # dict[ticker]-> pd.DataFrame (must include 'Profit')
     price_series_dict=None,               # dict[ticker]-> pd.Series of 'Close' prices (for B&H Sharpe)
@@ -588,7 +590,8 @@ def create_and_save_backtest_summary_table_csv_file(
         strategy = strategy_names[i] if strategy_names else ""
         model_no = model_numbers[i] if model_numbers else ""
         feat_id  = feature_set_ids[i] if feature_set_ids else ""
-        plot     = plot_links[i] if plot_links else ""
+        signal_plot = signal_plot_links[i] if signal_plot_links else ""
+        portfolio_plot = portfolio_plot_links[i] if portfolio_plot_links else ""
 
         # Trading metrics computed here (no new imports in main.py)
         pv_series = portfolio_values_dict.get(ticker) if portfolio_values_dict else None
@@ -662,7 +665,8 @@ def create_and_save_backtest_summary_table_csv_file(
             "Recall": rec,
             "F1_Score": f1,
             "Confusion_Matrix": conf,
-            "Plot_Link": plot
+            "Signal Execution Plot Link": signal_plot,
+            "Portfolio Value Plot Link": portfolio_plot,
         })
 
     df = pd.DataFrame(rows)
@@ -677,16 +681,6 @@ def create_and_save_backtest_summary_table_csv_file(
     csv_df.to_csv(csv_path, index=False)
     print(f"✅ Summary CSV with metrics saved at: {csv_path}")
 
-    # Make Plot_Link clickable
-    def _xl_hyperlink(path: str):
-        if not path:
-            return ""
-        # Excel-friendly absolute path hyperlink
-        return f'=HYPERLINK("{path}", "Open Plot")'
-
-    if "Plot_Link" in df.columns:
-        df["Plot_Link"] = df["Plot_Link"].apply(_xl_hyperlink)
-
     # Save to Excel
     with pd.ExcelWriter(full_path, engine="openpyxl") as writer:
         df.to_excel(writer, index=False, sheet_name="Summary")
@@ -694,6 +688,24 @@ def create_and_save_backtest_summary_table_csv_file(
         # bold header
         for cell in ws[1]:
             cell.font = Font(bold=True)
+
+        hyperlink_cols = {
+            "Signal Execution Plot Link": "Open Signal Plot",
+            "Portfolio Value Plot Link": "Open Portfolio Plot",
+        }
+        for col_name, link_text in hyperlink_cols.items():
+            if col_name not in df.columns:
+                continue
+            col_idx = df.columns.get_loc(col_name) + 1  # 1-based
+            for row_idx in range(2, ws.max_row + 1):
+                cell = ws.cell(row=row_idx, column=col_idx)
+                path = cell.value
+                if not path:
+                    continue
+                cell.value = link_text
+                cell.hyperlink = path
+                cell.style = "Hyperlink"
+
         apply_summary_excel_formatting(ws)
 
     # small CLI preview (optional)

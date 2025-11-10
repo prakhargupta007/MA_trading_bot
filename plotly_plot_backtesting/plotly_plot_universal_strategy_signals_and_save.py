@@ -1,6 +1,7 @@
 import plotly.graph_objects as go
 from config import OUTPUT_FOLDER_PATH_FOR_PLOTLY_CHART
 import os
+from datetime import datetime
 
 import plotly.io as pio
 pio.renderers.default = "browser"
@@ -83,10 +84,10 @@ def plotly_plot_universal_strategy_signals_and_save(data, signals, ticker, chose
     # Show the figure
     #fig.show()
 
-    # Save the interactive chart as HTML
-    file_name = f"{ticker}_{chosen_strategy}_strategy_plot.html"
+    # Save the interactive chart as HTML (unique per run)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    file_name = f"{ticker}_{chosen_strategy}_{timestamp}_strategy_plot.html"
     full_path = os.path.join(OUTPUT_FOLDER_PATH_FOR_PLOTLY_CHART, file_name)
     fig.write_html(full_path)
 
     return full_path
-

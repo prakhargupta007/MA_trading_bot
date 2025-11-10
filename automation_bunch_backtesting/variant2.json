@@ -1,29 +1,45 @@
-{
+
+
+    {
   "model_number": "60",
 
-  "tickers": ["AAPL", "MSFT", "NVDA", "QQQ"],
+  "tickers": ["QQQ"],
 
   "strategies": [
-    "sma",
-    "xgboost",
-    "sentiment_strategy"
+    "sentiment",
+    "logistic_regression",
+    "random_forest",
+    "xgboost"
   ],
 
   "feature_sets": [
+
+
     {
-      "feature_set_id": "fs_60",
-      "feature_columns": [
-        "sma_diff_pct_10d",
-        "sma_diff_pct_50d",
-        "sma_diff_pct_200d"
-      ]
-    },
-    {
-      "feature_set_id": "fs_61",
+      "feature_set_id": "fs_63",
       "feature_columns": [
         "ema_diff_pct_10d",
         "ema_diff_pct_50d",
-        "ema_diff_pct_200d"
+        "ema_diff_pct_200d",
+        "rsi_14",
+        "vix_roc1",
+        "vix_mean20",
+        "vix_std20"
+      ]
+    },
+    {
+      "feature_set_id": "fs_64",
+      "feature_columns": [
+        "volume_20d_ma",
+        "bb_percent",
+        "bb_lower",
+        "vix_mean20",
+        "rsi_14",
+        "ndx_20d_volatility",
+        "sma_50",
+        "bb_upper",
+        "sma_200",
+        "gspc_20d_volatility"
       ]
     }
   ],
@@ -37,6 +53,3 @@
     "ml_saved_models_dir": "ML/saved_models"
   }
 }
-
-
-

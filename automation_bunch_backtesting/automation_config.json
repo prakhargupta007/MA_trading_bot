@@ -1,19 +1,124 @@
 {
-  "model_number": "60",
+  "model_number": "100",
 
-  "tickers": ["AAPL", "MSFT", "NVDA", "QQQ"],
+  "tickers": [
+    "MSFT",
+    "AAPL",
+    "GOOG",
+    "PLTR",
+    "CRWD",
+    "NET",
+    "NVDA",
+    "TSLA",
+    "AMD",
+    "QQQ"
+  ],
 
   "strategies": [
-    "sentiment_strategy"
+    "sma",
+    "ema",
+    "sma_rsi",
+    "rsi_trend_filter",
+    "macd_trend_follow",
+    "bollinger_mean_reversion",
+    "bb_squeeze_breakout",
+    "obv_trend_confirmation",
+    "ma_distance_reversion",
+    "vol_adjusted_momentum",
+    "sentiment_strategy",
+    "sentiment_momentum_confirmation",
+    "sentiment_regime_filter",
+    "logistic_regression",
+    "random_forest",
+    "xgboost"
   ],
 
   "feature_sets": [
     {
-      "feature_set_id": "fs_60",
+      "feature_set_id": "fs_100",
+      "feature_columns": ["sma_diff_pct_50d", "sma_diff_pct_200d"]
+    },
+    {
+      "feature_set_id": "fs_101",
+      "feature_columns": ["ema_diff_pct_50d", "ema_diff_pct_200d"]
+    },
+    {
+      "feature_set_id": "fs_102",
+      "feature_columns": ["sma_diff_pct_10d", "sma_diff_pct_50d", "sma_diff_pct_200d"]
+    },
+    {
+      "feature_set_id": "fs_103",
+      "feature_columns": ["ema_diff_pct_10d", "ema_diff_pct_50d", "ema_diff_pct_200d"]
+    },
+    {
+      "feature_set_id": "fs_104",
+      "feature_columns": ["sma_50", "sma_200", "rsi_14", "momentum_10", "daily_return"]
+    },
+    {
+      "feature_set_id": "fs_105",
+      "feature_columns": ["sma_50", "sma_200", "volatility_14", "vix_mean20", "vix_std20"]
+    },
+    {
+      "feature_set_id": "fs_106",
+      "feature_columns": ["momentum_10", "volatility_14", "volume_20d_ma", "obv", "bb_percent"]
+    },
+    {
+      "feature_set_id": "fs_107",
+      "feature_columns": ["macd", "macd_signal", "ema_diff_pct_50d", "ema_diff_pct_200d", "gspc_20d_volatility"]
+    },
+    {
+      "feature_set_id": "fs_108",
+      "feature_columns": ["bb_upper", "bb_lower", "bb_percent", "volatility_14", "rsi_14", "gspc_daily_return"]
+    },
+    {
+      "feature_set_id": "fs_109",
+      "feature_columns": ["ema_diff_pct_10d", "momentum_10", "vix_roc1", "vix_mean20", "volume_20d_ma"]
+    },
+    {
+      "feature_set_id": "fs_110",
+      "feature_columns": ["gspc_daily_return", "ndx_daily_return", "gspc_20d_volatility", "ndx_20d_volatility", "ndx_20d_sma", "rsi_14"]
+    },
+    {
+      "feature_set_id": "fs_111",
+      "feature_columns": ["rsi_14", "macd", "sma_200", "bb_percent", "volatility_14", "obv", "gspc_daily_return", "ndx_20d_volatility", "ema_diff_pct_50d"]
+    },
+    {
+      "feature_set_id": "fs_112",
+      "feature_columns": ["volatility_14", "vix_roc1", "vix_mean20", "vix_std20", "mom_diff_pct_20d", "mom_diff_pct_50d", "ema_diff_pct_10d"]
+    },
+    {
+      "feature_set_id": "fs_113",
       "feature_columns": [
-        "sma_diff_pct_10d",
-        "sma_diff_pct_50d",
-        "sma_diff_pct_200d"
+        "rsi_14",
+        "macd",
+        "macd_signal",
+        "sma_50",
+        "sma_200",
+        "bb_upper",
+        "bb_lower",
+        "bb_percent",
+        "daily_return",
+        "volatility_14",
+        "momentum_10",
+        "volume_20d_ma",
+        "obv",
+        "gspc_daily_return",
+        "gspc_20d_volatility",
+        "ndx_daily_return",
+        "ndx_20d_volatility",
+        "ndx_20d_sma",
+        "mom_diff_pct_5d",
+        "mom_diff_pct_10d",
+        "mom_diff_pct_20d",
+        "mom_diff_pct_50d",
+        "mom_diff_pct_100d",
+        "mom_diff_pct_200d",
+        "ema_diff_pct_10d",
+        "ema_diff_pct_50d",
+        "ema_diff_pct_200d",
+        "vix_roc1",
+        "vix_mean20",
+        "vix_std20"
       ]
     }
   ],
@@ -27,6 +132,23 @@
     "ml_saved_models_dir": "ML/saved_models"
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -5,3 +5,4 @@ While adding a new strategy, make sure of the following points:
 3. Signals are generated for every single day of the data including the starting days on which the strategy might not  even be able to get implemented (for exmp: SMA / EMA crossover strategy)
 4. Add strategy's name to the strategy map
 5. Add strategy's name as a commented option in the config file 
+6. If new paramter created for strategy add it to indiactor_parameters in the main.py file

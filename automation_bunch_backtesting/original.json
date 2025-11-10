@@ -9,6 +9,7 @@
     "sma_rsi",
     "sma_rsi_macd",
     "ema_rsi",
+    "sentiment_strategy",
     "logistic_regression",
     "random_forest",
     "xgboost"

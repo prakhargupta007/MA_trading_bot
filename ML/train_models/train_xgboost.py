@@ -36,7 +36,11 @@ print('Data file as determined in the config file is being used to train model..
 data = pd.read_csv(DATA_FOR_ML_MODEL_TRAINING, index_col="Date", parse_dates=True)
 
 # Prepare features and labels
-X_train, X_test, y_train, y_test, feature_names = prepare_data_without_scaling(data)
+prepared = prepare_data_without_scaling(data)
+if prepared is None:
+    print("[WARN] Training data empty after cleaning; exiting.")
+    raise SystemExit(0)
+X_train, X_test, y_train, y_test, feature_names = prepared
 num_class = len(y_train.unique())
 
 print('Data has been prepared successfully')

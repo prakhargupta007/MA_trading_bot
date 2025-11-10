@@ -21,7 +21,11 @@ print(data.head())
 print("Before split:", data.shape)
 
 # Prepare data (scaling is optional for RandomForest)
-X_train, X_test, y_train, y_test, feature_names = prepare_data_without_scaling(data)
+prepared = prepare_data_without_scaling(data)
+if prepared is None:
+    print("[WARN] Training data empty after cleaning; exiting.")
+    raise SystemExit(0)
+X_train, X_test, y_train, y_test, feature_names = prepared
 print("After cleaning:", X_train.shape, X_test.shape, y_train.shape, y_test.shape)
 
 print('Data has been prepared successfully')

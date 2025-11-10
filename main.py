@@ -71,6 +71,7 @@ from metrics.sharpe import calculate_sharpe_ratio
 from backtest.create_and_save_backtest_summary_table_csv_file import (
     create_and_save_backtest_summary_table_csv_file,
 )
+from automation_bunch_backtesting.ml_metrics_eval import compute_ml_metrics_condensed
 
 ML_STRATEGIES_SET = {"logistic_regression", "random_forest", "xgboost", "mlp"}
 
@@ -119,6 +120,9 @@ def main():
         summary_buy_hold_CAGRs = []
         summary_cagr_strategy_efficiencies = []
         summary_sharpe_ratios = []
+        signal_plot_links = []
+        portfolio_plot_links = []
+        summary_ml_metrics = {}
 
         # extra for summary Excel
         portfolio_values_dict = {}
@@ -127,7 +131,6 @@ def main():
         strategy_names = []
         model_numbers = []
         feature_set_ids = []
-        plot_links = []
 
         for TICKER in TICKER_LIST:
             print("\n" + "_" * 200)
@@ -152,22 +155,56 @@ def main():
 
             # =========== INDICATORS ===========
             indicator_parameters = {
-                "data": data,
-                "sma_long_period": SMA_LONG_PERIOD,
-                "sma_short_period": SMA_SHORT_PERIOD,
-                "ema_long_period": EMA_LONG_PERIOD,
-                "ema_short_period": EMA_SHORT_PERIOD,
-                "rsi_period": RSI_PERIOD,
-                "macd_fast": MACD_FAST_PERIOD,
-                "macd_slow": MACD_SLOW_PERIOD,
-                "macd_signal": MACD_SIGNAL_PERIOD,
-                "rsi_overbought": RSI_OVERBOUGHT_WARNING,
-                "rsi_oversold": RSI_OVERSOLD_WARNING,
-                "data_path_for_sentiment_strategy": DATA_PATH_FOR_SENTIMENT_STRATEGY,
-                "ticker": TICKER,
-                "start_date": data.index[0],
-                "end_date": data.index[-1],
-            }
+            # --- Core ---
+            "data": data,
+            "ticker": TICKER,
+            "start_date": data.index[0],
+            "end_date": data.index[-1],
+            "data_path_for_sentiment_strategy": DATA_PATH_FOR_SENTIMENT_STRATEGY,
+
+            # --- SMA / EMA / RSI / MACD core parameters ---
+            "sma_long_period": SMA_LONG_PERIOD,       # e.g. 200
+            "sma_short_period": SMA_SHORT_PERIOD,     # e.g. 50
+            "ema_long_period": EMA_LONG_PERIOD,       # e.g. 200
+            "ema_short_period": EMA_SHORT_PERIOD,     # e.g. 50
+            "rsi_period": RSI_PERIOD,                 # e.g. 14
+            "rsi_overbought": RSI_OVERBOUGHT_WARNING, # e.g. 70
+            "rsi_oversold": RSI_OVERSOLD_WARNING,     # e.g. 30
+            "macd_fast": MACD_FAST_PERIOD,            # e.g. 12
+            "macd_slow": MACD_SLOW_PERIOD,            # e.g. 26
+            "macd_signal": MACD_SIGNAL_PERIOD,        # e.g. 9
+
+            # --- Bollinger Bands strategies ---
+            "bb_window": 20,      # common default
+            "bb_std_dev": 2,      # common default
+
+            # --- OBV Trend Confirmation strategy ---
+            "sma_period": 50,     # used for OBV confirmation smoothing
+
+            # --- MA Distance Reversion strategy ---
+            "ma_period": 50,      # main moving average window
+            "ma_threshold": 0.03, # % threshold for reversion trigger (3%)
+
+            # --- Volume / Volatility adjusted momentum strategy ---
+            "momentum_window": 10,     # number of lookback days for momentum
+            "vol_window": 20,          # rolling volatility window
+            "vol_smooth_period": 14,   # smoothing period for volatility normalization
+
+            # --- RSI Trend Filter strategy ---
+            "trend_sma_period": 200,   # long-term trend filter
+            "rsi_threshold": 50,       # RSI cutoff for trend confirmation
+
+            # --- MACD Trend Follow strategy ---
+            "macd_hist_threshold": 0.0,  # threshold around MACD histogram for confirmation
+
+            # --- Sentiment-based strategies ---
+            "sentiment_col": "sentiment",
+            "sentiment_threshold": 0.55,  # used in sentiment-momentum confirmation
+            "sentiment_window": 3,        # smoothing window for regime detection
+            "sentiment_ma_period": 5,     # used in regime filter SMA logic
+}
+
+
 
             stop_loss_parameters = {
                 "column_name": COLUMN_NAME,
@@ -224,13 +261,14 @@ def main():
 
             # =========== PLOTS ===========
             plot_path = None
+            portfolio_plot_path = None
             if VISUALISE_PLOTTED_SIGNAL_EXECUTIONS:
                 print("Generating Plotly chart...")
                 plot_path = plotly_plot_universal_strategy_signals_and_save(
                     data, signals, TICKER, CHOSEN_STRATEGY.upper()
                 )
                 portfolio_value = return_portfolio_values()
-                plotly_plot_portfolio_values(portfolio_value, data, TICKER)
+                portfolio_plot_path = plotly_plot_portfolio_values(portfolio_value, data, TICKER)
                 print("✅ Plots generated.\n")
 
             # =========== METRICS ===========
@@ -277,7 +315,30 @@ def main():
             feature_set_ids.append(
                 f"fs_{model_number}_default" if CHOSEN_STRATEGY in ML_STRATEGIES_SET else ""
             )
-            plot_links.append(plot_path or "")
+            signal_plot_links.append(plot_path or "")
+            portfolio_plot_links.append(portfolio_plot_path or "")
+
+            if CHOSEN_STRATEGY in ML_STRATEGIES_SET:
+                key = (TICKER, CHOSEN_STRATEGY)
+                if key not in summary_ml_metrics:
+                    try:
+                        ml_metrics = compute_ml_metrics_condensed(CHOSEN_STRATEGY, TICKER)
+                        summary_ml_metrics[key] = {
+                            "accuracy": ml_metrics.get("Accuracy", ""),
+                            "precision": ml_metrics.get("Precision", ""),
+                            "recall": ml_metrics.get("Recall", ""),
+                            "f1": ml_metrics.get("F1", ""),
+                            "confusion_matrix": ml_metrics.get("Confusion_Matrix", ""),
+                        }
+                    except Exception as ml_err:
+                        print(f"[WARN] ML metrics computation failed for {TICKER} {CHOSEN_STRATEGY}: {ml_err}")
+                        summary_ml_metrics[key] = {
+                            "accuracy": "",
+                            "precision": "",
+                            "recall": "",
+                            "f1": "",
+                            "confusion_matrix": "",
+                        }
 
             
         # =========== FINAL SUMMARY ===========
@@ -293,11 +354,12 @@ def main():
             strategy_names=strategy_names,
             model_numbers=model_numbers,
             feature_set_ids=feature_set_ids,
-            plot_links=plot_links,
+            signal_plot_links=signal_plot_links,
+            portfolio_plot_links=portfolio_plot_links,
             portfolio_values_dict=portfolio_values_dict,
             trade_tables_dict=trade_tables_dict,
             price_series_dict=price_series_dict,
-            ml_metrics_dict=None,
+            ml_metrics_dict=summary_ml_metrics if summary_ml_metrics else None,
         )
 
         print(

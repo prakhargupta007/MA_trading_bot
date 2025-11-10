@@ -94,12 +94,36 @@ def calculate_and_add_features_to_data(data, gspc_data_file_path, ndx_data_file_
         data[f'ema_diff_pct_{w}d'] = ((data['Close'] - ema) / ema) * 100
 
     # --- VIX features ---
-    vix_data = pd.read_csv(vix_data_file_path, parse_dates=['Date'], index_col='Date')
-    vix_data.index = pd.to_datetime(vix_data.index, errors='coerce')
-    vix_close = vix_data['Close'].rename('vix').reindex(data.index)
+    vix = pd.read_csv(vix_data_file_path)
+    vix['Date'] = pd.to_datetime(vix['Date'], errors='coerce')
+    vix = vix.sort_values('Date')
+    vix = vix[['Date', 'Close']].rename(columns={'Close': 'VIX_Close'})
+
+    vix_idx = vix.set_index('Date')
+    if data.index.tz is not None:
+        data.index = data.index.tz_localize(None)
+    if vix_idx.index.tz is not None:
+        vix_idx.index = vix_idx.index.tz_localize(None)
+    vix_idx = vix_idx.reindex(data.index)
+    vix_close = vix_idx['VIX_Close']
+
     data['vix_roc1'] = vix_close.pct_change(periods=1)
-    data['vix_mean20'] = vix_close.rolling(window=20).mean()
-    data['vix_std20'] = vix_close.rolling(window=20).std()
+    data['vix_mean20'] = vix_close.rolling(window=20, min_periods=1).mean()
+    data['vix_std20'] = vix_close.rolling(window=20, min_periods=1).std()
+
+    valid_ratio = vix_close.notna().mean()
+    print(f"✅ VIX merge check: overlap {vix_close.notna().sum()} valid out of {len(vix_close)} rows ({valid_ratio:.2%} valid).")
+
+    nan_ratio = data.isna().mean()
+    dead_features = nan_ratio[nan_ratio == 1.0].index.tolist()
+    if dead_features:
+        print(f"[WARN] Dropping dead feature columns (all NaN): {dead_features}")
+        data = data.drop(columns=dead_features)
+
+    if data.isna().all().any():
+        print("[ERROR] One or more feature columns are entirely NaN. Check your alignment or data sources.")
+        print(data.isna().mean())
+        raise ValueError("Feature columns invalid (all NaN).")
 
     return data
 '''
@@ -240,14 +264,38 @@ def calculate_and_add_features_to_data(data, gspc_data_file_path, ndx_data_file_
 
     # --- VIX features ---
     if any(f.startswith('vix') for f in FEATURE_COLUMNS):
-        vix_data = pd.read_csv(vix_data_file_path, parse_dates=['Date'], index_col='Date')
-        vix_data.index = pd.to_datetime(vix_data.index, errors='coerce')
-        vix_close = vix_data['Close'].rename('vix').reindex(data.index)
+        vix = pd.read_csv(vix_data_file_path)
+        vix['Date'] = pd.to_datetime(vix['Date'], errors='coerce')
+        vix = vix.sort_values('Date')
+        vix = vix[['Date', 'Close']].rename(columns={'Close': 'VIX_Close'})
+
+        vix_idx = vix.set_index('Date')
+        if data.index.tz is not None:
+            data.index = data.index.tz_localize(None)
+        if vix_idx.index.tz is not None:
+            vix_idx.index = vix_idx.index.tz_localize(None)
+        vix_idx = vix_idx.reindex(data.index)
+        vix_close = vix_idx['VIX_Close']
+
         if 'vix_roc1' in FEATURE_COLUMNS:
             data['vix_roc1'] = vix_close.pct_change(periods=1)
         if 'vix_mean20' in FEATURE_COLUMNS:
-            data['vix_mean20'] = vix_close.rolling(window=20).mean()
+            data['vix_mean20'] = vix_close.rolling(window=20, min_periods=1).mean()
         if 'vix_std20' in FEATURE_COLUMNS:
-            data['vix_std20'] = vix_close.rolling(window=20).std()
+            data['vix_std20'] = vix_close.rolling(window=20, min_periods=1).std()
+
+        valid_ratio = vix_close.notna().mean()
+        print(f"✅ VIX merge check: overlap {vix_close.notna().sum()} valid out of {len(vix_close)} rows ({valid_ratio:.2%} valid).")
+
+    nan_ratio = data.isna().mean()
+    dead_features = nan_ratio[nan_ratio == 1.0].index.tolist()
+    if dead_features:
+        print(f"[WARN] Dropping dead feature columns (all NaN): {dead_features}")
+        data = data.drop(columns=dead_features)
+
+    if data.isna().all().any():
+        print("[ERROR] One or more feature columns are entirely NaN. Check your alignment or data sources.")
+        print(data.isna().mean())
+        raise ValueError("Feature columns invalid (all NaN).")
 
     return data

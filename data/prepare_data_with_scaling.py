@@ -24,6 +24,10 @@ def prepare_data_with_scaling(data):
 
     print("Number of NaN values in training features:", X_train.isna().sum().sum())
     print("Number of NaN values in test features:", X_test.isna().sum().sum())
+    print("NaN ratio per feature column (train):")
+    print(X_train.isna().mean().sort_values(ascending=False).head(15))
+    print("NaN ratio per feature column (test):")
+    print(X_test.isna().mean().sort_values(ascending=False).head(15))
 
 
     # Remove potentially missing values (=NanNs) from data as ML models get confused by them
@@ -39,9 +43,14 @@ def prepare_data_with_scaling(data):
     print(f"After cleaning: {len(X_train)} training rows, {len(X_test)} test rows remaining")
     print("Number of NaN values in cleaned training features:", X_train.isna().sum().sum())
 
+    if len(X_train) == 0 or len(X_test) == 0:
+        raise ValueError(
+            f"[ERROR] After cleaning, dataset is empty (X_train={len(X_train)}, X_test={len(X_test)}). "
+            "Check your feature generation logic or external data alignment."
+        )
 
     # Now scale clean data
     X_train_scaled, X_test_scaled, scaler = scale_features(X_train, X_test)
     print('features scaled\nX_train_scaled\n', X_train_scaled[:5], '\n\n\nX_test_scaled\n', X_test_scaled[:5], '\n\n\n')
 
-    return X_train_scaled, X_test_scaled, y_train, y_test, scaler, feature_names 
+    return X_train_scaled, X_test_scaled, y_train.astype(int), y_test.astype(int), scaler, feature_names 

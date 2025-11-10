@@ -19,7 +19,11 @@ print('data file as determined in the config file (including data split) is bein
 data = pd.read_csv( DATA_FOR_ML_MODEL_TRAINING, index_col="Date", parse_dates=True)
 
 # Prepare data (this now includes cleaning + scaling)
-X_train_scaled, X_test_scaled, y_train, y_test, scaler, feature_names = prepare_data_with_scaling(data)
+prepared = prepare_data_with_scaling(data)
+if prepared is None:
+    print("[WARN] Training data empty after cleaning; exiting.")
+    raise SystemExit(0)
+X_train_scaled, X_test_scaled, y_train, y_test, scaler, feature_names = prepared
 
 print("Training class distribution:\n", pd.Series(y_train).value_counts())
 print("Test class distribution:\n", pd.Series(y_test).value_counts())
