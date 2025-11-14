@@ -9,7 +9,7 @@ SENTIMENT_FILE_MAP = {
     "MSFT": "MSFT_1_sentiment_trading_days.csv",
     "NVDA": "NVDA_1_sentiment_trading_days.csv",
     "GOOG": "GOOG_1_sentiment_trading_days.csv",
-    "PLTR": "PLTR_1_sentiment_trading_days.csv",
+    "META": "META_1_sentiment_trading_days.csv",
     "CRWD": "CRWD_1_sentiment_trading_days.csv",
     "NET":  "NET_1_sentiment_trading_days.csv",
     "TSLA": "TSLA_1_sentiment_trading_days.csv",

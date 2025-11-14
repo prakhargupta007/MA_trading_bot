@@ -6,14 +6,16 @@ import joblib
 from data.funcs_for_data_prep_for_ML.calculate_and_add_features_to_data import calculate_and_add_features_to_data
 from ML.ML_strategy.processing_steps_for_signal_generation.translate_raw_signals import translate_raw_signals
 from ML.ML_strategy.processing_steps_for_signal_generation.apply_positioning_rule_to_translated_signals import apply_positioning_rule_to_translated_signals
-from config import FEATURE_COLUMNS, GSPC_DATA_FILE_PATH, NDX_DATA_FILE_PATH, VIX_DATA_FILE_PATH
+from config import GSPC_DATA_FILE_PATH, NDX_DATA_FILE_PATH, VIX_DATA_FILE_PATH
 from config import MLP_MODEL_PATH_FOR_STRATEGY, MLP_SCALAR_PATH_FOR_STRATEGY
+from ma_trading_bot.ml_feature_store import resolve_feature_columns
 
 
 # Paths to model/scaler
 
 
 def mlp_strategy(data, **kwargs):
+    feature_columns = resolve_feature_columns(kwargs.get("feature_columns"))
     # Load model + scaler
     print("Loading trained MLP model and scaler...")
     model = tf.keras.models.load_model(MLP_MODEL_PATH_FOR_STRATEGY)
@@ -22,9 +24,9 @@ def mlp_strategy(data, **kwargs):
 
     # Add features
     data_with_features = calculate_and_add_features_to_data(
-        data, GSPC_DATA_FILE_PATH, NDX_DATA_FILE_PATH, VIX_DATA_FILE_PATH
+        data, GSPC_DATA_FILE_PATH, NDX_DATA_FILE_PATH, VIX_DATA_FILE_PATH, feature_columns
     )
-    data_with_features = data_with_features[FEATURE_COLUMNS]
+    data_with_features = data_with_features[feature_columns]
     print(f"len(data_with_features): {len(data_with_features)}")
 
     # Drop rows with NaNs

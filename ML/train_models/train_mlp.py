@@ -21,6 +21,7 @@ from config import (
 )
 from data.prepare_data_with_scaling import prepare_data_with_scaling
 from ML.evaluate_model import evaluate_model
+from ma_trading_bot.ml_feature_store import get_active_feature_columns
 
 # -------------------------------
 # Reproducibility
@@ -33,7 +34,10 @@ print('Using data file as determined in the config file to train MLP model...\n'
 # Load and prepare data
 # -------------------------------
 data = pd.read_csv(DATA_FOR_ML_MODEL_TRAINING, index_col="Date", parse_dates=True)
-X_train_scaled, X_test_scaled, y_train, y_test, scaler, feature_names = prepare_data_with_scaling(data)
+feature_columns = get_active_feature_columns()
+X_train_scaled, X_test_scaled, y_train, y_test, scaler, feature_names = prepare_data_with_scaling(
+    data, feature_columns=feature_columns
+)
 
 print("Training class distribution:\n", pd.Series(y_train).value_counts())
 print("Test class distribution:\n", pd.Series(y_test).value_counts())

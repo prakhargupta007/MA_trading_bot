@@ -5,18 +5,19 @@ import pandas as pd
 # This function downloads data of the period why is exactly in between start and end dates, excluding 
 
 
-#start = '2010-01-01'
-#end = '2020-12-31'
+start = '2012-05-18'
+end = '2020-12-31'
 
-start = '2021-01-01'
-end = '2025-10-24'
+#start = '2021-01-01'
+#end = '2025-10-24'
 
 #tickers = ['AAPL','NVDA','MSFT','QQQ','^VIX']
 #tickers = ['^GSPC','^NDX']
 #tickers = ['^VIX']
-tickers = ["ADBE", "CRM", "NFLX", "AMZN"]
+tickers = ["META", "ORCL", "ADBE"]
 
-word = 'backtest' 
+#word = 'backtest' 
+word = 'train_test'
 
 def download_data():
     for ticker in tickers:

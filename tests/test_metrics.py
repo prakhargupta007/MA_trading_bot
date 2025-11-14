@@ -4,7 +4,10 @@ import numpy as np
 from metrics.cagr import calculate_cagr
 from metrics.profit import calculate_profit
 from metrics.buy_hold_profit import calculate_profit_if_bought_and_held
-from backtest.transaction_fee import get_accurate_number_of_stocks, calculate_transaction_fee
+from ma_trading_bot.backtest.transaction_fee import (
+    get_accurate_number_of_stocks,
+    calculate_transaction_fee,
+)
 
 class TestMetrics(unittest.TestCase):
     def setUp(self):

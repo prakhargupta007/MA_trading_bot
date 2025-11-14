@@ -444,15 +444,15 @@ data_^VIX_train_2017-01-01--2022-12-31.csv
 
 ./data/stored_data2:
 data_AAPL_backtest_2021-01-01--2025-10-24.csv
-data_AAPL_train_test_2010-01-01--2020-12-31.csv
+data_AAPL_train_test_2012-05-18--2020-12-31.csv
 data_MSFT_backtest_2021-01-01--2025-10-24.csv
-data_MSFT_train_test_2010-01-01--2020-12-31.csv
+data_MSFT_train_test_2012-05-18--2020-12-31.csv
 data_NVDA_backtest_2021-01-01--2025-10-24.csv
-data_NVDA_train_test_2010-01-01--2020-12-31.csv
+data_NVDA_train_test_2012-05-18--2020-12-31.csv
 data_QQQ_backtest_2021-01-01--2025-10-24.csv
-data_QQQ_train_test_2010-01-01--2020-12-31.csv
+data_QQQ_train_test_2012-05-18--2020-12-31.csv
 data_^VIX_backtest_2021-01-01--2025-10-24.csv
-data_^VIX_train_test_2010-01-01--2020-12-31.csv
+data_^VIX_train_test_2012-05-18--2020-12-31.csv
 
 ./indicators:
 __init__.py

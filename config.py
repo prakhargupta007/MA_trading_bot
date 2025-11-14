@@ -1,7 +1,7 @@
 import os
 
 # =================================== CONFIG FOR TRAINING AND BACKTESTING ====================================
-model_number = '113'
+model_number = '13'
 TRAINING_MODE = False
 TECH_SECTOR_STOCK = True
 
@@ -49,9 +49,9 @@ def _resolve_data_path(*candidates):
     # Fall back to the first candidate even if it does not exist
     return candidates[0]
 
-LOG_REG_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/lr_model_QQQ_113.joblib'
-RANDOM_FOREST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/rf_model_QQQ_113.joblib'
-XGBOOST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/xgb_model_QQQ_113.joblib'
+LOG_REG_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/lr_model_QQQ_13.joblib'
+RANDOM_FOREST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/rf_model_QQQ_13.joblib'
+XGBOOST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/xgb_model_QQQ_13.joblib'
 MLP_MODEL_PATH_FOR_STRATEGY = f"/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/mlp_{model_number}.keras"
 MLP_SCALAR_PATH_FOR_STRATEGY = f'/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/mlp_scaler_{model_number}.pkl'
 
@@ -62,110 +62,26 @@ MLP_SCALAR_PATH_FOR_STRATEGY = f'/Users/prakhar/Desktop/MA_trading_bot/ML/saved_
 
 # =================================== TRAINING CONFIG ====================================
 model_name = 'xgb'
-MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = '/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/xgb_model_QQQ_113.joblib'
+MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = '/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/xgb_model_QQQ_13.joblib'
 MODEL_PATH_WHERE_MLP_MODEL_SHOULD_GET_SAVED = f"/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/mlp_{model_number}.keras"
 PATH_FOR_SAVING_MLP_SCALAR = f'/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/mlp_scaler_{model_number}.pkl'
 TICKER = 'QQQ'
-DATA_FOR_ML_MODEL_TRAINING = 'data/stored_data2/data_QQQ_train_test_2010-01-01--2020-12-31.csv'
+DATA_FOR_ML_MODEL_TRAINING = 'data/stored_data2/data_QQQ_train_test_2012-05-18--2020-12-31.csv'
 #DATA_FOR_ML_MODEL_TRAINING = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_QQQ_train_2017-01-02--2022-12-30.csv'           # QQQ
 
 SENTIMENT_DATA_PATH_FOR_ML_MODEL_TRAINING_FEATURE = '/Users/prakhar/Desktop/MA_trading_bot/sentiment_analysis/GDELT/trading_days_daily_output/AAPL_1_sentiment_trading_days.csv'
 
 
-
-
-
-
-# =================================== FEATURE COLUMNS ====================================
-
-#FEATURE_COLUMNS = ['volume_20d_ma', 'bb_percent', 'bb_lower', 'vix_mean20', 'rsi_14', 'ndx_20d_volatility', 'sma_50', 'bb_upper', 'sma_200', 'gspc_20d_volatility']
-FEATURE_COLUMNS = ["rsi_14", "macd", "macd_signal", "sma_50", "sma_200", "bb_upper", "bb_lower", "bb_percent", "daily_return", "volatility_14", "momentum_10", "volume_20d_ma", "obv", "gspc_daily_return", "gspc_20d_volatility", "ndx_daily_return", "ndx_20d_volatility", "ndx_20d_sma", "mom_diff_pct_5d", "mom_diff_pct_10d", "mom_diff_pct_20d", "mom_diff_pct_50d", "mom_diff_pct_100d", "mom_diff_pct_200d", "ema_diff_pct_10d", "ema_diff_pct_50d", "ema_diff_pct_200d", "vix_roc1", "vix_mean20", "vix_std20"]
-
-
-
-#(lr_21) #rf_21 #xgb_21
-#FEATURE_COLUMNS = ['sma_200', 'sma_50', 'bb_upper', 'bb_lower', 'ndx_20d_sma', 'ndx_20d_volatility', 'volume_20d_ma', 'volatility_14', 'ema_diff_pct_50d', 'mom_diff_pct_50d']
-
-'''
-#lr_20 (#rf_21 #xgb_21)
-FEATURE_COLUMNS = ["rsi_14", "macd", "macd_signal", "sma_50", "sma_200", "bb_upper", "bb_lower", "bb_percent", "daily_return", "volatility_14", "momentum_10", "volume_20d_ma", "obv", "gspc_daily_return", "gspc_20d_volatility", "ndx_daily_return", "ndx_20d_volatility", "ndx_20d_sma", "mom_diff_pct_5d", "mom_diff_pct_10d", "mom_diff_pct_20d", "mom_diff_pct_50d", "mom_diff_pct_100d", "mom_diff_pct_200d", "ema_diff_pct_10d", "ema_diff_pct_50d", "ema_diff_pct_200d", "vix_roc1", "vix_mean20", "vix_std20"]
-'''
-'''
-#lr_19 #rf_19 #xgb_19
-FEATURE_COLUMNS = ["rsi_14", "macd", "macd_signal", "sma_50", "sma_200", "bb_upper", "bb_lower", "bb_percent", "daily_return", "volatility_14", "momentum_10", "volume_20d_ma", "obv", "gspc_daily_return", "gspc_20d_volatility", "ndx_daily_return", "ndx_20d_volatility", "ndx_20d_sma", "mom_diff_pct_5d", "mom_diff_pct_10d", "mom_diff_pct_20d", "mom_diff_pct_50d", "mom_diff_pct_100d", "mom_diff_pct_200d", "ema_diff_pct_10d", "ema_diff_pct_50d", "ema_diff_pct_200d", "vix_roc1", "vix_mean20", "vix_std20"]
-'''
-# If I change/modify this feature column list I need to add/remove that feature to/from the function calculate_and_add_features_to_data as well!!!
-#lr_17 #rf_17 #xgb_17
-#lr_18 #rf_18 #xgb_18
-
-'''
-FEATURE_COLUMNS = ["rsi_14", "macd", "macd_signal", "sma_50", "sma_200", "bb_upper", "bb_lower", "bb_percent", "daily_return", "volatility_14", "momentum_10", "volume_20d_ma", "obv", "gspc_daily_return", "gspc_20d_volatility", "ndx_daily_return", "ndx_20d_volatility", "ndx_20d_sma", "mom_diff_pct_5d", "mom_diff_pct_10d", "mom_diff_pct_20d", "mom_diff_pct_50d", "mom_diff_pct_100d", "mom_diff_pct_200d", "ema_diff_pct_10d", "ema_diff_pct_50d", "ema_diff_pct_200d", "vix_roc1", "vix_mean20", "vix_std20"] 
-'''
-'''
-#lr_15 #rf_15 #xgb_15
-#lr_16 #rf_16 #xgb_16
-FEATURE_COLUMNS = ["rsi_14", "macd", "macd_signal", "sma_50", "sma_200", "bb_upper", "bb_lower", "bb_percent", "daily_return", "volatility_14", "momentum_10", "volume_20d_ma", "obv", "gspc_daily_return", "gspc_20d_volatility", "ndx_daily_return", "ndx_20d_volatility", "ndx_20d_sma", "mom_diff_pct_5d", "mom_diff_pct_10d", "mom_diff_pct_20d", "mom_diff_pct_50d", "mom_diff_pct_100d", "mom_diff_pct_200d", "ema_diff_pct_10d", "ema_diff_pct_50d", "ema_diff_pct_200d", "vix_roc1", "vix_mean20", "vix_std20"] 
-
-'''
-
-
-'''
-#lr_13 #rf_11 #xgb_10
-#lr_14 #rf_12 #xgb_11
-FEATURE_COLUMNS = ["rsi_14", "macd", "macd_signal", "sma_50", "sma_200", "bb_upper", "bb_lower", "bb_percent", "daily_return", "volatility_14", "momentum_10", "volume_20d_ma", "obv", "gspc_daily_return", "gspc_20d_volatility", "ndx_daily_return", "ndx_20d_volatility", "ndx_20d_sma", "mom_diff_pct_5d", "mom_diff_pct_10d", "mom_diff_pct_20d", "mom_diff_pct_50d", "mom_diff_pct_100d", "mom_diff_pct_200d", "ema_diff_pct_10d", "ema_diff_pct_50d", "ema_diff_pct_200d", "vix_roc1", "vix_mean20", "vix_std20"]
-'''
-
-'''
-FEATURE_COLUMNS = ["rsi_14", "macd", "macd_signal", "sma_50", "sma_200", "bb_upper", "bb_lower", "bb_percent", "daily_return", "volatility_14", "momentum_10", "volume_20d_ma", "obv", "gspc_daily_return", "gspc_20d_volatility", "ndx_daily_return", "ndx_20d_volatility", "ndx_20d_sma", "mom_diff_pct_5d", "mom_diff_pct_10d", "mom_diff_pct_20d", "mom_diff_pct_50d", "mom_diff_pct_100d", "mom_diff_pct_200d", "ema_diff_pct_10d", "ema_diff_pct_50d", "ema_diff_pct_200d", "vix_roc1", "vix_mean20", "vix_std20"]
-'''
-
-'''
-#lr_11 #rf_9 #xgb_8 
-#lr_12 #rf_10 #xgb_9
-#lr_22 rf_22 xgb_22 mlp_22
-#lr_23 rf_23 xgb_23 mlp_23
-FEATURE_COLUMNS = ["rsi_14", "macd", "macd_signal", "sma_50", "sma_200", "bb_upper", "bb_lower", "bb_percent", "daily_return", "volatility_14", "momentum_10", "volume_20d_ma", "obv", "gspc_daily_return", "gspc_20d_volatility", "ndx_daily_return", "ndx_20d_volatility", "ndx_20d_sma", "mom_diff_pct_5d", "mom_diff_pct_10d", "mom_diff_pct_20d", "mom_diff_pct_50d", "mom_diff_pct_100d", "mom_diff_pct_200d", "ema_diff_pct_10d", "ema_diff_pct_50d", "ema_diff_pct_200d", "vix_roc1", "vix_mean20", "vix_std20"]
-'''
-
-'''
-FEATURE_COLUMNS = ["rsi_14", "macd", "macd_signal", "sma_50", "sma_200", "bb_upper", "bb_lower", "bb_percent", "daily_return", "volatility_14", "momentum_10", "volume_20d_ma", "obv", "gspc_daily_return", "gspc_20d_volatility", "ndx_daily_return", "ndx_20d_volatility", "ndx_20d_sma", "mom_diff_pct_5d", "mom_diff_pct_10d", "mom_diff_pct_20d", "mom_diff_pct_50d", "mom_diff_pct_100d", "mom_diff_pct_200d", "ema_diff_pct_10d", "ema_diff_pct_50d", "ema_diff_pct_200d", "vix_roc1", "vix_mean20", "vix_std20"]
-'''
-
-
-'''
-
-        # lr_10 #rf_8 #xgb_7
-FEATURE_COLUMNS = ["rsi_14", "macd", "macd_signal", "sma_50", "sma_200", "bb_upper", "bb_lower", "bb_percent", "daily_return", "volatility_14", "momentum_10", "volume_20d_ma", "obv", "gspc_daily_return", "gspc_20d_volatility", "ndx_daily_return", "ndx_20d_volatility", "ndx_20d_sma", "mom_diff_pct_5d", "mom_diff_pct_10d", "mom_diff_pct_20d", "mom_diff_pct_50d", "mom_diff_pct_100d", "mom_diff_pct_200d", "ema_diff_pct_10d", "ema_diff_pct_50d", "ema_diff_pct_200d", "vix_roc1", "vix_mean20", "vix_std20"]
-else:
-        # lr_9 #rf_7 #xgb_6
-FEATURE_COLUMNS = ["rsi_14", "macd", "macd_signal", "sma_50", "sma_200", "bb_upper", "bb_lower", "bb_percent", "daily_return", "volatility_14", "momentum_10", "volume_20d_ma", "obv", "gspc_daily_return", "gspc_20d_volatility", "ndx_daily_return", "ndx_20d_volatility", "ndx_20d_sma", "mom_diff_pct_5d", "mom_diff_pct_10d", "mom_diff_pct_20d", "mom_diff_pct_50d", "mom_diff_pct_100d", "mom_diff_pct_200d", "ema_diff_pct_10d", "ema_diff_pct_50d", "ema_diff_pct_200d", "vix_roc1", "vix_mean20", "vix_std20"]
-'''
-
-
-    #lr_8 #rf_6 #xgb_5
-#FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upper', 'bb_lower', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10','mom_diff_pct_5d', 'mom_diff_pct_10d', 'mom_diff_pct_20d', 'mom_diff_pct_50d', 'mom_diff_pct_100d','gspc_daily_return', 'gspc_20d_volatility', 'ndx_daily_return', 'ndx_20d_volatility', 'ndx_20d_sma','volume_20d_ma', 'obv']
-    #lr_7 #rf_5 #xgb_4
-#FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upper', 'bb_lower', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10','mom_diff_pct_5d', 'mom_diff_pct_10d', 'mom_diff_pct_20d', 'mom_diff_pct_50d', 'mom_diff_pct_100d','gspc_daily_return', 'gspc_20d_volatility', 'ndx_daily_return', 'ndx_20d_volatility', 'ndx_20d_sma']
-    #rf_3 #lr_5 #xgb_2 #lr_6 #rf_4 #xgb_3 
-#FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upper', 'bb_lower', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10','mom_diff_pct_5d', 'mom_diff_pct_10d', 'mom_diff_pct_20d', 'mom_diff_pct_50d', 'mom_diff_pct_100d']
-
-#FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_upper', 'bb_lower', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10'] #lr_2 #rf_2 #xgb_1
-#FEATURE_COLUMNS = ['macd', 'macd_signal', 'sma_200', 'bb_percent','volatility_14', 'momentum_10'] #lr_3
-#FEATURE_COLUMNS = ['rsi_14', 'macd', 'macd_signal', 'sma_50', 'sma_200', 'bb_percent', 'daily_return', 'volatility_14', 'momentum_10'] #lr_4 #rf_1 
-
-
-
-
 if TRAINING_MODE:
     GSPC_DATA_FILE_PATH = _resolve_data_path(
         PATH_GSPC,
-        os.path.join(STORED_DATA2_DIR, 'data_^GSPC_train_test_2010-01-01--2020-12-31.csv')
+        os.path.join(STORED_DATA2_DIR, 'data_^GSPC_train_test_2012-05-18--2020-12-31.csv')
     )
     NDX_DATA_FILE_PATH = _resolve_data_path(
         PATH_NDX,
-        os.path.join(STORED_DATA2_DIR, 'data_^NDX_train_test_2010-01-01--2020-12-31.csv')
+        os.path.join(STORED_DATA2_DIR, 'data_^NDX_train_test_2012-05-18--2020-12-31.csv')
     )
-    VIX_DATA_FILE_PATH = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data2/data_^VIX_train_test_2010-01-01--2020-12-31.csv'
+    VIX_DATA_FILE_PATH = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data2/data_^VIX_train_test_2012-05-18--2020-12-31.csv'
 else:
     GSPC_DATA_FILE_PATH = _resolve_data_path(
         PATH_GSPC,
@@ -281,27 +197,6 @@ FOLDER_PATH_FOR_PDF_SUMMARIZED_BACKTESTING_FILE = '/Users/prakhar/Desktop/MA_tra
 #Here the last symbol should be '/' because I am combining this path with the file name and hence creating a new path where the html portly chart gets saved
 #OUTPUT_FOLDER_PATH_FOR_PLOTLY_CHART = '/Users/prakhar/Desktop/MA_trading_bot/saved_files/charts_plotted_portly' 
 OUTPUT_FOLDER_PATH_FOR_PLOTLY_CHART = '/Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/backtesting_plots'
-
-
-'''
-# ===================================== CORRECT CONFIGS DOUBLE CHECKING ====================================
-if (input('Did you determine the MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED ?\n')) == 'n':
-    exit()
-if (input('Did you choose correct DATA_PATH_FOR_SENTIMENT_STRATEGY if using sentiment_strategy?\n'))[0] == 'n':
-    exit()
-if (input('Did you choose the correct backtesting dates / period\n')) == 'n':
-    exit()
-if (input('Did you set TRAINING_MODE as per your requirement?\n'))[0] == 'n':
-    exit()
-if (input('If using sentiment_score feature in model training, has the SENTIMENT_DATA_PATH_FOR_ML_MODEL_TRAINING_FEATURE path been set to the correct sentiment data file path?\n'))[0] == 'n':
-    exit()
-
-if (input('Does this stock / do these stocks belong to the tech sector?\n'))[0] == 'y':
-    TECH_SECTOR_STOCK = True 
-else: 
-    TECH_SECTOR_STOCK = False 
-'''
-
 
 
 

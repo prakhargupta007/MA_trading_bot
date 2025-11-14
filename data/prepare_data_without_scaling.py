@@ -4,20 +4,33 @@ from data.funcs_for_data_prep_for_ML.label_data_with_future_window import label_
 from data.funcs_for_data_prep_for_ML.split_data_into_train_and_test_data import split_data_into_train_and_test_data
 from config import LOOKAHEAD_DAYS
 from config import GSPC_DATA_FILE_PATH, NDX_DATA_FILE_PATH, VIX_DATA_FILE_PATH
-def prepare_data_without_scaling(data):
+from ma_trading_bot.ml_feature_store import resolve_feature_columns
+
+
+def prepare_data_without_scaling(data, feature_columns=None):
+    feature_columns = resolve_feature_columns(feature_columns)
+
     # Add features to the raw data
-    data_with_features = calculate_and_add_features_to_data(data,GSPC_DATA_FILE_PATH, NDX_DATA_FILE_PATH, VIX_DATA_FILE_PATH)
+    data_with_features = calculate_and_add_features_to_data(
+        data,
+        GSPC_DATA_FILE_PATH,
+        NDX_DATA_FILE_PATH,
+        VIX_DATA_FILE_PATH,
+        feature_columns,
+    )
 
     # Label the data based on future price movement
     data_with_labels = label_data_with_future_window(data_with_features,LOOKAHEAD_DAYS)
 
     # Drop any rows that have NaNs anywhere, so training data is clean
-    print("NaN ratio per feature column before dropna:")
-    print(data_with_labels.isna().mean().sort_values(ascending=False).head(15))
-    data_clean = data_with_labels.dropna()
+    required_cols = feature_columns + ['Label']
+    nan_ratio = data_with_labels[required_cols].isna().mean().sort_values(ascending=False)
+    print("NaN ratio per selected feature column before dropna:")
+    print(nan_ratio.head(15))
+    data_clean = data_with_labels.dropna(subset=required_cols)
 
     # Split clean data into features (X) and target labels (y)
-    X, y = split_data_into_features_and_target(data_clean)
+    X, y = split_data_into_features_and_target(data_clean, feature_columns)
     feature_names = list(X.columns)
 
     # Split features and labels into training and testing sets

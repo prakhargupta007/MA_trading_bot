@@ -1,4 +1,7 @@
-from backtest.transaction_fee import calculate_transaction_fee, get_accurate_number_of_stocks
+from ma_trading_bot.backtest.transaction_fee import (
+    calculate_transaction_fee,
+    get_accurate_number_of_stocks,
+)
 
 def calculate_profit_if_bought_and_held(data, starting_balance):
     initial_investment = starting_balance

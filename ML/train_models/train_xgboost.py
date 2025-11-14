@@ -28,6 +28,7 @@ from config import USE_PROBABILITY_THRESHOLD, PROBABILITY_THRESHOLD
 import pandas as pd
 import joblib
 import os
+from ma_trading_bot.ml_feature_store import get_active_feature_columns
 
 
 print('Data file as determined in the config file is being used to train model...\n\n')
@@ -36,7 +37,8 @@ print('Data file as determined in the config file is being used to train model..
 data = pd.read_csv(DATA_FOR_ML_MODEL_TRAINING, index_col="Date", parse_dates=True)
 
 # Prepare features and labels
-prepared = prepare_data_without_scaling(data)
+feature_columns = get_active_feature_columns()
+prepared = prepare_data_without_scaling(data, feature_columns=feature_columns)
 if prepared is None:
     print("[WARN] Training data empty after cleaning; exiting.")
     raise SystemExit(0)

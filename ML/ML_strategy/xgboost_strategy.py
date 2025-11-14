@@ -4,13 +4,17 @@ from data.funcs_for_data_prep_for_ML.calculate_and_add_features_to_data import c
 from ML.ML_strategy.processing_steps_for_signal_generation.translate_raw_signals import translate_raw_signals
 from ML.ML_strategy.processing_steps_for_signal_generation.apply_positioning_rule_to_translated_signals import apply_positioning_rule_to_translated_signals
 from ML.ML_strategy.processing_steps_for_signal_generation.load_model_and_scaler_if_existant import load_model_and_scaler_if_existant
-from config import FEATURE_COLUMNS, XGBOOST_MODEL_PATH_FOR_STRATEGY
+from config import XGBOOST_MODEL_PATH_FOR_STRATEGY
 from config import GSPC_DATA_FILE_PATH, NDX_DATA_FILE_PATH, VIX_DATA_FILE_PATH
+from ma_trading_bot.ml_feature_store import resolve_feature_columns
 def xgboost_strategy(data, **kwargs):
     model, scaler = load_model_and_scaler_if_existant(XGBOOST_MODEL_PATH_FOR_STRATEGY)
+    feature_columns = resolve_feature_columns(kwargs.get("feature_columns"))
 
-    data_with_features = calculate_and_add_features_to_data(data,GSPC_DATA_FILE_PATH, NDX_DATA_FILE_PATH, VIX_DATA_FILE_PATH)
-    data_with_features = data_with_features[FEATURE_COLUMNS]
+    data_with_features = calculate_and_add_features_to_data(
+        data, GSPC_DATA_FILE_PATH, NDX_DATA_FILE_PATH, VIX_DATA_FILE_PATH, feature_columns
+    )
+    data_with_features = data_with_features[feature_columns]
     print(f"len(data_with_features): {len(data_with_features)}")
 
     valid_rows_mask = data_with_features.notnull().all(axis=1)
@@ -39,4 +43,3 @@ def xgboost_strategy(data, **kwargs):
     print(f"len(final_signals) after insert: {len(final_signals)}") 
     print('Final signals of XGBoost model have been generated!\n\n')
     return final_signals
-

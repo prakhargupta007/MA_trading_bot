@@ -111,7 +111,8 @@ data_with_features = calculate_and_add_features_to_data(
     data,
     DA_GSPC_DATA_FILE_PATH,
     DA_NDX_DATA_FILE_PATH,
-    DA_VIX_DATA_FILE_PATH
+    DA_VIX_DATA_FILE_PATH,
+    ALL_FEATURES,
 )
 
 labeled_data = label_data_with_future_window(data_with_features, LOOKAHEAD_DAYS)

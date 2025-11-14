@@ -5,15 +5,25 @@ from data.funcs_for_data_prep_for_ML.split_data_into_train_and_test_data import 
 from data.funcs_for_data_prep_for_ML.scale_features import scale_features
 from config import LOOKAHEAD_DAYS
 from config import GSPC_DATA_FILE_PATH, NDX_DATA_FILE_PATH, VIX_DATA_FILE_PATH
+from ma_trading_bot.ml_feature_store import resolve_feature_columns
 
-def prepare_data_with_scaling(data):
-    data_with_features = calculate_and_add_features_to_data(data,GSPC_DATA_FILE_PATH, NDX_DATA_FILE_PATH, VIX_DATA_FILE_PATH)
+
+def prepare_data_with_scaling(data, feature_columns=None):
+    feature_columns = resolve_feature_columns(feature_columns)
+
+    data_with_features = calculate_and_add_features_to_data(
+        data,
+        GSPC_DATA_FILE_PATH,
+        NDX_DATA_FILE_PATH,
+        VIX_DATA_FILE_PATH,
+        feature_columns,
+    )
     print('features added to data\n', data_with_features.head(), '\n\n\n')
 
     data_with_labels = label_data_with_future_window(data_with_features,LOOKAHEAD_DAYS)
     print('labels added to data\n', data_with_labels.head(), '\n\n\n')
 
-    X, y = split_data_into_features_and_target(data_with_labels)
+    X, y = split_data_into_features_and_target(data_with_labels, feature_columns)
     print('features and labels split\nfeatures:\n', X.head(), '\n\n\nlabels:\n', y.head(), '\n\n\n')
     feature_names = list(X.columns)
     print(f'feature_names:\n{feature_names}')

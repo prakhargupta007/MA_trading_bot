@@ -1,8 +1,8 @@
 import unittest
 import pandas as pd
 import numpy as np
-from backtest.backtest_strategy import backtest_strategy
-from backtest.transaction_fee import calculate_transaction_fee
+from ma_trading_bot.backtest.backtest_strategy import backtest_strategy
+from ma_trading_bot.backtest.transaction_fee import calculate_transaction_fee
 from config import MINIMUM_TRANSACTION_FEE, TRANSACTION_FEE_PER_STOCK
 
 class TestBacktesting(unittest.TestCase):
@@ -49,7 +49,7 @@ class TestBacktesting(unittest.TestCase):
 
     def test_transaction_fee(self):
         """Test transaction fee calculation"""
-        from backtest.transaction_fee import calculate_transaction_fee
+        from ma_trading_bot.backtest.transaction_fee import calculate_transaction_fee
         from config import TRANSACTION_FEE_PER_STOCK, MINIMUM_TRANSACTION_FEE
 
         # Test minimum fee

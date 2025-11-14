@@ -1,0 +1,134 @@
+{
+  "model_number": "1",
+
+  "tickers": [
+    "MSFT",
+    "AAPL",
+    "GOOG",
+    "META",
+    "ORCL",
+    "ADBE",
+    "TSLA",
+    "AMD",
+    "NVDA",
+    "QQQ"
+  ],
+
+  "strategies": [
+    "sma",
+    "ema",
+    "sma_rsi",
+    "rsi_trend_filter",
+    "macd_trend_follow",
+    "bollinger_mean_reversion",
+    "bb_squeeze_breakout",
+    "obv_trend_confirmation",
+    "ma_distance_reversion",
+    "vol_adjusted_momentum",
+    "sentiment_strategy",
+    "sentiment_momentum_confirmation",
+    "sentiment_regime_filter",
+    "logistic_regression",
+    "random_forest",
+    "xgboost"
+  ],
+
+  "feature_sets": [
+    {
+      "feature_set_id": "FS_1",
+      "feature_columns": ["sma_diff_pct_50d", "sma_diff_pct_200d"]
+    },
+    {
+      "feature_set_id": "FS_2",
+      "feature_columns": ["ema_diff_pct_50d", "ema_diff_pct_200d"]
+    },
+    {
+      "feature_set_id": "FS_3",
+      "feature_columns": ["sma_diff_pct_10d", "sma_diff_pct_50d", "sma_diff_pct_200d"]
+    },
+    {
+      "feature_set_id": "FS_4",
+      "feature_columns": ["ema_diff_pct_10d", "ema_diff_pct_50d", "ema_diff_pct_200d"]
+    },
+    {
+      "feature_set_id": "FS_5",
+      "feature_columns": ["sma_50", "sma_200", "rsi_14", "momentum_10", "daily_return"]
+    },
+    {
+      "feature_set_id": "FS_6",
+      "feature_columns": ["sma_50", "sma_200", "volatility_14", "vix_mean20", "vix_std20"]
+    },
+    {
+      "feature_set_id": "FS_7",
+      "feature_columns": ["momentum_10", "volatility_14", "volume_20d_ma", "obv", "bb_percent"]
+    },
+    {
+      "feature_set_id": "FS_8",
+      "feature_columns": ["macd", "macd_signal", "ema_diff_pct_50d", "ema_diff_pct_200d", "gspc_20d_volatility"]
+    },
+    {
+      "feature_set_id": "FS_9",
+      "feature_columns": ["bb_upper", "bb_lower", "bb_percent", "volatility_14", "rsi_14", "gspc_daily_return"]
+    },
+    {
+      "feature_set_id": "FS_10",
+      "feature_columns": ["ema_diff_pct_10d", "momentum_10", "vix_roc1", "vix_mean20", "volume_20d_ma"]
+    },
+    {
+      "feature_set_id": "FS_11",
+      "feature_columns": ["gspc_daily_return", "ndx_daily_return", "gspc_20d_volatility", "ndx_20d_volatility", "ndx_20d_sma", "rsi_14"]
+    },
+    {
+      "feature_set_id": "FS_12",
+      "feature_columns": ["rsi_14", "macd", "sma_200", "bb_percent", "volatility_14", "obv", "gspc_daily_return", "ndx_20d_volatility", "ema_diff_pct_50d"]
+    },
+    {
+      "feature_set_id": "FS_13",
+      "feature_columns": [
+        "rsi_14",
+        "macd",
+        "macd_signal",
+        "sma_50",
+        "sma_200",
+        "bb_upper",
+        "bb_lower",
+        "bb_percent",
+        "daily_return",
+        "volatility_14",
+        "momentum_10",
+        "volume_20d_ma",
+        "obv",
+        "gspc_daily_return",
+        "gspc_20d_volatility",
+        "ndx_daily_return",
+        "ndx_20d_volatility",
+        "ndx_20d_sma",
+        "mom_diff_pct_5d",
+        "mom_diff_pct_10d",
+        "mom_diff_pct_20d",
+        "mom_diff_pct_50d",
+        "mom_diff_pct_100d",
+        "mom_diff_pct_200d",
+        "ema_diff_pct_10d",
+        "ema_diff_pct_50d",
+        "ema_diff_pct_200d",
+        "vix_roc1",
+        "vix_mean20",
+        "vix_std20"
+      ]
+    }
+  ],
+
+  "paths": {
+    "project_root": ".",
+    "final_root": "/Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results",
+    "final_excel_dir": "/Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel",
+    "final_plots_dir": "/Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/backtesting_plots",
+    "stored_data_dir": "data/stored_data2",
+    "ml_saved_models_dir": "ML/saved_models"
+  }
+}
+
+
+
+

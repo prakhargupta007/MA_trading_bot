@@ -43,15 +43,15 @@ from indicators.check_indicator_length import check_indicator_length
 from strategy_map import strategy_map
 from stop_loss_map import stop_loss_map
 
-from backtest.backtest_strategy import (
+from ma_trading_bot.backtest.backtest_strategy import (
     backtest_strategy,
     return_endbalance,
     return_portfolio_values,
 )
-from backtest.create_and_save_backtest_table_csv_file import (
+from ma_trading_bot.backtest.create_and_save_backtest_table_csv_file import (
     create_and_save_backtest_table_csv_file,
 )
-from backtest.enforce_signal_consistency import enforce_signal_consistency
+from ma_trading_bot.backtest.enforce_signal_consistency import enforce_signal_consistency
 
 from plotly_plot_backtesting.plotly_plot_universal_strategy_signals_and_save import (
     plotly_plot_universal_strategy_signals_and_save,
@@ -68,10 +68,11 @@ from metrics.average_cagr_of_list import calculate_average_cagr_of_list
 from metrics.sharpe import calculate_sharpe_ratio
 
 # upgraded summary writer (Excel + links)
-from backtest.create_and_save_backtest_summary_table_csv_file import (
+from ma_trading_bot.backtest.create_and_save_backtest_summary_table_csv_file import (
     create_and_save_backtest_summary_table_csv_file,
 )
-from automation_bunch_backtesting.ml_metrics_eval import compute_ml_metrics_condensed
+from ma_trading_bot.automation_bunch_backtesting.ml_metrics_eval import compute_ml_metrics_condensed
+from ma_trading_bot.ml_feature_store import get_active_feature_columns
 
 ML_STRATEGIES_SET = {"logistic_regression", "random_forest", "xgboost", "mlp"}
 
@@ -203,6 +204,9 @@ def main():
             "sentiment_window": 3,        # smoothing window for regime detection
             "sentiment_ma_period": 5,     # used in regime filter SMA logic
 }
+
+            if CHOSEN_STRATEGY in ML_STRATEGIES_SET:
+                indicator_parameters["feature_columns"] = get_active_feature_columns()
 
 
 
