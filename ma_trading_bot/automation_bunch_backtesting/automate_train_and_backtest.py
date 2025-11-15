@@ -15,7 +15,6 @@ from datetime import datetime
 from pathlib import Path
 
 from ma_trading_bot.backtest.create_and_save_backtest_summary_table_csv_file import (
-    format_confusion_matrix_string,
     apply_summary_excel_formatting,
 )
 
@@ -48,7 +47,10 @@ RULE_STRATEGIES = {
     "ema_rsi",
     "sma_rsi_macd",
     "sentiment_strategy",
+    "buy_and_hold",
 }
+
+BUY_AND_HOLD_STRATEGY_NAME = "buy_and_hold"
 
 MODEL_PATH_KEYS = {
     "logistic_regression": "LOG_REG_MODEL_PATH_FOR_STRATEGY",
@@ -176,36 +178,42 @@ def collect_summary_row(
         if row.empty:
             row = df.tail(1)
 
-        row_dict = row.iloc[0].to_dict()
+        raw = row.iloc[0].to_dict()
+        strategy_name = raw.get("Strategy Name") or strategy
+        model_label = raw.get("Model Name") or ""
+        assigned_feature_set = feature_set_id if strategy in ML_STRATEGIES else ""
+        assigned_model_number = model_number if strategy in ML_STRATEGIES else ""
 
-        if strategy in ML_STRATEGIES:
-            assigned_feature_set = feature_set_id
-            assigned_model_number = model_number
-        else:
-            assigned_feature_set = ""
-            assigned_model_number = ""
+        signal_plot_path = raw.get("Strategy Plot Link") or infer_plot_path(final_plots_dir, ticker, strategy)
+        portfolio_plot_path = raw.get("Portfolio Value Plot Link", "")
 
-        row_dict.update({
+        backtest_row = {
+            "Strategy Name": strategy_name,
             "Ticker": ticker,
-            "Strategy": strategy,
-            "Model_Number": assigned_model_number,
-            "Model_Name": ML_STRATEGIES.get(strategy, {}).get("model_name", ""),
-            "Feature_Set_ID": assigned_feature_set,
-        })
+            "Model Name": model_label,
+            "Model Number": assigned_model_number,
+            "Feature Set ID": assigned_feature_set,
+            "CAGR (%)": raw.get("CAGR (%)", ""),
+            "Sharpe Ratio": raw.get("Sharpe Ratio", ""),
+            "Sortino Ratio": raw.get("Sortino Ratio", ""),
+            "Calmar Ratio": raw.get("Calmar Ratio", ""),
+            "Max Drawdown (%)": raw.get("Max Drawdown (%)", ""),
+            "Volatility": raw.get("Volatility", ""),
+            "Win Rate (%)": raw.get("Win Rate (%)", ""),
+            "Number of Trades": raw.get("Number of Trades", ""),
+            "Information Ratio": raw.get("Information Ratio", ""),
+            "Strategy Plot Link": signal_plot_path,
+            "Portfolio Value Plot Link": portfolio_plot_path,
+            "_StrategyPlotAbsPath": signal_plot_path,
+            "_PortfolioPlotAbsPath": portfolio_plot_path,
+            "_StrategyKey": strategy,
+        }
 
-        signal_plot_raw = row_dict.get("Signal Execution Plot Link") or infer_plot_path(
-            final_plots_dir, ticker, strategy
-        )
-        portfolio_plot_raw = row_dict.get("Portfolio Value Plot Link", "")
-
-        row_dict["_SignalPlotAbsPath"] = signal_plot_raw
-        row_dict["_PortfolioPlotAbsPath"] = portfolio_plot_raw
-        row_dict["Signal Execution Plot Link"] = "Open Signal Plot" if signal_plot_raw else ""
-        row_dict["Portfolio Value Plot Link"] = "Open Portfolio Plot" if portfolio_plot_raw else ""
-
+        ml_training_row = None
         if strategy in ML_STRATEGIES:
+            from .ml_metrics_eval import compute_ml_metrics_condensed
+
             try:
-                from .ml_metrics_eval import compute_ml_metrics_condensed
                 ml_metrics = compute_ml_metrics_condensed(
                     strategy,
                     ticker,
@@ -213,33 +221,38 @@ def collect_summary_row(
                     feature_columns=feature_columns,
                     model_artifact_path=model_artifact_path,
                 )
-                row_dict.update(ml_metrics)
-                row_dict["ML_Metrics_Status"] = "ok"
+                ml_training_row = {
+                    "Strategy Name": strategy_name,
+                    "Ticker": ticker,
+                    "Model Name": ML_STRATEGIES[strategy]["model_name"],
+                    "Model Number": assigned_model_number,
+                    "Feature Set ID": assigned_feature_set,
+                    "Accuracy": ml_metrics.get("Accuracy", ""),
+                    "Precision": ml_metrics.get("Precision", ""),
+                    "Recall": ml_metrics.get("Recall", ""),
+                    "F1 Score": ml_metrics.get("F1", ""),
+                    "Confusion Matrix": ml_metrics.get("Confusion_Matrix", ""),
+                }
             except Exception as ml_err:
                 log(f"[WARN] ML metrics failed for {ticker} {strategy}: {ml_err}", log_path)
-                row_dict.update({
+                ml_training_row = {
+                    "Strategy Name": strategy_name,
+                    "Ticker": ticker,
+                    "Model Name": ML_STRATEGIES[strategy]["model_name"],
+                    "Model Number": assigned_model_number,
+                    "Feature Set ID": assigned_feature_set,
                     "Accuracy": "",
                     "Precision": "",
                     "Recall": "",
-                    "F1": "",
-                    "Confusion_Matrix": ""
-                })
-                row_dict["ML_Metrics_Status"] = f"error: {ml_err}"
-        else:
-            row_dict.update({
-                "Accuracy": "",
-                "Precision": "",
-                "Recall": "",
-                "F1": "",
-                "Confusion_Matrix": ""
-            })
-            row_dict["ML_Metrics_Status"] = "n/a (rule strategy)"
+                    "F1 Score": "",
+                    "Confusion Matrix": "",
+                }
 
-        return row_dict
+        return backtest_row, ml_training_row
 
     except Exception as err:
         log(f"[WARN] Could not collect summary for {ticker} {strategy}: {err}", log_path)
-        return None
+        return None, None
 
 # ----------------------------
 # Main
@@ -251,6 +264,8 @@ def main():
     strategies = cfg["strategies"]
     selected_ml_strategies = [s for s in strategies if s in ML_STRATEGIES]
     selected_rule_strategies = [s for s in strategies if s not in ML_STRATEGIES]
+    if BUY_AND_HOLD_STRATEGY_NAME not in selected_rule_strategies:
+        selected_rule_strategies.append(BUY_AND_HOLD_STRATEGY_NAME)
     feature_sets = cfg["feature_sets"]
     paths = cfg["paths"]
 
@@ -284,19 +299,12 @@ def main():
     summary_dir = str(Path(summary_dir))
 
     # Combined dataframe rows (we’ll assemble manually, then send to Excel)
-    combined_rows = []
-
-
-
-
-
-
-
-
-
-
-
-
+    combined_backtest_rows = []
+    combined_ml_training_rows = []
+    benchmark_rows = []
+    successful_runs = []
+    failed_runs = []
+    skipped_runs = []
 
     failure_log = []
 
@@ -360,6 +368,7 @@ def main():
                                 "model_number": model_number,
                                 "reason": "training command failed"
                             })
+                            failed_runs.append((ticker, ml_strategy))
                             continue
 
                 # 2b) Backtest only ML strategies for this ticker/feature set
@@ -377,6 +386,7 @@ def main():
                                 "Skipping backtest for this combination.",
                                 log_path,
                             )
+                            skipped_runs.append((ticker, strategy))
                             continue
                         strategy_key = MODEL_PATH_KEYS.get(strategy)
                         if strategy_key:
@@ -408,9 +418,10 @@ def main():
                             "model_number": model_number,
                             "reason": "backtest command failed"
                         })
+                        failed_runs.append((ticker, strategy))
                         continue
 
-                    row_dict = collect_summary_row(
+                    row_dict, ml_training_row = collect_summary_row(
                         ticker=ticker,
                         strategy=strategy,
                         feature_set_id=fs_id,
@@ -423,7 +434,10 @@ def main():
                         model_artifact_path=strategy_model_path if strategy in ML_STRATEGIES else None,
                     )
                     if row_dict:
-                        combined_rows.append(row_dict)
+                        combined_backtest_rows.append(row_dict)
+                        successful_runs.append((ticker, strategy))
+                        if ml_training_row:
+                            combined_ml_training_rows.append(ml_training_row)
                     else:
                         failure_log.append({
                             "phase": "summary",
@@ -433,6 +447,7 @@ def main():
                             "model_number": model_number,
                             "reason": "summary row missing"
                         })
+                        failed_runs.append((ticker, strategy))
 
             except Exception as e:
                 log(f"[WARN] Outer loop failure for ticker {ticker}: {e}", log_path)
@@ -475,9 +490,10 @@ def main():
                             "model_number": "",
                             "reason": "backtest command failed"
                         })
+                        failed_runs.append((ticker, strategy))
                         continue
 
-                    row_dict = collect_summary_row(
+                    row_dict, ml_training_row = collect_summary_row(
                         ticker=ticker,
                         strategy=strategy,
                         feature_set_id="",
@@ -487,7 +503,21 @@ def main():
                         log_path=log_path,
                     )
                     if row_dict:
-                        combined_rows.append(row_dict)
+                        combined_backtest_rows.append(row_dict)
+                        if strategy == BUY_AND_HOLD_STRATEGY_NAME:
+                            benchmark_rows.append({
+                                "Strategy Name": "Buy and Hold",
+                                "Ticker": ticker,
+                                "CAGR (%)": row_dict.get("CAGR (%)", ""),
+                                "Sharpe Ratio": row_dict.get("Sharpe Ratio", ""),
+                                "Sortino Ratio": row_dict.get("Sortino Ratio", ""),
+                                "Calmar Ratio": row_dict.get("Calmar Ratio", ""),
+                                "Max Drawdown (%)": row_dict.get("Max Drawdown (%)", ""),
+                                "Volatility": row_dict.get("Volatility", ""),
+                            })
+                        successful_runs.append((ticker, strategy))
+                        if ml_training_row:
+                            combined_ml_training_rows.append(ml_training_row)
                     else:
                         failure_log.append({
                             "phase": "summary",
@@ -497,6 +527,7 @@ def main():
                             "model_number": "",
                             "reason": "summary row missing"
                         })
+                        failed_runs.append((ticker, strategy))
 
             except Exception as e:
                 log(f"[WARN] Rule-based loop failure for ticker {ticker}: {e}", log_path)
@@ -510,79 +541,136 @@ def main():
 
 
 
-    # 3) Build ONE combined Excel file
+    # 3) Build strategy, ML, and benchmark tables
     try:
         import pandas as pd
-        if not combined_rows:
+
+        if not combined_backtest_rows:
             log("[ERROR] No results collected — nothing to write to Excel.", log_path)
             return
 
-        # Reorder columns nicely
-        preferred_cols = [
-            "Ticker", "Strategy", "Model_Name", "Model_Number", "Feature_Set_ID",
-            "CAGR(%)", "B&H CAGR(%)", "CAGR Efficiency",
-            "Sharpe", "B&H Sharpe", "Sharpe Efficiency",
-            # Extra trading metrics
-            "WinRate(%)", "Avg_Win", "Avg_Loss", "Profit_Factor",
-            "Max_Drawdown(%)", "B&H Max_Drawdown(%)", "Sortino", "Calmar",
-            "Number_of_Trades",
-            # ML metrics (condensed)
-            "Accuracy", "Precision", "Recall", "F1", "Confusion_Matrix",
-            # Plot link
-            "Signal Execution Plot Link", "Portfolio Value Plot Link"
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+        def _display_strategy_name(key: str) -> str:
+            if key == BUY_AND_HOLD_STRATEGY_NAME:
+                return "Buy and Hold"
+            return key.replace("_", " ").title()
+
+        def _model_label(row):
+            key = row.get("_StrategyKey")
+            if key in ML_STRATEGIES:
+                return row.get("Model Name") or ML_STRATEGIES[key]["model_name"]
+            return ""
+
+        table2_cols = [
+            "Strategy Name",
+            "Ticker",
+            "Model Name",
+            "Model Number",
+            "Feature Set ID",
+            "CAGR (%)",
+            "Sharpe Ratio",
+            "Sortino Ratio",
+            "Calmar Ratio",
+            "Max Drawdown (%)",
+            "Volatility",
+            "Win Rate (%)",
+            "Number of Trades",
+            "Information Ratio",
+            "Strategy Plot Link",
+            "Portfolio Value Plot Link",
         ]
-        df_all = pd.DataFrame(combined_rows)
 
-        signal_abs = df_all["_SignalPlotAbsPath"] if "_SignalPlotAbsPath" in df_all.columns else None
-        portfolio_abs = df_all["_PortfolioPlotAbsPath"] if "_PortfolioPlotAbsPath" in df_all.columns else None
-        if signal_abs is not None:
-            df_all.drop(columns=["_SignalPlotAbsPath"], inplace=True)
-        if portfolio_abs is not None:
-            df_all.drop(columns=["_PortfolioPlotAbsPath"], inplace=True)
+        all_df = pd.DataFrame(combined_backtest_rows)
+        for col in table2_cols:
+            if col not in all_df.columns:
+                all_df[col] = ""
+        all_df["Model Name"] = all_df.apply(_model_label, axis=1)
+        all_df["Strategy Name"] = all_df["_StrategyKey"].apply(_display_strategy_name)
+        all_df.drop(columns=["_StrategyKey"], inplace=True)
 
-        if "Number_of_Trades" not in df_all.columns:
-            df_all["Number_of_Trades"] = [
-                row.get("Number_of_Trades", "") for row in combined_rows
-            ]
-            log("[INFO] Added Number_of_Trades column to combined Excel summary.", log_path)
-
-        # Ensure columns exist
-        for c in preferred_cols:
-            if c not in df_all.columns:
-                df_all[c] = ""
-
-        df_all = df_all[preferred_cols]
-        if "Confusion_Matrix" in df_all.columns:
-            df_all["Confusion_Matrix"] = df_all["Confusion_Matrix"].apply(format_confusion_matrix_string)
-        print(f"[DEBUG] Combined summary columns: {list(df_all.columns)}")
-
-        # Write Excel with formatting
-        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-        excel_path = Path(final_excel_dir) / f"Backtest_Summary_All_{ts}.xlsx"
-        with pd.ExcelWriter(excel_path, engine="openpyxl") as writer:
-            df_all.to_excel(writer, index=False, sheet_name="Summary")
-            ws = writer.sheets["Summary"]
-
-            def _apply_hyperlinks(col_name, paths, label):
-                if paths is None or col_name not in df_all.columns:
-                    return
-                col_idx = df_all.columns.get_loc(col_name) + 1
-                for row_idx, path in enumerate(paths.tolist(), start=2):
-                    if not path:
+        def _write_excel(df: pd.DataFrame, path: Path):
+            helper_df = df.copy()
+            visible_df = helper_df[[col for col in helper_df.columns if not col.startswith("_")]]
+            with pd.ExcelWriter(path, engine="openpyxl") as writer:
+                visible_df.to_excel(writer, index=False, sheet_name="Summary")
+                ws = writer.sheets["Summary"]
+                for col_name, label in {
+                    "Strategy Plot Link": "Open Strategy Plot",
+                    "Portfolio Value Plot Link": "Open Portfolio Plot",
+                }.items():
+                    if col_name not in visible_df.columns:
                         continue
-                    cell = ws.cell(row=row_idx, column=col_idx)
-                    cell.value = label
-                    cell.hyperlink = str(Path(path).resolve())
-                    cell.style = "Hyperlink"
+                    abs_col = "_StrategyPlotAbsPath" if "Strategy" in col_name else "_PortfolioPlotAbsPath"
+                    col_idx = visible_df.columns.get_loc(col_name) + 1
+                    for row_idx in range(2, ws.max_row + 1):
+                        path_value = helper_df.at[row_idx - 2, abs_col] if abs_col in helper_df.columns else helper_df.at[row_idx - 2, col_name]
+                        if not path_value:
+                            continue
+                        cell = ws.cell(row=row_idx, column=col_idx)
+                        cell.value = label
+                        cell.hyperlink = str(Path(path_value).resolve())
+                apply_summary_excel_formatting(ws)
 
-            _apply_hyperlinks("Signal Execution Plot Link", signal_abs, "Open Signal Plot")
-            _apply_hyperlinks("Portfolio Value Plot Link", portfolio_abs, "Open Portfolio Plot")
+        all_output_df = all_df[table2_cols + ["_StrategyPlotAbsPath", "_PortfolioPlotAbsPath"]].copy()
+        all_path = Path(final_excel_dir) / f"Strategy_Backtesting_Performance_All_{timestamp}.xlsx"
+        _write_excel(all_output_df, all_path)
+        log(f"✅ Strategy performance (all) → {all_path}")
 
+        for ticker in tickers:
+            ticker_df = all_df[all_df["Ticker"] == ticker]
+            if ticker_df.empty:
+                continue
+            df_to_write = ticker_df[table2_cols + ["_StrategyPlotAbsPath", "_PortfolioPlotAbsPath"]].copy()
+            path = Path(final_excel_dir) / f"Strategy_Backtesting_Performance_{ticker}_{timestamp}.xlsx"
+            _write_excel(df_to_write, path)
+            log(f"✅ Strategy performance ({ticker}) → {path}", log_path)
+
+        ml_cols = [
+            "Strategy Name",
+            "Ticker",
+            "Model Name",
+            "Model Number",
+            "Feature Set ID",
+            "Accuracy",
+            "Precision",
+            "Recall",
+            "F1 Score",
+            "Confusion Matrix",
+        ]
+        ml_df = pd.DataFrame(combined_ml_training_rows, columns=ml_cols) if combined_ml_training_rows else pd.DataFrame(columns=ml_cols)
+        if not ml_df.empty:
+            ml_df["Strategy Name"] = ml_df["Strategy Name"].apply(_display_strategy_name)
+        ml_path = Path(final_excel_dir) / f"ML_Training_Performance_{timestamp}.xlsx"
+        with pd.ExcelWriter(ml_path, engine="openpyxl") as writer:
+            ml_df.to_excel(writer, index=False, sheet_name="Training Performance")
+            ws = writer.sheets["Training Performance"]
             apply_summary_excel_formatting(ws)
+        log(f"✅ ML training performance → {ml_path}")
 
-        log(f"✅ Combined Excel written: {excel_path}", log_path)
+        benchmark_cols = [
+            "Strategy Name",
+            "Ticker",
+            "CAGR (%)",
+            "Sharpe Ratio",
+            "Sortino Ratio",
+            "Calmar Ratio",
+            "Max Drawdown (%)",
+            "Volatility",
+        ]
+        benchmark_df = pd.DataFrame(benchmark_rows, columns=benchmark_cols) if benchmark_rows else pd.DataFrame(columns=benchmark_cols)
+        if not benchmark_df.empty:
+            for col in benchmark_cols[2:]:
+                benchmark_df[col] = pd.to_numeric(benchmark_df[col], errors="coerce")
+        benchmark_path = Path(final_excel_dir) / f"Benchmark_Performance_{timestamp}.xlsx"
+        with pd.ExcelWriter(benchmark_path, engine="openpyxl") as writer:
+            benchmark_df.to_excel(writer, index=False, sheet_name="Benchmark")
+            ws = writer.sheets["Benchmark"]
+            apply_summary_excel_formatting(ws)
+        log(f"✅ Benchmark performance → {benchmark_path}")
+
     except Exception as e:
-        log(f"[ERROR] Writing Excel failed: {e}", log_path)
+        log(f"[ERROR] Writing Excel tables failed: {e}", log_path)
 
     if failure_log:
         log("\n--- SUMMARY OF FAILED RUNS ---", log_path)
@@ -593,7 +681,24 @@ def main():
                 f"model_number={entry['model_number']}, reason={entry['reason']}",
                 log_path,
             )
-    else:
+
+    if failed_runs:
+        log("\n--- FAILED STRATEGY RUNS ---", log_path)
+        for ticker, strategy in failed_runs:
+            log(f"FAILED → ticker={ticker}, strategy={strategy}", log_path)
+
+    if skipped_runs:
+        log("\n--- SKIPPED STRATEGY RUNS ---", log_path)
+        for ticker, strategy in skipped_runs:
+            log(f"SKIPPED → ticker={ticker}, strategy={strategy}", log_path)
+
+    log(
+        f"Run summary: successful={len(successful_runs)}, "
+        f"failed={len(failed_runs)}, skipped={len(skipped_runs)}",
+        log_path,
+    )
+
+    if not failed_runs and not skipped_runs:
         log("All training/backtest tasks completed successfully.", log_path)
 
     log(f"=== Automation finished: {datetime.now().isoformat()} ===", log_path)

@@ -17,6 +17,7 @@ from rule_based_strategy.vol_adjusted_momentum_strategy import vol_adjusted_mome
 from rule_based_strategy.sentiment_strategy import sentiment_strategy
 from rule_based_strategy.sentiment_momentum_confirmation_strategy import sentiment_momentum_confirmation_strategy
 from rule_based_strategy.sentiment_regime_filter_strategy import sentiment_regime_filter_strategy
+from rule_based_strategy.buy_and_hold_strategy import buy_and_hold_strategy
 
 # ----- Machine Learning Strategies -----
 from ML.ML_strategy.logistic_regression_strategy import logistic_regression_strategy
@@ -51,6 +52,7 @@ strategy_map = {
     'sentiment_strategy': sentiment_strategy,
     'sentiment_momentum_confirmation': sentiment_momentum_confirmation_strategy,
     'sentiment_regime_filter': sentiment_regime_filter_strategy,
+    'buy_and_hold': buy_and_hold_strategy,
 
     # --- ML-based strategies ---
     'logistic_regression': logistic_regression_strategy,

@@ -32,6 +32,22 @@ from config import (
     ATR_PERIOD,
     ATR_MULTIPLIER,
     model_number,  # your global ML model number
+    model_name,
+    BB_WINDOW,
+    BB_STD_DEV,
+    OBV_SMA_PERIOD,
+    MA_DISTANCE_PERIOD,
+    MA_DISTANCE_THRESHOLD,
+    MOMENTUM_WINDOW,
+    VOL_WINDOW,
+    VOL_SMOOTH_PERIOD,
+    TREND_SMA_PERIOD,
+    RSI_TREND_THRESHOLD,
+    MACD_HIST_THRESHOLD,
+    SENTIMENT_COL,
+    SENTIMENT_THRESHOLD,
+    SENTIMENT_WINDOW,
+    SENTIMENT_MA_PERIOD,
 )
 
 # ======================= FUNCTION IMPORTS =======================
@@ -130,6 +146,7 @@ def main():
         trade_tables_dict = {}
         price_series_dict = {}
         strategy_names = []
+        model_names = []
         model_numbers = []
         feature_set_ids = []
 
@@ -176,33 +193,33 @@ def main():
             "macd_signal": MACD_SIGNAL_PERIOD,        # e.g. 9
 
             # --- Bollinger Bands strategies ---
-            "bb_window": 20,      # common default
-            "bb_std_dev": 2,      # common default
+            "bb_window": BB_WINDOW,
+            "bb_std_dev": BB_STD_DEV,
 
             # --- OBV Trend Confirmation strategy ---
-            "sma_period": 50,     # used for OBV confirmation smoothing
+            "sma_period": OBV_SMA_PERIOD,
 
             # --- MA Distance Reversion strategy ---
-            "ma_period": 50,      # main moving average window
-            "ma_threshold": 0.03, # % threshold for reversion trigger (3%)
+            "ma_period": MA_DISTANCE_PERIOD,
+            "ma_threshold": MA_DISTANCE_THRESHOLD,
 
             # --- Volume / Volatility adjusted momentum strategy ---
-            "momentum_window": 10,     # number of lookback days for momentum
-            "vol_window": 20,          # rolling volatility window
-            "vol_smooth_period": 14,   # smoothing period for volatility normalization
+            "momentum_window": MOMENTUM_WINDOW,
+            "vol_window": VOL_WINDOW,
+            "vol_smooth_period": VOL_SMOOTH_PERIOD,
 
             # --- RSI Trend Filter strategy ---
-            "trend_sma_period": 200,   # long-term trend filter
-            "rsi_threshold": 50,       # RSI cutoff for trend confirmation
+            "trend_sma_period": TREND_SMA_PERIOD,
+            "rsi_threshold": RSI_TREND_THRESHOLD,
 
             # --- MACD Trend Follow strategy ---
-            "macd_hist_threshold": 0.0,  # threshold around MACD histogram for confirmation
+            "macd_hist_threshold": MACD_HIST_THRESHOLD,
 
             # --- Sentiment-based strategies ---
-            "sentiment_col": "sentiment",
-            "sentiment_threshold": 0.55,  # used in sentiment-momentum confirmation
-            "sentiment_window": 3,        # smoothing window for regime detection
-            "sentiment_ma_period": 5,     # used in regime filter SMA logic
+            "sentiment_col": SENTIMENT_COL,
+            "sentiment_threshold": SENTIMENT_THRESHOLD,
+            "sentiment_window": SENTIMENT_WINDOW,
+            "sentiment_ma_period": SENTIMENT_MA_PERIOD,
 }
 
             if CHOSEN_STRATEGY in ML_STRATEGIES_SET:
@@ -315,6 +332,10 @@ def main():
             trade_tables_dict[TICKER] = trades_df.copy(deep=True)
             price_series_dict[TICKER] = data["Close"]
             strategy_names.append(CHOSEN_STRATEGY)
+            if CHOSEN_STRATEGY in ML_STRATEGIES_SET:
+                model_names.append(model_name)
+            else:
+                model_names.append("")
             model_numbers.append(model_number)
             feature_set_ids.append(
                 f"fs_{model_number}_default" if CHOSEN_STRATEGY in ML_STRATEGIES_SET else ""
@@ -364,6 +385,7 @@ def main():
             trade_tables_dict=trade_tables_dict,
             price_series_dict=price_series_dict,
             ml_metrics_dict=summary_ml_metrics if summary_ml_metrics else None,
+            model_names=model_names,
         )
 
         print(

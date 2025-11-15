@@ -1,17 +1,11 @@
 {
-  "model_number": "60",
+  "model_number": "100",
 
-  "tickers": ["AAPL", "MSFT", "NVDA", "QQQ"],
+  "tickers": ["AAPL","ADBE"],
 
   "strategies": [
-    "sma",
-    "ema",
-    "sma_rsi",
-    "sma_rsi_macd",
     "ema_rsi",
     "sentiment_strategy",
-    "logistic_regression",
-    "random_forest",
     "xgboost"
   ],
 
@@ -22,83 +16,6 @@
         "sma_diff_pct_10d",
         "sma_diff_pct_50d",
         "sma_diff_pct_200d"
-      ]
-    },
-    {
-      "feature_set_id": "fs_61",
-      "feature_columns": [
-        "ema_diff_pct_10d",
-        "ema_diff_pct_50d",
-        "ema_diff_pct_200d"
-      ]
-    },
-    {
-      "feature_set_id": "fs_62",
-      "feature_columns": [
-        "ema_diff_pct_10d",
-        "ema_diff_pct_50d",
-        "ema_diff_pct_200d",
-        "rsi_14"
-      ]
-    },
-    {
-      "feature_set_id": "fs_63",
-      "feature_columns": [
-        "ema_diff_pct_10d",
-        "ema_diff_pct_50d",
-        "ema_diff_pct_200d",
-        "rsi_14",
-        "vix_roc1",
-        "vix_mean20",
-        "vix_std20"
-      ]
-    },
-    {
-      "feature_set_id": "fs_64",
-      "feature_columns": [
-        "volume_20d_ma",
-        "bb_percent",
-        "bb_lower",
-        "vix_mean20",
-        "rsi_14",
-        "ndx_20d_volatility",
-        "sma_50",
-        "bb_upper",
-        "sma_200",
-        "gspc_20d_volatility"
-      ]
-    },
-    {
-      "feature_set_id": "fs_65",
-      "feature_columns": [
-        "rsi_14",
-        "macd",
-        "mom_diff_pct_10d",
-        "mom_diff_pct_100d",
-        "volatility_14",
-        "gspc_20d_volatility",
-        "ndx_20d_volatility",
-        "daily_return",
-        "gspc_daily_return",
-        "ndx_daily_return",
-        "obv",
-        "volume_20d_ma",
-        "bb_percent"
-      ]
-    },
-    {
-      "feature_set_id": "fs_66",
-      "feature_columns": [
-        "sma_200",
-        "sma_50",
-        "bb_upper",
-        "bb_lower",
-        "ndx_20d_sma",
-        "ndx_20d_volatility",
-        "volume_20d_ma",
-        "volatility_14",
-        "ema_diff_pct_50d",
-        "mom_diff_pct_50d"
       ]
     }
   ],
