@@ -1,12 +1,10 @@
 {
   "model_number": "100",
 
-  "tickers": ["AAPL","ADBE"],
+  "tickers": ["TSLA"],
 
   "strategies": [
-    "ema_rsi",
-    "sentiment_strategy",
-    "xgboost"
+    "random_forest","xgbosst","logistic_regression"
   ],
 
   "feature_sets": [

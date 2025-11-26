@@ -2,40 +2,83 @@
 
 from indicators.bollinger_bands import calculate_bollinger_bands
 
-def bb_squeeze_breakout_strategy(data, bb_window, bb_std_dev, squeeze_threshold=0.02, **kwargs):
+def bb_squeeze_breakout_strategy(
+    data,
+    bb_window=20,
+    bb_std_dev=2,
+    squeeze_threshold=0.05,
+    breakout_lookback=5,
+    **kwargs
+):
     """
-    Bollinger Band Squeeze Breakout Strategy
-    - Detects low volatility (bandwidth < threshold * mid_band)
-    - Buys if price breaks above upper band after a squeeze.
-    - Sells if price breaks below lower band after a squeeze.
+    Corrected Bollinger Band Squeeze Breakout Strategy
+
+    Logic:
+    1. A "squeeze" occurs when the Bollinger Band width is extremely tight.
+       - bandwidth = (upper - lower) / mid
+       - squeeze = bandwidth < squeeze_threshold
+
+    2. A breakout is valid ONLY AFTER a squeeze ends.
+
+       BUY conditions:
+       - Squeeze was active in the past `breakout_lookback` bars
+       - Current close > upper band
+
+       SELL conditions:
+       - Squeeze was active in the past `breakout_lookback` bars
+       - Current close < lower band
+
+    3. Ensures signal length EXACTLY matches data length.
     """
 
     bb_upper, bb_lower, bb_mid = calculate_bollinger_bands(data, bb_window, bb_std_dev)
-    band_width = bb_upper - bb_lower
 
-    signals = ['HOLD']
+    # Compute volatility compression (squeeze)
+    band_width = bb_upper - bb_lower
+    bandwidth_ratio = band_width / bb_mid
+
+    squeeze = bandwidth_ratio < squeeze_threshold
+
+    signals = ['HOLD'] * len(data)
     bought = False
 
-    for _ in range(bb_window - 1):
-        signals.append('HOLD')
+    # Debug counters
+    squeeze_count = 0
+    squeeze_exit_count = 0
+    buy_signals = 0
+    sell_signals = 0
 
-    for i in range(bb_window - 1, len(data)):
-        signal = 'HOLD'
+    for i in range(bb_window, len(data)):
+
         close = data['Close'].iloc[i]
-        mid = bb_mid.iloc[i]
+        upper = bb_upper.iloc[i]
+        lower = bb_lower.iloc[i]
 
-        # Detect squeeze: narrow band
-        is_squeeze = band_width.iloc[i] / mid < squeeze_threshold
+        # Check if a squeeze happened recently
+        recent_squeeze = squeeze.iloc[max(0, i - breakout_lookback):i].any()
 
-        if not bought:
-            if is_squeeze and close > bb_upper.iloc[i]:
-                signal = 'BUY'
-                bought = True
-        elif bought:
-            if close < bb_mid.iloc[i]:
-                signal = 'SELL'
-                bought = False
+        if squeeze.iloc[i]:
+            squeeze_count += 1
 
-        signals.append(signal)
+        # No squeeze recently → no breakout trading
+        if not recent_squeeze:
+            continue
+
+        # BUY breakout
+        if not bought and close > upper:
+            signals[i] = 'BUY'
+            bought = True
+            buy_signals += 1
+            continue
+
+        # SELL breakdown
+        if bought and close < lower:
+            signals[i] = 'SELL'
+            bought = False
+            sell_signals += 1
+
+    print(f"[BB SQUEEZE DEBUG] Squeeze candles: {squeeze_count}")
+    print(f"[BB SQUEEZE DEBUG] Buy signals: {buy_signals}")
+    print(f"[BB SQUEEZE DEBUG] Sell signals: {sell_signals}")
 
     return signals

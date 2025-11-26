@@ -1,0 +1,11 @@
+Strategy Name,Ticker,CAGR (%),Sharpe Ratio,Sortino Ratio,Calmar Ratio,Max Drawdown (%),Volatility
+buy_and_hold,MSFT,20.83,0.74,1.1,0.56,-37.15,0.259
+buy_and_hold,AAPL,16.16,0.56,0.83,0.48,-33.36,0.2827
+buy_and_hold,GOOG,25.23,0.78,1.13,0.57,-44.6,0.3096
+buy_and_hold,META,23.34,0.63,0.83,0.3,-76.74,0.4368
+buy_and_hold,ORCL,37.96,0.95,1.45,0.94,-40.36,0.3817
+buy_and_hold,ADBE,-6.37,-0.1,-0.12,-0.11,-60.02,0.3545
+buy_and_hold,TSLA,13.56,0.46,0.72,0.18,-73.63,0.6125
+buy_and_hold,AMD,21.4,0.57,0.91,0.33,-65.45,0.5231
+buy_and_hold,NVDA,72.73,1.24,2,1.1,-66.34,0.527
+buy_and_hold,QQQ,15.85,0.62,0.87,0.45,-35.12,0.2286

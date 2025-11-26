@@ -13,6 +13,9 @@ import traceback
 import subprocess
 from datetime import datetime
 from pathlib import Path
+from typing import Optional
+
+import numpy as np
 
 from ma_trading_bot.backtest.create_and_save_backtest_summary_table_csv_file import (
     apply_summary_excel_formatting,
@@ -179,13 +182,15 @@ def collect_summary_row(
             row = df.tail(1)
 
         raw = row.iloc[0].to_dict()
-        strategy_name = raw.get("Strategy Name") or strategy
+        strategy_name = (raw.get("Strategy Name") or strategy).lower()
         model_label = raw.get("Model Name") or ""
         assigned_feature_set = feature_set_id if strategy in ML_STRATEGIES else ""
         assigned_model_number = model_number if strategy in ML_STRATEGIES else ""
 
         signal_plot_path = raw.get("Strategy Plot Link") or infer_plot_path(final_plots_dir, ticker, strategy)
         portfolio_plot_path = raw.get("Portfolio Value Plot Link", "")
+        visible_strategy_link = "Open Strategy Plot" if signal_plot_path else ""
+        visible_portfolio_link = "Open Portfolio Plot" if portfolio_plot_path else ""
 
         backtest_row = {
             "Strategy Name": strategy_name,
@@ -202,8 +207,8 @@ def collect_summary_row(
             "Win Rate (%)": raw.get("Win Rate (%)", ""),
             "Number of Trades": raw.get("Number of Trades", ""),
             "Information Ratio": raw.get("Information Ratio", ""),
-            "Strategy Plot Link": signal_plot_path,
-            "Portfolio Value Plot Link": portfolio_plot_path,
+            "Strategy Plot Link": visible_strategy_link,
+            "Portfolio Value Plot Link": visible_portfolio_link,
             "_StrategyPlotAbsPath": signal_plot_path,
             "_PortfolioPlotAbsPath": portfolio_plot_path,
             "_StrategyKey": strategy,
@@ -227,11 +232,11 @@ def collect_summary_row(
                     "Model Name": ML_STRATEGIES[strategy]["model_name"],
                     "Model Number": assigned_model_number,
                     "Feature Set ID": assigned_feature_set,
-                    "Accuracy": ml_metrics.get("Accuracy", ""),
-                    "Precision": ml_metrics.get("Precision", ""),
-                    "Recall": ml_metrics.get("Recall", ""),
-                    "F1 Score": ml_metrics.get("F1", ""),
-                    "Confusion Matrix": ml_metrics.get("Confusion_Matrix", ""),
+                    "Accuracy": _as_float_or_nan(ml_metrics.get("Accuracy", "")),
+                    "Precision": _as_float_or_nan(ml_metrics.get("Precision", "")),
+                    "Recall": _as_float_or_nan(ml_metrics.get("Recall", "")),
+                    "F1 Score": _as_float_or_nan(ml_metrics.get("F1", "")),
+                    "Confusion Matrix": _format_confusion_matrix(ml_metrics.get("Confusion_Matrix", "")),
                 }
             except Exception as ml_err:
                 log(f"[WARN] ML metrics failed for {ticker} {strategy}: {ml_err}", log_path)
@@ -241,10 +246,10 @@ def collect_summary_row(
                     "Model Name": ML_STRATEGIES[strategy]["model_name"],
                     "Model Number": assigned_model_number,
                     "Feature Set ID": assigned_feature_set,
-                    "Accuracy": "",
-                    "Precision": "",
-                    "Recall": "",
-                    "F1 Score": "",
+                    "Accuracy": np.nan,
+                    "Precision": np.nan,
+                    "Recall": np.nan,
+                    "F1 Score": np.nan,
                     "Confusion Matrix": "",
                 }
 
@@ -253,6 +258,40 @@ def collect_summary_row(
     except Exception as err:
         log(f"[WARN] Could not collect summary for {ticker} {strategy}: {err}", log_path)
         return None, None
+
+
+def _as_float(value):
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return 0.0
+
+
+def _format_confusion_matrix(matrix_value: Optional[str]) -> str:
+    """
+    Convert a serialized confusion matrix like "[12 3 4; 5 9 2; 1 4 7]"
+    into a multiline string suitable for a single Excel cell.
+    """
+    if not matrix_value:
+        return ""
+    import re
+    numbers = re.findall(r"-?\d+", matrix_value)
+    if not numbers:
+        return ""
+    chunk = int(len(numbers) ** 0.5) or 1
+    rows = [
+        numbers[i : i + chunk]
+        for i in range(0, len(numbers), chunk)
+    ]
+    formatted_rows = ["    ".join(row) for row in rows]
+    return "\n".join(formatted_rows)
+
+
+def _as_float_or_nan(value):
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return np.nan
 
 # ----------------------------
 # Main
@@ -506,14 +545,14 @@ def main():
                         combined_backtest_rows.append(row_dict)
                         if strategy == BUY_AND_HOLD_STRATEGY_NAME:
                             benchmark_rows.append({
-                                "Strategy Name": "Buy and Hold",
+                                "Strategy Name": BUY_AND_HOLD_STRATEGY_NAME,
                                 "Ticker": ticker,
-                                "CAGR (%)": row_dict.get("CAGR (%)", ""),
-                                "Sharpe Ratio": row_dict.get("Sharpe Ratio", ""),
-                                "Sortino Ratio": row_dict.get("Sortino Ratio", ""),
-                                "Calmar Ratio": row_dict.get("Calmar Ratio", ""),
-                                "Max Drawdown (%)": row_dict.get("Max Drawdown (%)", ""),
-                                "Volatility": row_dict.get("Volatility", ""),
+                                "CAGR (%)": _as_float(row_dict.get("CAGR (%)", 0)),
+                                "Sharpe Ratio": _as_float(row_dict.get("Sharpe Ratio", 0)),
+                                "Sortino Ratio": _as_float(row_dict.get("Sortino Ratio", 0)),
+                                "Calmar Ratio": _as_float(row_dict.get("Calmar Ratio", 0)),
+                                "Max Drawdown (%)": _as_float(row_dict.get("Max Drawdown (%)", 0)),
+                                "Volatility": _as_float(row_dict.get("Volatility", 0)),
                             })
                         successful_runs.append((ticker, strategy))
                         if ml_training_row:
@@ -552,9 +591,7 @@ def main():
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
         def _display_strategy_name(key: str) -> str:
-            if key == BUY_AND_HOLD_STRATEGY_NAME:
-                return "Buy and Hold"
-            return key.replace("_", " ").title()
+            return (key or "").lower()
 
         def _model_label(row):
             key = row.get("_StrategyKey")
@@ -585,13 +622,17 @@ def main():
         for col in table2_cols:
             if col not in all_df.columns:
                 all_df[col] = ""
+        ml_keys_set = set(ML_STRATEGIES.keys())
         all_df["Model Name"] = all_df.apply(_model_label, axis=1)
         all_df["Strategy Name"] = all_df["_StrategyKey"].apply(_display_strategy_name)
-        all_df.drop(columns=["_StrategyKey"], inplace=True)
+        non_ml_mask = ~all_df["_StrategyKey"].isin(ml_keys_set)
+        all_df.loc[non_ml_mask, ["Model Name", "Model Number", "Feature Set ID"]] = ""
+        all_df["Information Ratio"] = pd.to_numeric(all_df["Information Ratio"], errors="coerce")
 
         def _write_excel(df: pd.DataFrame, path: Path):
-            helper_df = df.copy()
+            helper_df = df.reset_index(drop=True).copy()
             visible_df = helper_df[[col for col in helper_df.columns if not col.startswith("_")]]
+            visible_df = visible_df.apply(pd.to_numeric, errors="ignore")
             with pd.ExcelWriter(path, engine="openpyxl") as writer:
                 visible_df.to_excel(writer, index=False, sheet_name="Summary")
                 ws = writer.sheets["Summary"]
@@ -604,7 +645,10 @@ def main():
                     abs_col = "_StrategyPlotAbsPath" if "Strategy" in col_name else "_PortfolioPlotAbsPath"
                     col_idx = visible_df.columns.get_loc(col_name) + 1
                     for row_idx in range(2, ws.max_row + 1):
-                        path_value = helper_df.at[row_idx - 2, abs_col] if abs_col in helper_df.columns else helper_df.at[row_idx - 2, col_name]
+                        if abs_col in helper_df.columns:
+                            path_value = helper_df.iloc[row_idx - 2][abs_col]
+                        else:
+                            path_value = helper_df.iloc[row_idx - 2][col_name]
                         if not path_value:
                             continue
                         cell = ws.cell(row=row_idx, column=col_idx)
@@ -612,17 +656,24 @@ def main():
                         cell.hyperlink = str(Path(path_value).resolve())
                 apply_summary_excel_formatting(ws)
 
-        all_output_df = all_df[table2_cols + ["_StrategyPlotAbsPath", "_PortfolioPlotAbsPath"]].copy()
-        all_path = Path(final_excel_dir) / f"Strategy_Backtesting_Performance_All_{timestamp}.xlsx"
-        _write_excel(all_output_df, all_path)
-        log(f"✅ Strategy performance (all) → {all_path}")
+        non_bh_df = all_df[all_df["_StrategyKey"] != BUY_AND_HOLD_STRATEGY_NAME].copy()
+        if not non_bh_df.empty:
+            all_output_df = non_bh_df[table2_cols + ["_StrategyPlotAbsPath", "_PortfolioPlotAbsPath", "_StrategyKey"]].copy()
+            all_output_df.drop(columns=["_StrategyKey"], inplace=True)
+            all_path = Path(final_excel_dir) / f"Strategy_Backtesting_Performance_All_{timestamp}.xlsx"
+            _write_excel(all_output_df, all_path)
+            log(f"✅ Strategy performance (all) → {all_path}", log_path)
 
         for ticker in tickers:
-            ticker_df = all_df[all_df["Ticker"] == ticker]
+            ticker_df = all_df[all_df["Ticker"] == ticker].copy()
             if ticker_df.empty:
                 continue
+            ticker_df["_BH_ORDER"] = (ticker_df["_StrategyKey"] != BUY_AND_HOLD_STRATEGY_NAME).astype(int)
+            ticker_df.sort_values(by=["_BH_ORDER", "Strategy Name"], inplace=True)
+            ticker_df.drop(columns=["_BH_ORDER"], inplace=True)
+            ticker_df.drop(columns=["_StrategyKey"], inplace=True)
             df_to_write = ticker_df[table2_cols + ["_StrategyPlotAbsPath", "_PortfolioPlotAbsPath"]].copy()
-            path = Path(final_excel_dir) / f"Strategy_Backtesting_Performance_{ticker}_{timestamp}.xlsx"
+            path = Path(final_excel_dir) / f"{ticker}_Final_Backtesting_Summary_{timestamp}.xlsx"
             _write_excel(df_to_write, path)
             log(f"✅ Strategy performance ({ticker}) → {path}", log_path)
 
@@ -641,12 +692,13 @@ def main():
         ml_df = pd.DataFrame(combined_ml_training_rows, columns=ml_cols) if combined_ml_training_rows else pd.DataFrame(columns=ml_cols)
         if not ml_df.empty:
             ml_df["Strategy Name"] = ml_df["Strategy Name"].apply(_display_strategy_name)
+        ml_df = ml_df.apply(pd.to_numeric, errors="ignore")
         ml_path = Path(final_excel_dir) / f"ML_Training_Performance_{timestamp}.xlsx"
         with pd.ExcelWriter(ml_path, engine="openpyxl") as writer:
             ml_df.to_excel(writer, index=False, sheet_name="Training Performance")
             ws = writer.sheets["Training Performance"]
             apply_summary_excel_formatting(ws)
-        log(f"✅ ML training performance → {ml_path}")
+        log(f"✅ ML training performance → {ml_path}", log_path)
 
         benchmark_cols = [
             "Strategy Name",
@@ -662,12 +714,14 @@ def main():
         if not benchmark_df.empty:
             for col in benchmark_cols[2:]:
                 benchmark_df[col] = pd.to_numeric(benchmark_df[col], errors="coerce")
+            benchmark_df["Strategy Name"] = benchmark_df["Strategy Name"].str.lower()
+        benchmark_df = benchmark_df.apply(pd.to_numeric, errors="ignore")
         benchmark_path = Path(final_excel_dir) / f"Benchmark_Performance_{timestamp}.xlsx"
         with pd.ExcelWriter(benchmark_path, engine="openpyxl") as writer:
             benchmark_df.to_excel(writer, index=False, sheet_name="Benchmark")
             ws = writer.sheets["Benchmark"]
             apply_summary_excel_formatting(ws)
-        log(f"✅ Benchmark performance → {benchmark_path}")
+        log(f"✅ Benchmark performance → {benchmark_path}", log_path)
 
     except Exception as e:
         log(f"[ERROR] Writing Excel tables failed: {e}", log_path)

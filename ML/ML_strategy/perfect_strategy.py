@@ -5,6 +5,7 @@ from ML.ML_strategy.processing_steps_for_signal_generation.translate_raw_signals
 from ML.ML_strategy.processing_steps_for_signal_generation.apply_positioning_rule_to_translated_signals import apply_positioning_rule_to_translated_signals
 import pandas as pd
 from config import GSPC_DATA_FILE_PATH, NDX_DATA_FILE_PATH, VIX_DATA_FILE_PATH
+from config import LOOKAHEAD_DAYS
 from ma_trading_bot.ml_feature_store import resolve_feature_columns
 # Because for this strategy we also need the NaN signal values that the labeling function generates, the NaN values don't get dropped in that function.
 def perfect_strategy(data, **kwargs):
@@ -17,7 +18,7 @@ def perfect_strategy(data, **kwargs):
     print(f"After feature calculation: {len(data_with_features)}")
 
     #data_with_labels = label_data_with_threshold(data_with_features)
-    data_with_labels = label_data_with_future_window(data_with_features)
+    data_with_labels = label_data_with_future_window(data_with_features, LOOKAHEAD_DAYS)
     print(f"After labeling: {len(data_with_labels)}")
 
     raw_signals = data_with_labels['Label'].tolist()

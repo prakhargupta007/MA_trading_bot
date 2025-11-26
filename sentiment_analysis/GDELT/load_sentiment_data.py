@@ -5,19 +5,19 @@ from typing import Optional
 import pandas as pd
 
 SENTIMENT_FILE_MAP = {
-    "AAPL": "AAPL_1_sentiment_trading_days.csv",
-    "ADBE": "ADBE_1_sentiment_trading_days.csv",
-    "AMD":  "AMD_1_sentiment_trading_days.csv",
-    "CRWD": "CRWD_1_sentiment_trading_days.csv",
-    "GOOG": "GOOG_1_sentiment_trading_days.csv",
-    "META": "META_1_sentiment_trading_days.csv",
-    "MSFT": "MSFT_1_sentiment_trading_days.csv",
-    "NET":  "NET_1_sentiment_trading_days.csv",
-    "NFLX": "NFLX_1_sentiment_trading_days.csv",
-    "NVDA": "NVDA_1_sentiment_trading_days.csv",
-    "ORCL": "ORCL_1_sentiment_trading_days.csv",
-    "PLTR": "PLTR_1_sentiment_trading_days.csv",
-    "TSLA": "TSLA_1_sentiment_trading_days.csv"
+    "AAPL": "AAPL_2_sentiment_trading_days.csv",
+    "ADBE": "ADBE_2_sentiment_trading_days.csv",
+    "AMD":  "AMD_2_sentiment_trading_days.csv",
+    "CRWD": "CRWD_2_sentiment_trading_days.csv",
+    "GOOG": "GOOG_2_sentiment_trading_days.csv",
+    "META": "META_2_sentiment_trading_days.csv",
+    "MSFT": "MSFT_2_sentiment_trading_days.csv",
+    "NET":  "NET_2_sentiment_trading_days.csv",
+    "NFLX": "NFLX_2_sentiment_trading_days.csv",
+    "NVDA": "NVDA_2_sentiment_trading_days.csv",
+    "ORCL": "ORCL_2_sentiment_trading_days.csv",
+    "PLTR": "PLTR_2_sentiment_trading_days.csv",
+    "TSLA": "TSLA_2_sentiment_trading_days.csv"
 }
 
 

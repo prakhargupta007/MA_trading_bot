@@ -19,16 +19,16 @@ USE_STORED_DATA = True
 # FOR BACKTESTING USING STORED DATA
 if USE_STORED_DATA:
     # If using stored data, the TICKERS variable can only be one ticker at a time, since the stored data file only contains data for one ticker
-    TICKERS = 'QQQ'
+    TICKERS = 'GOOG'
     'When changing the following line to use a diffrent file of data for reading, change the backtesting dates and period in the main.py file!!!'
-    STORED_DATA_TO_BE_READ = 'data/stored_data2/data_QQQ_backtest_2021-01-01--2025-10-24.csv'
+    STORED_DATA_TO_BE_READ = 'data/stored_data2/data_GOOG_backtest_2021-01-01--2025-10-25.csv'
     
 # 'sma' 'ema' 'sma_rsi' 'sma_rsi_macd'  'ema_rsi'
 # 'sentiment_strategy'
 # 'logistic_regression' 'random_forest' 'xgboost' 'mlp'
 # 'perfect_strategy'
 
-CHOSEN_STRATEGY = 'sentiment_regime_filter'
+CHOSEN_STRATEGY = 'buy_and_hold'
 #CHOSEN_STRATEGY = 'random_forest'
 #CHOSEN_STRATEGY = 'xgboost'
 
@@ -38,8 +38,11 @@ CHOSEN_STRATEGY = 'sentiment_regime_filter'
 DATA_PATH_FOR_SENTIMENT_STRATEGY = '/Users/prakhar/Desktop/MA_trading_bot/sentiment_analysis/GDELT/trading_days_daily_output'
 
 STORED_DATA2_DIR = os.path.join('data', 'stored_data2')
-PATH_GSPC = os.path.join(STORED_DATA2_DIR, 'gspc.csv')
-PATH_NDX = os.path.join(STORED_DATA2_DIR, 'ndx.csv')
+
+# Direct, explicit file paths matching your folder
+PATH_GSPC = os.path.join(STORED_DATA2_DIR, 'data_^GSPC_backtest_2021-01-01--2025-10-25.csv')
+PATH_NDX  = os.path.join(STORED_DATA2_DIR, 'data_^NDX_backtest_2021-01-01--2025-10-25.csv')
+
 
 
 def _resolve_data_path(*candidates):
@@ -73,27 +76,19 @@ SENTIMENT_DATA_PATH_FOR_ML_MODEL_TRAINING_FEATURE = '/Users/prakhar/Desktop/MA_t
 
 
 if TRAINING_MODE:
-    GSPC_DATA_FILE_PATH = _resolve_data_path(
-        PATH_GSPC,
-        os.path.join(STORED_DATA2_DIR, 'data_^GSPC_train_test_2012-05-18--2020-12-31.csv')
-    )
-    NDX_DATA_FILE_PATH = _resolve_data_path(
-        PATH_NDX,
-        os.path.join(STORED_DATA2_DIR, 'data_^NDX_train_test_2012-05-18--2020-12-31.csv')
-    )
-    VIX_DATA_FILE_PATH = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data2/data_^VIX_train_test_2012-05-18--2020-12-31.csv'
+    _GSPC_TRAIN_PATH = os.path.join(STORED_DATA2_DIR, 'data_^GSPC_train_test_2012-05-18--2020-12-31.csv')
+    _NDX_TRAIN_PATH  = os.path.join(STORED_DATA2_DIR, 'data_^NDX_train_test_2012-05-18--2020-12-31.csv')
+
+    # TRAINING must ALWAYS use the training files
+    GSPC_DATA_FILE_PATH = _resolve_data_path(_GSPC_TRAIN_PATH, PATH_GSPC)
+    NDX_DATA_FILE_PATH  = _resolve_data_path(_NDX_TRAIN_PATH, PATH_NDX)
+    VIX_DATA_FILE_PATH  = os.path.join(STORED_DATA2_DIR, 'data_^VIX_train_test_2012-05-18--2020-12-31.csv')
+
 else:
-    GSPC_DATA_FILE_PATH = _resolve_data_path(
-        PATH_GSPC,
-        os.path.join(STORED_DATA2_DIR, 'data_^GSPC_backtest_2021-01-01--2025-08-15.csv'),
-        os.path.join(STORED_DATA2_DIR, 'data_^GSPC_backtest_2021-01-01--2025-10-24.csv')
-    )
-    NDX_DATA_FILE_PATH = _resolve_data_path(
-        PATH_NDX,
-        os.path.join(STORED_DATA2_DIR, 'data_^NDX_backtest_2021-01-01--2025-08-15.csv'),
-        os.path.join(STORED_DATA2_DIR, 'data_^NDX_backtest_2021-01-01--2025-10-24.csv')
-    )
-    VIX_DATA_FILE_PATH = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data2/data_^VIX_backtest_2021-01-01--2025-10-24.csv'
+    # BACKTEST must ALWAYS use the latest file ONLY (10-25). Remove old backups.
+    GSPC_DATA_FILE_PATH = _resolve_data_path(PATH_GSPC)
+    NDX_DATA_FILE_PATH  = _resolve_data_path(PATH_NDX)
+    VIX_DATA_FILE_PATH  = os.path.join(STORED_DATA2_DIR, 'data_^VIX_backtest_2021-01-01--2025-10-25.csv')
 
 
 
@@ -147,7 +142,7 @@ ML_BATCH_SIZE = 32
 
 # =================================== BACKTESTING WITH FRESHLY NEW DOWNLOADED DATA ====================================
 if not USE_STORED_DATA:
-    TICKERS = 'QQQ'
+    TICKERS = 'GOOG'
     #TICKERS =  "JNJ,KO,PG,D"
     #TICKERS =  "MSFT,DIS,UNH,UPS"
     #TICKERS =  "TSLA,NVDA,ARKK,META"
@@ -172,7 +167,7 @@ OPEN_INDIVIDUAL_PROCESS_EXCEL_FILES_AFTER_SAVING = False
 OPEN_SUMMARY_EXCEL_FILE_AFTER_SAVING = False
 
 SLIPPAGE_RATE = 0.0005
-RISK_FREE_RATE = 0.052 # current risk free rate in the US ==> yield on the 3-month US treasury bill, used for sharpe ratio calculation 
+RISK_FREE_RATE = 0.0322 # current risk free rate in the US ==> yield on the 3-month US treasury bill, used for sharpe ratio calculation 
 TRANSACTION_FEE_PER_STOCK = 0.05
 MINIMUM_TRANSACTION_FEE = 1 
 

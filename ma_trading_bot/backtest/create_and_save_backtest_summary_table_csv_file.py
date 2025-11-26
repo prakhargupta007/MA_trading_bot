@@ -109,22 +109,29 @@ def apply_summary_excel_formatting(ws):
         bottom=Side(style="thin"),
     )
     for cell in ws[1]:
+        wrap = cell.value == "Confusion Matrix"
         cell.font = bold_font
-        cell.alignment = Alignment(horizontal="center")
+        cell.alignment = Alignment(horizontal="center", wrap_text=wrap)
         cell.border = thin_border
 
     for row in ws.iter_rows(min_row=2):
         for cell in row:
             cell.border = thin_border
-            if isinstance(cell.value, str) and cell.value.startswith("http"):
+            if cell.hyperlink is not None:
                 cell.style = "Hyperlink"
+            if ws.cell(row=1, column=cell.column).value == "Confusion Matrix":
+                cell.alignment = Alignment(horizontal="left", wrap_text=True)
 
     for col_idx in range(1, ws.max_column + 1):
         max_len = 0
         for row_idx in range(1, ws.max_row + 1):
             value = ws.cell(row=row_idx, column=col_idx).value
             max_len = max(max_len, len(str(value)) if value is not None else 0)
-        ws.column_dimensions[get_column_letter(col_idx)].width = min(max_len + 4, 60)
+        width = min(max_len + 4, 60)
+        header = ws.cell(row=1, column=col_idx).value
+        if header == "Confusion Matrix":
+            width = max(width, 25)
+        ws.column_dimensions[get_column_letter(col_idx)].width = width
 
 
 # ---------------- Main Summary Writer ---------------- #
@@ -159,7 +166,7 @@ def create_and_save_backtest_summary_table_csv_file(
     n = len(summary_tickers)
     for i in range(n):
         ticker = summary_tickers[i]
-        strategy = strategy_names[i] if strategy_names else ""
+        strategy = (strategy_names[i] if strategy_names else "").lower()
         model_no = model_numbers[i] if model_numbers else ""
         feat_id = feature_set_ids[i] if feature_set_ids else ""
         model_label = model_names[i] if model_names else ""
@@ -177,6 +184,13 @@ def create_and_save_backtest_summary_table_csv_file(
         if ticker not in benchmark_returns_cache:
             benchmark_returns_cache[ticker] = _make_benchmark_returns(close_series)
         benchmark_returns = benchmark_returns_cache[ticker]
+        min_len = min(len(strat_returns), len(benchmark_returns))
+        if min_len > 0:
+            strat_aligned = pd.Series(strat_returns.iloc[-min_len:].to_numpy(), dtype=float)
+            bench_aligned = pd.Series(benchmark_returns.iloc[-min_len:].to_numpy(), dtype=float)
+        else:
+            strat_aligned = pd.Series([], dtype=float)
+            bench_aligned = pd.Series([], dtype=float)
 
         sortino = _sortino_ratio(pv_series, rf_annual=RISK_FREE_RATE)
         mdd = _max_drawdown(pv_series)
@@ -184,20 +198,21 @@ def create_and_save_backtest_summary_table_csv_file(
         volatility = calculate_volatility(strat_returns)
         win_rate, num_trades = _trade_stats(trades_df)
         info_ratio = calculate_information_ratio(
-            strat_returns,
-            benchmark_returns,
+            strat_aligned,
+            bench_aligned,
             risk_free_rate=RISK_FREE_RATE / 252,
-        )
+        ) if not strat_aligned.empty and not bench_aligned.empty else np.nan
         if strategy == "buy_and_hold":
             # Benchmark equals strategy; IR undefined -> set to NaN
             info_ratio = np.nan
 
+        is_ml = strategy in {"logistic_regression", "random_forest", "xgboost", "mlp"}
         rows.append({
             "Strategy Name": strategy,
             "Ticker": ticker,
-            "Model Name": model_label,
-            "Model Number": model_no,
-            "Feature Set ID": feat_id,
+            "Model Name": model_label if is_ml else "",
+            "Model Number": model_no if is_ml else "",
+            "Feature Set ID": feat_id if is_ml else "",
             "CAGR (%)": round(cagr, 2),
             "Sharpe Ratio": round(sharpe, 2),
             "Sortino Ratio": round(sortino, 2),
@@ -206,7 +221,7 @@ def create_and_save_backtest_summary_table_csv_file(
             "Volatility": round(volatility, 4),
             "Win Rate (%)": round(win_rate, 2),
             "Number of Trades": num_trades,
-            "Information Ratio": round(info_ratio, 4) if not np.isnan(info_ratio) else "",
+            "Information Ratio": np.nan if np.isnan(info_ratio) else round(info_ratio, 4),
             "Strategy Plot Link": signal_plot,
             "Portfolio Value Plot Link": portfolio_plot,
         })
@@ -219,29 +234,6 @@ def create_and_save_backtest_summary_table_csv_file(
     df.to_csv(csv_path, index=False)
     print(f"✅ Summary CSV with metrics saved at: {csv_path}")
 
-    excel_name = f"final_backtesting_summary_{TICKERS}.xlsx"
-    excel_path = os.path.join(FINAL_EXCEL_DIR, excel_name)
-    with pd.ExcelWriter(excel_path, engine="openpyxl") as writer:
-        df.to_excel(writer, index=False, sheet_name="Summary")
-        ws = writer.sheets["Summary"]
-        # Replace paths with hyperlinks
-        link_cols = {
-            "Strategy Plot Link": "Open Strategy Plot",
-            "Portfolio Value Plot Link": "Open Portfolio Plot",
-        }
-        for col_name, label in link_cols.items():
-            if col_name not in df.columns:
-                continue
-            col_idx = df.columns.get_loc(col_name) + 1
-            for row_idx in range(2, ws.max_row + 1):
-                cell = ws.cell(row=row_idx, column=col_idx)
-                path = cell.value
-                if not path:
-                    continue
-                cell.value = label
-                cell.hyperlink = path
-        apply_summary_excel_formatting(ws)
-
     preview = tabulate(df, headers="keys", tablefmt="grid", floatfmt=".2f")
-    print(f"\n✅ Final backtesting summary saved at:\n{excel_path}\n")
-    return preview, excel_path
+    print(f"\n✅ Summary rows written to CSV:\n{csv_path}\n")
+    return preview, csv_path

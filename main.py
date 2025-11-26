@@ -32,7 +32,6 @@ from config import (
     ATR_PERIOD,
     ATR_MULTIPLIER,
     model_number,  # your global ML model number
-    model_name,
     BB_WINDOW,
     BB_STD_DEV,
     OBV_SMA_PERIOD,
@@ -91,6 +90,13 @@ from ma_trading_bot.automation_bunch_backtesting.ml_metrics_eval import compute_
 from ma_trading_bot.ml_feature_store import get_active_feature_columns
 
 ML_STRATEGIES_SET = {"logistic_regression", "random_forest", "xgboost", "mlp"}
+
+ML_STRATEGY_MODEL_LABELS = {
+    "logistic_regression": "lr",
+    "random_forest": "rf",
+    "xgboost": "xgb",
+    "mlp": "mlp",
+}
 
 
 # ======================= MAIN FUNCTION =======================
@@ -285,9 +291,8 @@ def main():
             portfolio_plot_path = None
             if VISUALISE_PLOTTED_SIGNAL_EXECUTIONS:
                 print("Generating Plotly chart...")
-                plot_path = plotly_plot_universal_strategy_signals_and_save(
-                    data, signals, TICKER, CHOSEN_STRATEGY.upper()
-                )
+
+                plot_path = plotly_plot_universal_strategy_signals_and_save(data, signals, TICKER, CHOSEN_STRATEGY.upper())
                 portfolio_value = return_portfolio_values()
                 portfolio_plot_path = plotly_plot_portfolio_values(portfolio_value, data, TICKER)
                 print("✅ Plots generated.\n")
@@ -333,7 +338,10 @@ def main():
             price_series_dict[TICKER] = data["Close"]
             strategy_names.append(CHOSEN_STRATEGY)
             if CHOSEN_STRATEGY in ML_STRATEGIES_SET:
-                model_names.append(model_name)
+                dynamic_model_name = ML_STRATEGY_MODEL_LABELS.get(
+                    CHOSEN_STRATEGY, CHOSEN_STRATEGY
+                )
+                model_names.append(dynamic_model_name)
             else:
                 model_names.append("")
             model_numbers.append(model_number)
@@ -395,7 +403,7 @@ def main():
         print(summary_table)
         print(f"Average CAGR: {calculate_average_cagr_of_list(summary_CAGRs):.2f}%")
 
-        print(f"\n✅ Final summary Excel saved at: {excel_path}")
+        print(f"\n✅ Summary CSV saved at: {excel_path}")
         print("\nEnd of backtesting!\nADIOS! 😎\n")
 
     except Exception as e:
