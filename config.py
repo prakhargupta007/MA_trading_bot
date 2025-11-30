@@ -19,9 +19,9 @@ USE_STORED_DATA = True
 # FOR BACKTESTING USING STORED DATA
 if USE_STORED_DATA:
     # If using stored data, the TICKERS variable can only be one ticker at a time, since the stored data file only contains data for one ticker
-    TICKERS = 'GOOG'
+    TICKERS = 'QQQ'
     'When changing the following line to use a diffrent file of data for reading, change the backtesting dates and period in the main.py file!!!'
-    STORED_DATA_TO_BE_READ = 'data/stored_data2/data_GOOG_backtest_2021-01-01--2025-10-25.csv'
+    STORED_DATA_TO_BE_READ = 'data/stored_data2/data_QQQ_backtest_2021-01-01--2025-10-25.csv'
     
 # 'sma' 'ema' 'sma_rsi' 'sma_rsi_macd'  'ema_rsi'
 # 'sentiment_strategy'
@@ -142,7 +142,7 @@ ML_BATCH_SIZE = 32
 
 # =================================== BACKTESTING WITH FRESHLY NEW DOWNLOADED DATA ====================================
 if not USE_STORED_DATA:
-    TICKERS = 'GOOG'
+    TICKERS = 'QQQ'
     #TICKERS =  "JNJ,KO,PG,D"
     #TICKERS =  "MSFT,DIS,UNH,UPS"
     #TICKERS =  "TSLA,NVDA,ARKK,META"

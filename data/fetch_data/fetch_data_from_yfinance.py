@@ -33,3 +33,4 @@ def fetch_data_from_yfinance(ticker, option_1_chosen, backtesting_period, end_of
         return data
     except Exception as e:
         raise ValueError(f"❌ Error fetching data for ticker {ticker}: {str(e)}")
+    

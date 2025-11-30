@@ -2,11 +2,35 @@
   "model_number": "1",
 
   "tickers": [
-    "GOOG"
+    "MSFT",
+    "AAPL",
+    "GOOG",
+    "META",
+    "ORCL",
+    "ADBE",
+    "TSLA",
+    "AMD",
+    "NVDA",
+    "QQQ"
   ],
 
   "strategies": [
-    "perfect_strategy"
+    "sma",
+    "ema",
+    "sma_rsi",
+    "rsi_trend_filter",
+    "macd_trend_follow",
+    "bollinger_mean_reversion",
+    "bb_squeeze_breakout",
+    "obv_trend_confirmation",
+    "ma_distance_reversion",
+    "vol_adjusted_momentum",
+    "sentiment_strategy",
+    "sentiment_momentum_confirmation",
+    "sentiment_regime_filter",
+    "logistic_regression",
+    "random_forest",
+    "xgboost"
   ],
 
   "feature_sets": [
@@ -104,5 +128,9 @@
     "ml_saved_models_dir": "ML/saved_models"
   }
 }
+
+
+
+
 
 
