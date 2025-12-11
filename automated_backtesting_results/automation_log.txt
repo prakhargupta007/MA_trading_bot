@@ -9233,3 +9233,441 @@ $ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
 Run summary: successful=530, failed=0, skipped=0
 All training/backtest tasks completed successfully.
 === Automation finished: 2025-11-29T16:19:42.538577 ===
+=== Automation started: 2025-11-30T15:28:32.180700 ===
+Activated feature set → FS_1
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] No ML strategies selected for GOOG; skipping training phase.
+[INFO] No ML strategies selected for META; skipping training phase.
+[INFO] No ML strategies selected for ORCL; skipping training phase.
+[INFO] No ML strategies selected for ADBE; skipping training phase.
+[INFO] No ML strategies selected for TSLA; skipping training phase.
+[INFO] No ML strategies selected for AMD; skipping training phase.
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+Incremented model_number → 2
+Activated feature set → FS_2
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] No ML strategies selected for GOOG; skipping training phase.
+[INFO] No ML strategies selected for META; skipping training phase.
+[INFO] No ML strategies selected for ORCL; skipping training phase.
+[INFO] No ML strategies selected for ADBE; skipping training phase.
+[INFO] No ML strategies selected for TSLA; skipping training phase.
+[INFO] No ML strategies selected for AMD; skipping training phase.
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+Incremented model_number → 3
+Activated feature set → FS_3
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] No ML strategies selected for GOOG; skipping training phase.
+[INFO] No ML strategies selected for META; skipping training phase.
+[INFO] No ML strategies selected for ORCL; skipping training phase.
+[INFO] No ML strategies selected for ADBE; skipping training phase.
+[INFO] No ML strategies selected for TSLA; skipping training phase.
+[INFO] No ML strategies selected for AMD; skipping training phase.
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+Incremented model_number → 4
+Activated feature set → FS_4
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] No ML strategies selected for GOOG; skipping training phase.
+[INFO] No ML strategies selected for META; skipping training phase.
+[INFO] No ML strategies selected for ORCL; skipping training phase.
+[INFO] No ML strategies selected for ADBE; skipping training phase.
+[INFO] No ML strategies selected for TSLA; skipping training phase.
+[INFO] No ML strategies selected for AMD; skipping training phase.
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+Incremented model_number → 5
+Activated feature set → FS_5
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] No ML strategies selected for GOOG; skipping training phase.
+[INFO] No ML strategies selected for META; skipping training phase.
+[INFO] No ML strategies selected for ORCL; skipping training phase.
+[INFO] No ML strategies selected for ADBE; skipping training phase.
+[INFO] No ML strategies selected for TSLA; skipping training phase.
+[INFO] No ML strategies selected for AMD; skipping training phase.
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+Incremented model_number → 6
+Activated feature set → FS_6
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] No ML strategies selected for GOOG; skipping training phase.
+[INFO] No ML strategies selected for META; skipping training phase.
+[INFO] No ML strategies selected for ORCL; skipping training phase.
+[INFO] No ML strategies selected for ADBE; skipping training phase.
+[INFO] No ML strategies selected for TSLA; skipping training phase.
+[INFO] No ML strategies selected for AMD; skipping training phase.
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+Incremented model_number → 7
+Activated feature set → FS_7
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] No ML strategies selected for GOOG; skipping training phase.
+[INFO] No ML strategies selected for META; skipping training phase.
+[INFO] No ML strategies selected for ORCL; skipping training phase.
+[INFO] No ML strategies selected for ADBE; skipping training phase.
+[INFO] No ML strategies selected for TSLA; skipping training phase.
+[INFO] No ML strategies selected for AMD; skipping training phase.
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+Incremented model_number → 8
+Activated feature set → FS_8
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] No ML strategies selected for GOOG; skipping training phase.
+[INFO] No ML strategies selected for META; skipping training phase.
+[INFO] No ML strategies selected for ORCL; skipping training phase.
+[INFO] No ML strategies selected for ADBE; skipping training phase.
+[INFO] No ML strategies selected for TSLA; skipping training phase.
+[INFO] No ML strategies selected for AMD; skipping training phase.
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+Incremented model_number → 9
+Activated feature set → FS_9
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] No ML strategies selected for GOOG; skipping training phase.
+[INFO] No ML strategies selected for META; skipping training phase.
+[INFO] No ML strategies selected for ORCL; skipping training phase.
+[INFO] No ML strategies selected for ADBE; skipping training phase.
+[INFO] No ML strategies selected for TSLA; skipping training phase.
+[INFO] No ML strategies selected for AMD; skipping training phase.
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+Incremented model_number → 10
+Activated feature set → FS_10
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] No ML strategies selected for GOOG; skipping training phase.
+[INFO] No ML strategies selected for META; skipping training phase.
+[INFO] No ML strategies selected for ORCL; skipping training phase.
+[INFO] No ML strategies selected for ADBE; skipping training phase.
+[INFO] No ML strategies selected for TSLA; skipping training phase.
+[INFO] No ML strategies selected for AMD; skipping training phase.
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+Incremented model_number → 11
+Activated feature set → FS_11
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] No ML strategies selected for GOOG; skipping training phase.
+[INFO] No ML strategies selected for META; skipping training phase.
+[INFO] No ML strategies selected for ORCL; skipping training phase.
+[INFO] No ML strategies selected for ADBE; skipping training phase.
+[INFO] No ML strategies selected for TSLA; skipping training phase.
+[INFO] No ML strategies selected for AMD; skipping training phase.
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+Incremented model_number → 12
+Activated feature set → FS_12
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] No ML strategies selected for GOOG; skipping training phase.
+[INFO] No ML strategies selected for META; skipping training phase.
+[INFO] No ML strategies selected for ORCL; skipping training phase.
+[INFO] No ML strategies selected for ADBE; skipping training phase.
+[INFO] No ML strategies selected for TSLA; skipping training phase.
+[INFO] No ML strategies selected for AMD; skipping training phase.
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+Incremented model_number → 13
+Activated feature set → FS_13
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] No ML strategies selected for GOOG; skipping training phase.
+[INFO] No ML strategies selected for META; skipping training phase.
+[INFO] No ML strategies selected for ORCL; skipping training phase.
+[INFO] No ML strategies selected for ADBE; skipping training phase.
+[INFO] No ML strategies selected for TSLA; skipping training phase.
+[INFO] No ML strategies selected for AMD; skipping training phase.
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+Incremented model_number → 14
+=== Running rule-based strategies (feature-set agnostic phase) ===
+[INFO] Backtesting rule-based strategy: buy_and_hold
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+[INFO] Backtesting rule-based strategy: buy_and_hold
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+[INFO] Backtesting rule-based strategy: buy_and_hold
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+[INFO] Backtesting rule-based strategy: buy_and_hold
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+[INFO] Backtesting rule-based strategy: buy_and_hold
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+[INFO] Backtesting rule-based strategy: buy_and_hold
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+[INFO] Backtesting rule-based strategy: buy_and_hold
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+[INFO] Backtesting rule-based strategy: buy_and_hold
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+[INFO] Backtesting rule-based strategy: buy_and_hold
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+[INFO] Backtesting rule-based strategy: buy_and_hold
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+✅ Strategy performance (MSFT) → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/MSFT_Final_Backtesting_Summary_20251130_153126.xlsx
+✅ Strategy performance (AAPL) → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/AAPL_Final_Backtesting_Summary_20251130_153126.xlsx
+✅ Strategy performance (GOOG) → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/GOOG_Final_Backtesting_Summary_20251130_153126.xlsx
+✅ Strategy performance (META) → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/META_Final_Backtesting_Summary_20251130_153126.xlsx
+✅ Strategy performance (ORCL) → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/ORCL_Final_Backtesting_Summary_20251130_153126.xlsx
+✅ Strategy performance (ADBE) → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/ADBE_Final_Backtesting_Summary_20251130_153126.xlsx
+✅ Strategy performance (TSLA) → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/TSLA_Final_Backtesting_Summary_20251130_153126.xlsx
+✅ Strategy performance (AMD) → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/AMD_Final_Backtesting_Summary_20251130_153126.xlsx
+✅ Strategy performance (NVDA) → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/NVDA_Final_Backtesting_Summary_20251130_153126.xlsx
+✅ Strategy performance (QQQ) → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/QQQ_Final_Backtesting_Summary_20251130_153126.xlsx
+✅ ML training performance → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/ML_Training_Performance_20251130_153126.xlsx
+✅ Benchmark performance → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/Benchmark_Performance_20251130_153126.xlsx
+Run summary: successful=10, failed=0, skipped=0
+All training/backtest tasks completed successfully.
+=== Automation finished: 2025-11-30T15:31:27.055162 ===
+=== Automation started: 2025-11-30T15:42:25.377170 ===
+Activated feature set → FS_1
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] No ML strategies selected for GOOG; skipping training phase.
+[INFO] No ML strategies selected for META; skipping training phase.
+[INFO] No ML strategies selected for ORCL; skipping training phase.
+[INFO] No ML strategies selected for ADBE; skipping training phase.
+[INFO] No ML strategies selected for TSLA; skipping training phase.
+[INFO] No ML strategies selected for AMD; skipping training phase.
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+Incremented model_number → 2
+Activated feature set → FS_2
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] No ML strategies selected for GOOG; skipping training phase.
+[INFO] No ML strategies selected for META; skipping training phase.
+[INFO] No ML strategies selected for ORCL; skipping training phase.
+[INFO] No ML strategies selected for ADBE; skipping training phase.
+[INFO] No ML strategies selected for TSLA; skipping training phase.
+[INFO] No ML strategies selected for AMD; skipping training phase.
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+Incremented model_number → 3
+Activated feature set → FS_3
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] No ML strategies selected for GOOG; skipping training phase.
+[INFO] No ML strategies selected for META; skipping training phase.
+[INFO] No ML strategies selected for ORCL; skipping training phase.
+[INFO] No ML strategies selected for ADBE; skipping training phase.
+[INFO] No ML strategies selected for TSLA; skipping training phase.
+[INFO] No ML strategies selected for AMD; skipping training phase.
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+Incremented model_number → 4
+Activated feature set → FS_4
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] No ML strategies selected for GOOG; skipping training phase.
+[INFO] No ML strategies selected for META; skipping training phase.
+[INFO] No ML strategies selected for ORCL; skipping training phase.
+[INFO] No ML strategies selected for ADBE; skipping training phase.
+[INFO] No ML strategies selected for TSLA; skipping training phase.
+[INFO] No ML strategies selected for AMD; skipping training phase.
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+Incremented model_number → 5
+Activated feature set → FS_5
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] No ML strategies selected for GOOG; skipping training phase.
+[INFO] No ML strategies selected for META; skipping training phase.
+[INFO] No ML strategies selected for ORCL; skipping training phase.
+[INFO] No ML strategies selected for ADBE; skipping training phase.
+[INFO] No ML strategies selected for TSLA; skipping training phase.
+[INFO] No ML strategies selected for AMD; skipping training phase.
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+Incremented model_number → 6
+Activated feature set → FS_6
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] No ML strategies selected for GOOG; skipping training phase.
+[INFO] No ML strategies selected for META; skipping training phase.
+[INFO] No ML strategies selected for ORCL; skipping training phase.
+[INFO] No ML strategies selected for ADBE; skipping training phase.
+[INFO] No ML strategies selected for TSLA; skipping training phase.
+[INFO] No ML strategies selected for AMD; skipping training phase.
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+Incremented model_number → 7
+Activated feature set → FS_7
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] No ML strategies selected for GOOG; skipping training phase.
+[INFO] No ML strategies selected for META; skipping training phase.
+[INFO] No ML strategies selected for ORCL; skipping training phase.
+[INFO] No ML strategies selected for ADBE; skipping training phase.
+[INFO] No ML strategies selected for TSLA; skipping training phase.
+[INFO] No ML strategies selected for AMD; skipping training phase.
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+Incremented model_number → 8
+Activated feature set → FS_8
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] No ML strategies selected for GOOG; skipping training phase.
+[INFO] No ML strategies selected for META; skipping training phase.
+[INFO] No ML strategies selected for ORCL; skipping training phase.
+[INFO] No ML strategies selected for ADBE; skipping training phase.
+[INFO] No ML strategies selected for TSLA; skipping training phase.
+[INFO] No ML strategies selected for AMD; skipping training phase.
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+Incremented model_number → 9
+Activated feature set → FS_9
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] No ML strategies selected for GOOG; skipping training phase.
+[INFO] No ML strategies selected for META; skipping training phase.
+[INFO] No ML strategies selected for ORCL; skipping training phase.
+[INFO] No ML strategies selected for ADBE; skipping training phase.
+[INFO] No ML strategies selected for TSLA; skipping training phase.
+[INFO] No ML strategies selected for AMD; skipping training phase.
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+Incremented model_number → 10
+Activated feature set → FS_10
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] No ML strategies selected for GOOG; skipping training phase.
+[INFO] No ML strategies selected for META; skipping training phase.
+[INFO] No ML strategies selected for ORCL; skipping training phase.
+[INFO] No ML strategies selected for ADBE; skipping training phase.
+[INFO] No ML strategies selected for TSLA; skipping training phase.
+[INFO] No ML strategies selected for AMD; skipping training phase.
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+Incremented model_number → 11
+Activated feature set → FS_11
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] No ML strategies selected for GOOG; skipping training phase.
+[INFO] No ML strategies selected for META; skipping training phase.
+[INFO] No ML strategies selected for ORCL; skipping training phase.
+[INFO] No ML strategies selected for ADBE; skipping training phase.
+[INFO] No ML strategies selected for TSLA; skipping training phase.
+[INFO] No ML strategies selected for AMD; skipping training phase.
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+Incremented model_number → 12
+Activated feature set → FS_12
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] No ML strategies selected for GOOG; skipping training phase.
+[INFO] No ML strategies selected for META; skipping training phase.
+[INFO] No ML strategies selected for ORCL; skipping training phase.
+[INFO] No ML strategies selected for ADBE; skipping training phase.
+[INFO] No ML strategies selected for TSLA; skipping training phase.
+[INFO] No ML strategies selected for AMD; skipping training phase.
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+Incremented model_number → 13
+Activated feature set → FS_13
+[INFO] No ML strategies selected for MSFT; skipping training phase.
+[INFO] No ML strategies selected for AAPL; skipping training phase.
+[INFO] No ML strategies selected for GOOG; skipping training phase.
+[INFO] No ML strategies selected for META; skipping training phase.
+[INFO] No ML strategies selected for ORCL; skipping training phase.
+[INFO] No ML strategies selected for ADBE; skipping training phase.
+[INFO] No ML strategies selected for TSLA; skipping training phase.
+[INFO] No ML strategies selected for AMD; skipping training phase.
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+[INFO] No ML strategies selected for QQQ; skipping training phase.
+Incremented model_number → 14
+=== Running rule-based strategies (feature-set agnostic phase) ===
+[INFO] Backtesting rule-based strategy: buy_and_hold
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+[INFO] Backtesting rule-based strategy: buy_and_hold
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+[INFO] Backtesting rule-based strategy: buy_and_hold
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+[INFO] Backtesting rule-based strategy: buy_and_hold
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+[INFO] Backtesting rule-based strategy: buy_and_hold
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+[INFO] Backtesting rule-based strategy: buy_and_hold
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+[INFO] Backtesting rule-based strategy: buy_and_hold
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+[INFO] Backtesting rule-based strategy: buy_and_hold
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+[INFO] Backtesting rule-based strategy: buy_and_hold
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+[INFO] Backtesting rule-based strategy: buy_and_hold
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+✅ Strategy performance (MSFT) → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/MSFT_Final_Backtesting_Summary_20251130_154535.xlsx
+✅ Strategy performance (AAPL) → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/AAPL_Final_Backtesting_Summary_20251130_154535.xlsx
+✅ Strategy performance (GOOG) → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/GOOG_Final_Backtesting_Summary_20251130_154535.xlsx
+✅ Strategy performance (META) → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/META_Final_Backtesting_Summary_20251130_154535.xlsx
+✅ Strategy performance (ORCL) → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/ORCL_Final_Backtesting_Summary_20251130_154535.xlsx
+✅ Strategy performance (ADBE) → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/ADBE_Final_Backtesting_Summary_20251130_154535.xlsx
+✅ Strategy performance (TSLA) → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/TSLA_Final_Backtesting_Summary_20251130_154535.xlsx
+✅ Strategy performance (AMD) → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/AMD_Final_Backtesting_Summary_20251130_154535.xlsx
+✅ Strategy performance (NVDA) → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/NVDA_Final_Backtesting_Summary_20251130_154535.xlsx
+✅ Strategy performance (QQQ) → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/QQQ_Final_Backtesting_Summary_20251130_154535.xlsx
+✅ ML training performance → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/ML_Training_Performance_20251130_154535.xlsx
+✅ Benchmark performance → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/Benchmark_Performance_20251130_154535.xlsx
+Run summary: successful=10, failed=0, skipped=0
+All training/backtest tasks completed successfully.
+=== Automation finished: 2025-11-30T15:45:36.339176 ===
+=== Automation started: 2025-12-03T20:17:12.098338 ===
+Activated feature set → FS_1
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+Incremented model_number → 2
+Activated feature set → FS_2
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+Incremented model_number → 3
+Activated feature set → FS_3
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+Incremented model_number → 4
+Activated feature set → FS_4
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+Incremented model_number → 5
+Activated feature set → FS_5
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+Incremented model_number → 6
+Activated feature set → FS_6
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+Incremented model_number → 7
+Activated feature set → FS_7
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+Incremented model_number → 8
+Activated feature set → FS_8
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+Incremented model_number → 9
+Activated feature set → FS_9
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+Incremented model_number → 10
+Activated feature set → FS_10
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+Incremented model_number → 11
+Activated feature set → FS_11
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+Incremented model_number → 12
+Activated feature set → FS_12
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+Incremented model_number → 13
+Activated feature set → FS_13
+[INFO] No ML strategies selected for NVDA; skipping training phase.
+Incremented model_number → 14
+=== Running rule-based strategies (feature-set agnostic phase) ===
+[INFO] Backtesting rule-based strategy: perfect_strategy
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+[INFO] Backtesting rule-based strategy: buy_and_hold
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+✅ Strategy performance (all) → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/Strategy_Backtesting_Performance_All_20251203_201812.xlsx
+✅ Strategy performance (NVDA) → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/NVDA_Final_Backtesting_Summary_20251203_201812.xlsx
+✅ ML training performance → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/ML_Training_Performance_20251203_201812.xlsx
+✅ Benchmark performance → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/Benchmark_Performance_20251203_201812.xlsx
+Run summary: successful=2, failed=0, skipped=0
+All training/backtest tasks completed successfully.
+=== Automation finished: 2025-12-03T20:18:12.776246 ===

@@ -2,35 +2,11 @@
   "model_number": "1",
 
   "tickers": [
-    "MSFT",
-    "AAPL",
-    "GOOG",
-    "META",
-    "ORCL",
-    "ADBE",
-    "TSLA",
-    "AMD",
-    "NVDA",
-    "QQQ"
+    "NVDA"
   ],
 
   "strategies": [
-    "sma",
-    "ema",
-    "sma_rsi",
-    "rsi_trend_filter",
-    "macd_trend_follow",
-    "bollinger_mean_reversion",
-    "bb_squeeze_breakout",
-    "obv_trend_confirmation",
-    "ma_distance_reversion",
-    "vol_adjusted_momentum",
-    "sentiment_strategy",
-    "sentiment_momentum_confirmation",
-    "sentiment_regime_filter",
-    "logistic_regression",
-    "random_forest",
-    "xgboost"
+    "perfect_strategy"
   ],
 
   "feature_sets": [

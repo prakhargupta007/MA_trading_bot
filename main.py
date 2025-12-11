@@ -310,6 +310,42 @@ def main():
             portfolio_values = return_portfolio_values()
             portfolio_values_series = pd.Series(portfolio_values, dtype=float)
 
+            # =========== BUY & HOLD PLOT GENERATION (FIXED) ===========
+            if CHOSEN_STRATEGY.lower() == "buy_and_hold":
+                try:
+                    # Synthetic signals for Buy & Hold:
+                    # BUY at the first day, SELL at the last day, HOLD in between
+                    bh_signals = ["HOLD"] * len(data)
+                    if len(bh_signals) >= 2:
+                        bh_signals[0] = "BUY"
+                        bh_signals[-1] = "SELL"
+
+                    # 1) Strategy plot with correct markers + green hold region
+                    bh_plot_path = plotly_plot_universal_strategy_signals_and_save(
+                        data,
+                        bh_signals,
+                        TICKER,
+                        "buy_and_hold"
+                    )
+
+                    # 2) Portfolio value plot
+                    bh_portfolio_plot_path = plotly_plot_portfolio_values(
+                        portfolio_values_series,
+                        data,
+                        TICKER
+                    )
+
+                    plot_path = bh_plot_path
+                    portfolio_plot_path = bh_portfolio_plot_path
+
+                    print(f"✅ Buy & Hold (fixed) strategy plot saved: {bh_plot_path}")
+                    print(f"✅ Buy & Hold (fixed) portfolio plot saved: {bh_portfolio_plot_path}")
+
+                except Exception as e:
+                    print(f"⚠️ Failed to generate buy & hold plots: {e}")
+                    plot_path = ""
+                    portfolio_plot_path = ""
+
             sharpe_ratio = (
                 calculate_sharpe_ratio(portfolio_values_series)
                 if len(portfolio_values) > 1

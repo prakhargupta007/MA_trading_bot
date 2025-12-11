@@ -553,6 +553,8 @@ def main():
                                 "Calmar Ratio": _as_float(row_dict.get("Calmar Ratio", 0)),
                                 "Max Drawdown (%)": _as_float(row_dict.get("Max Drawdown (%)", 0)),
                                 "Volatility": _as_float(row_dict.get("Volatility", 0)),
+                                "Strategy Plot Link": row_dict.get("_StrategyPlotAbsPath", ""),
+                                "Portfolio Value Plot Link": row_dict.get("_PortfolioPlotAbsPath", "")
                             })
                         successful_runs.append((ticker, strategy))
                         if ml_training_row:
@@ -709,17 +711,43 @@ def main():
             "Calmar Ratio",
             "Max Drawdown (%)",
             "Volatility",
+            "Strategy Plot Link",
+            "Portfolio Value Plot Link",
         ]
         benchmark_df = pd.DataFrame(benchmark_rows, columns=benchmark_cols) if benchmark_rows else pd.DataFrame(columns=benchmark_cols)
         if not benchmark_df.empty:
-            for col in benchmark_cols[2:]:
-                benchmark_df[col] = pd.to_numeric(benchmark_df[col], errors="coerce")
+            numeric_cols = [
+                "CAGR (%)",
+                "Sharpe Ratio",
+                "Sortino Ratio",
+                "Calmar Ratio",
+                "Max Drawdown (%)",
+                "Volatility",
+            ]
+            for col in numeric_cols:
+                if col in benchmark_df.columns:
+                    benchmark_df[col] = pd.to_numeric(benchmark_df[col], errors="coerce")
             benchmark_df["Strategy Name"] = benchmark_df["Strategy Name"].str.lower()
         benchmark_df = benchmark_df.apply(pd.to_numeric, errors="ignore")
         benchmark_path = Path(final_excel_dir) / f"Benchmark_Performance_{timestamp}.xlsx"
         with pd.ExcelWriter(benchmark_path, engine="openpyxl") as writer:
             benchmark_df.to_excel(writer, index=False, sheet_name="Benchmark")
             ws = writer.sheets["Benchmark"]
+            link_labels = {
+                "Strategy Plot Link": "Open Strategy Plot",
+                "Portfolio Value Plot Link": "Open Portfolio Plot",
+            }
+            for col_name, label in link_labels.items():
+                if col_name not in benchmark_df.columns:
+                    continue
+                col_idx = benchmark_df.columns.get_loc(col_name) + 1
+                for row_idx in range(2, ws.max_row + 1):
+                    path_value = benchmark_df.iloc[row_idx - 2][col_name]
+                    if not path_value:
+                        continue
+                    cell = ws.cell(row=row_idx, column=col_idx)
+                    cell.value = label
+                    cell.hyperlink = str(Path(path_value).resolve())
             apply_summary_excel_formatting(ws)
         log(f"✅ Benchmark performance → {benchmark_path}", log_path)
 
