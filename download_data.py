@@ -1,4 +1,7 @@
-# This function is used for downloading data from yfinance to store locally. function need to get run as seperate file on terminal 
+"""
+Utility script to download historical data from yfinance and store CSVs locally.
+Run directly from the terminal; guarded to avoid executing on import.
+"""
 
 import yfinance as yf
 import pandas as pd
@@ -47,7 +50,9 @@ def download_data():
         data["Close"] = pd.to_numeric(data["Close"], errors='coerce')  # Convert to numeric, turning errors into NaNs
         data = data.dropna(subset=["Close"])
 
-        data.to_csv(file_path) 
+        data.to_csv(file_path)
         print(f'download of {tickers} complete')
 
-download_data()
+
+if __name__ == "__main__":
+    download_data()

@@ -3,6 +3,12 @@ from indicators.rsi import calculate_rsi
 from indicators.macd import calculate_macd
 
 def sma_rsi_macd_strategy(data, sma_long_period, sma_short_period, rsi_period, rsi_overbought, rsi_oversold, **kwargs):
+    """
+    SMA crossover filtered by RSI with MACD confirmation (next-day execution).
+
+    Signals follow the len(data)+1 convention: initial HOLD plus potential
+    trailing entry; execution happens on the following trading day.
+    """
     sma_short = calculate_sma(data, sma_short_period)
     sma_long = calculate_sma(data, sma_long_period)
     rsi = calculate_rsi(data, rsi_period)
@@ -35,5 +41,4 @@ def sma_rsi_macd_strategy(data, sma_long_period, sma_short_period, rsi_period, r
         signals.append(signal)  # Append the signal for this day
 
     return signals
-
 

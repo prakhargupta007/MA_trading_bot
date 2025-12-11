@@ -1,3 +1,10 @@
+"""
+ATR-based static stop-loss applied to generated signals.
+
+Signals are modified in place without altering their length; execution timing
+remains controlled by the caller/backtester.
+"""
+
 import talib as ta
 import numpy as np
 

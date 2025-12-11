@@ -1,3 +1,10 @@
+"""
+Trailing percentage stop-loss applied to generated signals.
+
+Signals are modified in place without altering their length; execution timing
+remains controlled by the caller/backtester.
+"""
+
 def trailing_stop_loss(data, signals, column_name='Close', threshold=0.03,**kwargs):
     """
     Implements a trailing percentage stop-loss.

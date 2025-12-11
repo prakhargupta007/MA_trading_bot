@@ -2,6 +2,12 @@ from indicators.ema import calculate_ema
 from indicators.rsi import calculate_rsi
 
 def ema_rsi_strategy(data, ema_long_period, ema_short_period, rsi_period, rsi_overbought, rsi_oversold, **kwargs):
+    """
+    EMA crossover filtered by RSI (next-day execution).
+
+    Signals follow the len(data)+1 convention: initial HOLD plus potential
+    trailing entry; execution happens on the following trading day.
+    """
     ema_short = calculate_ema(data, ema_short_period)
     ema_long = calculate_ema(data, ema_long_period)
     rsi = calculate_rsi(data, rsi_period)

@@ -1,7 +1,7 @@
 import os
 
 # =================================== CONFIG FOR TRAINING AND BACKTESTING ====================================
-model_number = '13'
+model_number = '2'
 TRAINING_MODE = False
 TECH_SECTOR_STOCK = True
 
@@ -52,7 +52,7 @@ def _resolve_data_path(*candidates):
     # Fall back to the first candidate even if it does not exist
     return candidates[0]
 
-LOG_REG_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/lr_model_QQQ_13.joblib'
+LOG_REG_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/lr_model_NVDA_2.joblib'
 RANDOM_FOREST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/rf_model_QQQ_13.joblib'
 XGBOOST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/xgb_model_QQQ_13.joblib'
 MLP_MODEL_PATH_FOR_STRATEGY = f"/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/mlp_{model_number}.keras"
@@ -64,12 +64,12 @@ MLP_SCALAR_PATH_FOR_STRATEGY = f'/Users/prakhar/Desktop/MA_trading_bot/ML/saved_
 
 
 # =================================== TRAINING CONFIG ====================================
-model_name = 'xgb'
-MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = '/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/xgb_model_QQQ_13.joblib'
+model_name = 'lr'
+MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = '/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/lr_model_NVDA_2.joblib'
 MODEL_PATH_WHERE_MLP_MODEL_SHOULD_GET_SAVED = f"/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/mlp_{model_number}.keras"
 PATH_FOR_SAVING_MLP_SCALAR = f'/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/mlp_scaler_{model_number}.pkl'
-TICKER = 'QQQ'
-DATA_FOR_ML_MODEL_TRAINING = 'data/stored_data2/data_QQQ_train_test_2012-05-18--2020-12-31.csv'
+TICKER = 'NVDA'
+DATA_FOR_ML_MODEL_TRAINING = 'data/stored_data2/data_NVDA_train_test_2012-05-18--2020-12-31.csv'
 #DATA_FOR_ML_MODEL_TRAINING = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_QQQ_train_2017-01-02--2022-12-30.csv'           # QQQ
 
 SENTIMENT_DATA_PATH_FOR_ML_MODEL_TRAINING_FEATURE = '/Users/prakhar/Desktop/MA_trading_bot/sentiment_analysis/GDELT/trading_days_daily_output/AAPL_1_sentiment_trading_days.csv'

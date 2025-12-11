@@ -1,3 +1,11 @@
+"""
+Backtesting engine for next-day execution with fractional shares.
+
+Global lists track actions/prices/cash for downstream plotting. Signals are assumed
+to follow the len(data)+1 pattern (day i signal executes on day i+1, first entry is
+HOLD, and the final signal is intentionally unexecuted).
+"""
+
 import pandas as pd
 from .transaction_fee import calculate_transaction_fee, get_accurate_number_of_stocks
 from config import SLIPPAGE_RATE
@@ -14,9 +22,12 @@ _end_cash = None  # final cash at end of backtest
 
 def backtest_strategy(data, signals, starting_balance):
     """
-    Fractional-share backtesting engine.
-    Assumes the STRATEGY already inserts an initial HOLD to handle the 1-day lag.
-    Therefore: signal[i] executes at Open[i].
+    Fractional-share backtesting engine for next-day execution signals.
+
+    Assumptions:
+    - Strategies prepend a HOLD to cover the 1-day execution lag.
+    - signal[i] executes at Open[i]; a trailing unexecuted signal may be present.
+    - Global state (list_* variables) is reused across runs; each call resets them.
     """
 
     global list_portfolio_values, list_actions, list_dates
@@ -44,7 +55,7 @@ def backtest_strategy(data, signals, starting_balance):
 
     trade_rows = []
 
-    # Day 0 portfolio valuation
+    # Day 0 portfolio valuation (assumes initial HOLD)
     list_portfolio_values.append(round(cash, 2))
 
     # MAIN BACKTEST LOOP — EACH ROW IS A FULL DAY

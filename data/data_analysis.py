@@ -1,7 +1,11 @@
-# Because of the fact that the sentiment analysis scores are only available from 2017 till 2025, only this exact date range needs to be used across all features for the data analysis.
+"""
+Exploratory feature analysis script.
+
+Because sentiment scores exist only from 2017–2025, limit analysis to that range.
+Script is guarded to avoid execution on import; run directly to perform analysis.
+"""
 
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from data.funcs_for_data_prep_for_ML.label_data_with_future_window import label_data_with_future_window
@@ -103,29 +107,29 @@ def analyze_feature_relationships(df, feature_list, target_col = 'Label', top_n=
 
 
 
-# --- Load original data ---
-data = pd.read_csv(DATA_FOR_DATA_ANALYSIS)
+if __name__ == "__main__":
+    # --- Load original data ---
+    data = pd.read_csv(DATA_FOR_DATA_ANALYSIS)
 
-# --- Calculate features ---
-data_with_features = calculate_and_add_features_to_data(
-    data,
-    DA_GSPC_DATA_FILE_PATH,
-    DA_NDX_DATA_FILE_PATH,
-    DA_VIX_DATA_FILE_PATH,
-    ALL_FEATURES,
-)
+    # --- Calculate features ---
+    data_with_features = calculate_and_add_features_to_data(
+        data,
+        DA_GSPC_DATA_FILE_PATH,
+        DA_NDX_DATA_FILE_PATH,
+        DA_VIX_DATA_FILE_PATH,
+        ALL_FEATURES,
+    )
 
-labeled_data = label_data_with_future_window(data_with_features, LOOKAHEAD_DAYS)
-print(f'Data labeled with future window of {LOOKAHEAD_DAYS} days\n')
+    labeled_data = label_data_with_future_window(data_with_features, LOOKAHEAD_DAYS)
+    print(f'Data labeled with future window of {LOOKAHEAD_DAYS} days\n')
 
-df_clean = clean_data_for_feature_analysis(labeled_data, ALL_FEATURES, target_col='Label')
-print(f"Remaining rows after cleaning: {len(df_clean)}")
+    df_clean = clean_data_for_feature_analysis(labeled_data, ALL_FEATURES, target_col='Label')
+    print(f"Remaining rows after cleaning: {len(df_clean)}")
 
-top_linear, top_tree = analyze_feature_relationships(df_clean, ALL_FEATURES)
-print("\n=== Top Linear Features (F-stat) ===")
-print(top_linear)
-print("\n=== Top Non-Linear Features (Mutual Information) ===")
-print(top_tree)
+    top_linear, top_tree = analyze_feature_relationships(df_clean, ALL_FEATURES)
+    print("\n=== Top Linear Features (F-stat) ===")
+    print(top_linear)
+    print("\n=== Top Non-Linear Features (Mutual Information) ===")
+    print(top_tree)
 
-
-print("\nFeature analysis complete!")
+    print("\nFeature analysis complete!")

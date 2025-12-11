@@ -1,6 +1,12 @@
 from indicators.sma import calculate_sma
 
 def sma_strategy(data, sma_long_period, sma_short_period, **kwargs):
+    """
+    Simple moving-average crossover strategy (next-day execution).
+
+    Signals follow the len(data)+1 convention: initial HOLD plus potential
+    trailing entry; execution happens on the following trading day.
+    """
     sma_short = calculate_sma(data, sma_short_period)
     sma_long = calculate_sma(data, sma_long_period)
 

@@ -1,6 +1,12 @@
 from indicators.ema import calculate_ema
 
 def ema_strategy(data, ema_long_period, ema_short_period, **kwargs):
+    """
+    Exponential moving-average crossover strategy (next-day execution).
+
+    Signals follow the len(data)+1 convention: initial HOLD plus potential
+    trailing entry; execution happens on the following trading day.
+    """
     ema_short = calculate_ema(data, ema_short_period)
     ema_long = calculate_ema(data, ema_long_period)
 

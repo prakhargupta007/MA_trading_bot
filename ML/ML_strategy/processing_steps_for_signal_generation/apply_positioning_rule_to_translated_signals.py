@@ -1,4 +1,10 @@
 def apply_positioning_rule_to_translated_signals(translated_signals):
+    """
+    Enforce position statefulness on translated signals to avoid double-BUY/SELL.
+
+    Returns a list matching input length; caller may prepend/append additional
+    signals for the len(data)+1 convention.
+    """
     final_signals = []
     state = "NEUTRAL"  # can be NEUTRAL, BOUGHT, or SOLD
 

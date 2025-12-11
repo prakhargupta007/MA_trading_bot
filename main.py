@@ -1,7 +1,14 @@
+"""
+Main orchestration script for the MA trading bot.
+
+Reads configuration, fetches data, builds indicators, generates signals
+(including the intentional len(data)+1 convention for next-day execution),
+runs the backtest, computes metrics, and writes plots/summary outputs.
+"""
+
 import traceback
 import pandas as pd
 from datetime import datetime
-import os
 import math
 from collections import Counter
 
@@ -101,6 +108,15 @@ ML_STRATEGY_MODEL_LABELS = {
 
 # ======================= MAIN FUNCTION =======================
 def main():
+    """
+    Orchestrate a full backtest run using the configured strategy.
+
+    Signal conventions:
+    - Strategies may return len(data)+1 signals: day i signal executes on day i+1,
+      day 0 defaults to HOLD, and the final signal is intentionally unexecuted.
+    - A trailing unexecutable signal is trimmed here only when the strategy returned
+      one extra entry.
+    """
     try:
         # --- Determine backtesting period ---
         if USE_STORED_DATA:
@@ -256,6 +272,7 @@ def main():
             print("✅ Transaction signals generated successfully.\n")
 
             if len(signals) == len(data) + 1:
+                # Strategies intentionally include a final unexecuted signal for the next-day model.
                 print("[INFO] Trimming final unexecutable signal.")
                 signals = signals[:-1]
                 print(f"[DEBUG] Signals length after trim: {len(signals)} (data length: {len(data)})")

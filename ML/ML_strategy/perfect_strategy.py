@@ -9,6 +9,12 @@ from config import LOOKAHEAD_DAYS
 from ma_trading_bot.ml_feature_store import resolve_feature_columns
 # Because for this strategy we also need the NaN signal values that the labeling function generates, the NaN values don't get dropped in that function.
 def perfect_strategy(data, **kwargs):
+    """
+    Benchmark strategy that replays ground-truth labels as signals.
+
+    Preserves NaN labels to keep plotting alignment and inserts the extra HOLD to
+    follow the len(data)+1 next-day execution convention.
+    """
     print(f"Original input data: {len(data)}")
     feature_columns = resolve_feature_columns(kwargs.get("feature_columns"))
 

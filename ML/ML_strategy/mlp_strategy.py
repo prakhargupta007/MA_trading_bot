@@ -15,6 +15,12 @@ from ma_trading_bot.ml_feature_store import resolve_feature_columns
 
 
 def mlp_strategy(data, **kwargs):
+    """
+    Generate next-day execution signals using a trained MLP classifier.
+
+    Signals follow the len(data)+1 convention: a leading HOLD for execution lag,
+    with a trailing inserted HOLD for alignment with the backtester.
+    """
     feature_columns = resolve_feature_columns(kwargs.get("feature_columns"))
     # Load model + scaler
     print("Loading trained MLP model and scaler...")

@@ -2,6 +2,12 @@ from indicators.sma import calculate_sma
 from indicators.rsi import calculate_rsi
 
 def sma_rsi_strategy(data, sma_long_period, sma_short_period, rsi_period, rsi_overbought, rsi_oversold, **kwargs):
+    """
+    SMA crossover filtered by RSI (next-day execution).
+
+    Signals follow the len(data)+1 convention: initial HOLD plus potential
+    trailing entry; execution happens on the following trading day.
+    """
     sma_short = calculate_sma(data, sma_short_period)
     sma_long = calculate_sma(data, sma_long_period)
     rsi = calculate_rsi(data, rsi_period)

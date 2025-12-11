@@ -1,3 +1,10 @@
+"""
+Static percentage stop-loss applied to generated signals.
+
+Signals are modified in place without altering their length; execution timing
+remains controlled by the caller/backtester.
+"""
+
 def static_stop_loss(data, signals, column_name='Close', threshold=0.03, **kwargs):
     """
     Modifies the buy/sell signals based on a stop-loss threshold.

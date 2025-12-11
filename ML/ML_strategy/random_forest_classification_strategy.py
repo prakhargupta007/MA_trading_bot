@@ -1,5 +1,3 @@
-import joblib
-import pandas as pd
 from data.funcs_for_data_prep_for_ML.calculate_and_add_features_to_data import calculate_and_add_features_to_data
 from ML.ML_strategy.processing_steps_for_signal_generation.translate_raw_signals import translate_raw_signals
 from ML.ML_strategy.processing_steps_for_signal_generation.apply_positioning_rule_to_translated_signals import apply_positioning_rule_to_translated_signals
@@ -8,6 +6,12 @@ from config import RANDOM_FOREST_MODEL_PATH_FOR_STRATEGY
 from config import GSPC_DATA_FILE_PATH, NDX_DATA_FILE_PATH, VIX_DATA_FILE_PATH
 from ma_trading_bot.ml_feature_store import resolve_feature_columns
 def random_forest_strategy(data, **kwargs):
+    """
+    Generate next-day execution signals using a trained Random Forest classifier.
+
+    Signals follow the len(data)+1 convention: a leading HOLD for execution lag,
+    with a trailing inserted HOLD below for alignment with the backtester.
+    """
     model, scaler = load_model_and_scaler_if_existant(RANDOM_FOREST_MODEL_PATH_FOR_STRATEGY)
     feature_columns = resolve_feature_columns(kwargs.get("feature_columns"))
 

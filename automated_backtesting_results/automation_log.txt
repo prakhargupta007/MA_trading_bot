@@ -9671,3 +9671,45 @@ $ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
 Run summary: successful=2, failed=0, skipped=0
 All training/backtest tasks completed successfully.
 === Automation finished: 2025-12-03T20:18:12.776246 ===
+=== Automation started: 2025-12-11T23:43:02.942159 ===
+Activated feature set → FS_6
+[INFO] Training ML model for strategy: logistic_regression
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 -m ML.train_models.train_logistic_regression
+[INFO] Backtesting strategy: logistic_regression
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+[INFO] Training ML model for strategy: logistic_regression
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 -m ML.train_models.train_logistic_regression
+[INFO] Backtesting strategy: logistic_regression
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+Incremented model_number → 2
+Activated feature set → FS_10
+[INFO] Training ML model for strategy: logistic_regression
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 -m ML.train_models.train_logistic_regression
+[INFO] Backtesting strategy: logistic_regression
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+[INFO] Training ML model for strategy: logistic_regression
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 -m ML.train_models.train_logistic_regression
+[INFO] Backtesting strategy: logistic_regression
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+Incremented model_number → 3
+=== Running rule-based strategies (feature-set agnostic phase) ===
+[INFO] Backtesting rule-based strategy: sma
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+[INFO] Backtesting rule-based strategy: sentiment_momentum_confirmation
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+[INFO] Backtesting rule-based strategy: buy_and_hold
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+[INFO] Backtesting rule-based strategy: sma
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+[INFO] Backtesting rule-based strategy: sentiment_momentum_confirmation
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+[INFO] Backtesting rule-based strategy: buy_and_hold
+$ /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 main.py
+✅ Strategy performance (all) → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/Strategy_Backtesting_Performance_All_20251211_234518.xlsx
+✅ Strategy performance (AAPL) → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/AAPL_Final_Backtesting_Summary_20251211_234518.xlsx
+✅ Strategy performance (NVDA) → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/NVDA_Final_Backtesting_Summary_20251211_234518.xlsx
+✅ ML training performance → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/ML_Training_Performance_20251211_234518.xlsx
+✅ Benchmark performance → /Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/full_backtesting_tables_excel/Benchmark_Performance_20251211_234518.xlsx
+Run summary: successful=10, failed=0, skipped=0
+All training/backtest tasks completed successfully.
+=== Automation finished: 2025-12-11T23:45:18.540775 ===

@@ -6,6 +6,8 @@
 from rule_based_strategy.sma_strategy import sma_strategy
 from rule_based_strategy.ema_strategy import ema_strategy
 from rule_based_strategy.sma_rsi_strategy import sma_rsi_strategy
+from rule_based_strategy.ema_rsi_strategy import ema_rsi_strategy
+from rule_based_strategy.sma_rsi_macd_strategy import sma_rsi_macd_strategy
 
 from rule_based_strategy.rsi_trend_filter_strategy import rsi_trend_filter_strategy
 from rule_based_strategy.macd_trend_follow_strategy import macd_trend_follow_strategy
@@ -41,6 +43,8 @@ strategy_map = {
     'sma': sma_strategy,
     'ema': ema_strategy,
     'sma_rsi': sma_rsi_strategy,
+    'ema_rsi': ema_rsi_strategy,
+    'sma_rsi_macd': sma_rsi_macd_strategy,
 
     'rsi_trend_filter': rsi_trend_filter_strategy,
     'macd_trend_follow': macd_trend_follow_strategy,

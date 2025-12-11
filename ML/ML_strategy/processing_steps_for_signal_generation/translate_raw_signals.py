@@ -1,4 +1,5 @@
 def translate_raw_signals(raw_signals):
+    """Convert numeric model outputs (0/1/2 or NaN) into textual signals."""
     'raw_signals can also contain NaNs, so thes will get translated into HOLD'
     translated_signals = []
     for signal in raw_signals:
