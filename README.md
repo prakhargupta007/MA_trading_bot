@@ -71,16 +71,16 @@ flowchart TD
     A[Load Config] --> B[Fetch or Load Price Data]
     B --> C[Compute Indicators]
     C --> D{Strategy Type?}
-    D -->|Rule-Based| E[Generate Signals via Rule Strategies]
-    D -->|ML-Based| F[Compute Features & Predict Signals]
-    D -->|Sentiment| G[Load GDELT Sentiment & Generate Signals]
-    E --> H[Apply Stop-Loss (Optional)]
+    D -->|Rule-Based| E[Generate Rule-Based Signals]
+    D -->|ML-Based| F[Compute Features and Predict Signals]
+    D -->|Sentiment| G[Load GDELT Sentiment and Generate Signals]
+    E --> H[Apply Stop Loss]
     F --> H
     G --> H
-    H --> I[Backtest Engine (Next-Day Execution)]
+    H --> I[Backtest Engine Next-Day Execution]
     I --> J[Performance Metrics]
-    J --> K[Plot Results (Plotly/Matplotlib)]
-    K --> L[Export CSV/Excel/PDF Summaries]
+    J --> K[Plot Results]
+    K --> L[Export Reports]
 ```
 ```text
 MA_trading_bot/
