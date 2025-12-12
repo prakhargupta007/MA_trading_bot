@@ -68,7 +68,6 @@ This repo reflects real quant workflow experience, not toy examples.
 
 # 🏗️ Architecture Diagram
 
-```mermaid
 flowchart TD
     A[Load Config] --> B[Fetch or Load Price Data]
     B --> C[Compute Indicators]
@@ -88,7 +87,6 @@ flowchart TD
     K --> L[Export CSV/Excel/PDF Summaries]
 
 
-```
 
 MA_trading_bot/
 ├── main.py                           # Fetch → Indicators → Signals → Backtest → Reports
