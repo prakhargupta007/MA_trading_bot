@@ -7,7 +7,6 @@ __pycache__/
 /sentiment_analysis/GDELT/trading_days_daily_output/
 /sentiment_analysis/stock_news_api/output_stocknewsapi/
 /ML/saved_models/
-automated_backtesting_results/
 ML/
 sentiment_analysis/
 __pycache__/
