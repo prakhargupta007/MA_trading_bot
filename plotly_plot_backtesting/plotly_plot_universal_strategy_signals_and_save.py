@@ -1,3 +1,8 @@
+"""
+Generic Plotly plotter for strategy signals and price series.
+Keeps the next-day execution signal conventions intact.
+"""
+
 import plotly.graph_objects as go
 from config import OUTPUT_FOLDER_PATH_FOR_PLOTLY_CHART
 import os

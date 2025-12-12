@@ -1,3 +1,8 @@
+"""
+Helpers to patch/reload config.py during automated batch runs.
+Mutates config.py directly; intended for internal automation only.
+"""
+
 import importlib
 from contextlib import contextmanager
 from pathlib import Path

@@ -29,6 +29,9 @@ def sentiment_momentum_confirmation_strategy(
         rsi_overbought (float): RSI level above which to consider sell.
         rsi_oversold (float): RSI level below which to consider buy.
         start_date, end_date (str): Optional clipping range for sentiment data.
+
+    Signals follow the len(data)+1 next-day execution convention: initial HOLD
+    plus potential trailing entry; execution happens on the following trading day.
     """
 
     # --- Load sentiment data ---

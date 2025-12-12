@@ -1,3 +1,5 @@
+"""Plotly plotter for portfolio value over time."""
+
 import os
 from datetime import datetime
 import plotly.graph_objects as go

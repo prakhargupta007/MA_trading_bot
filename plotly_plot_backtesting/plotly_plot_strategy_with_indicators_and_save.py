@@ -1,3 +1,8 @@
+"""
+Plot strategy signals alongside indicators using Plotly.
+Designed for visual inspection without altering signal timing or content.
+"""
+
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import os

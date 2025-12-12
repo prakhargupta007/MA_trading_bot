@@ -7,6 +7,9 @@ def macd_trend_follow_strategy(data, macd_fast, macd_slow, macd_signal, **kwargs
     MACD Trend Follow Strategy
     - Buys when MACD crosses above signal line and MACD > 0 (bullish momentum).
     - Sells when MACD crosses below signal line and MACD < 0 (bearish momentum).
+
+    Signals follow the len(data)+1 next-day execution convention: initial HOLD
+    plus potential trailing entry; execution happens on the following trading day.
     """
 
     macd_line, signal_line = calculate_macd(

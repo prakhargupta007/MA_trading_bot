@@ -32,6 +32,9 @@ def sentiment_regime_filter_strategy(
         bullish_threshold (float): Minimum positive sentiment mean to trigger bullish regime.
         start_date (str): Optional start date for sentiment alignment.
         end_date (str): Optional end date for sentiment alignment.
+
+    Signals follow the len(data)+1 next-day execution convention: initial HOLD
+    plus potential trailing entry; execution happens on the following trading day.
     """
 
     # --- Load sentiment data ---

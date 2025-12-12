@@ -9,6 +9,9 @@ def ma_distance_reversion_strategy(data, ma_period, upper_threshold=0.03, lower_
     - Buys when price deviates too far below MA.
     - Sells when price deviates too far above MA.
     - Thresholds are in % (e.g., 0.03 = 3%).
+
+    Signals follow the len(data)+1 next-day execution convention: initial HOLD
+    plus potential trailing entry; execution happens on the following trading day.
     """
 
     ma = calculate_sma(data, ma_period)

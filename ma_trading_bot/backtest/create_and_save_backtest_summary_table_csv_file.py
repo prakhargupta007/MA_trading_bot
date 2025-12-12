@@ -1,3 +1,11 @@
+"""
+Build and persist per-ticker backtest summary tables (CSV/Excel).
+
+Includes extended metrics (Sortino, Calmar, MDD, win rate, info ratio) and
+supports optional ML metrics embedding. Designed to keep behaviour identical
+to previous summary outputs.
+"""
+
 import os
 from typing import Dict, List, Optional, Sequence, Tuple
 

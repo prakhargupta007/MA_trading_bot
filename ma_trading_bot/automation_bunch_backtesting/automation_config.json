@@ -2,8 +2,7 @@
   "model_number": "1",
 
   "tickers": [
-    "AAPL",
-    "NVDA"
+    "AAPL"
   ],
 
   "strategies": [
@@ -16,10 +15,6 @@
     {
       "feature_set_id": "FS_6",
       "feature_columns": ["sma_50", "sma_200", "volatility_14", "vix_mean20", "vix_std20"]
-    },
-    {
-      "feature_set_id": "FS_10",
-      "feature_columns": ["ema_diff_pct_10d", "momentum_10", "vix_roc1", "vix_mean20", "volume_20d_ma"]
     }
   ],
 

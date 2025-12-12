@@ -1,3 +1,8 @@
+"""
+Utility helper to detect duplicate dates in a sentiment CSV.
+Run directly to inspect a specific file; avoids execution on import.
+"""
+
 import pandas as pd
 
 def find_duplicate_dates(csv_path):
@@ -19,9 +24,9 @@ def find_duplicate_dates(csv_path):
     
     # Count how many times each duplicate date appears
     duplicate_counts = duplicates_df['day'].value_counts()
-    
     return duplicates_df, duplicate_counts
 
 
-path = '/Users/prakhar/Desktop/MA_trading_bot/sentiment_analysis/GDELT/trading_days_daily_output/NVDA_1_sentiment_trading_days.csv'
-print(find_duplicate_dates(path))
+if __name__ == "__main__":
+    path = '/Users/prakhar/Desktop/MA_trading_bot/sentiment_analysis/GDELT/trading_days_daily_output/NVDA_1_sentiment_trading_days.csv'
+    print(find_duplicate_dates(path))

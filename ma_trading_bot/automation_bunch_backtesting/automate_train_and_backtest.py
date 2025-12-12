@@ -1,8 +1,10 @@
 
-# THIS IS HOW TO RUN THIS FILE:
-'python3 -m ma_trading_bot.automation_bunch_backtesting.automate_train_and_backtest'
+"""
+Automation runner to train ML models and backtest strategies in batch.
 
-
+Run via: python3 -m ma_trading_bot.automation_bunch_backtesting.automate_train_and_backtest
+Behaviour preserved; this module mutates config.py on disk to drive child processes.
+"""
 
 import os
 import sys

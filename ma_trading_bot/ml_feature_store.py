@@ -1,3 +1,10 @@
+"""
+Runtime feature column resolution for ML pipelines.
+
+Prefers an explicit environment variable (MA_TRADING_BOT_FEATURE_COLUMNS),
+then config.DEFAULT_FEATURE_COLUMNS. Cache persists within process.
+"""
+
 import json
 import os
 from typing import Iterable, List, Optional, Sequence

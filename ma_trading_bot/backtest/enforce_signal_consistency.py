@@ -1,3 +1,8 @@
+"""
+Normalize BUY/SELL ordering without changing signal length or timing.
+Ensures no double-BUY or SELL without prior BUY; enforces final SELL if open.
+"""
+
 def enforce_signal_consistency(signals):
     position_open = False
     for i, s in enumerate(signals):

@@ -1,7 +1,11 @@
 import os
+from pathlib import Path
+
+# Project root (directory containing this config.py)
+BASE_DIR = Path(__file__).resolve().parent
 
 # =================================== CONFIG FOR TRAINING AND BACKTESTING ====================================
-model_number = '2'
+model_number = '1'
 TRAINING_MODE = False
 TECH_SECTOR_STOCK = True
 
@@ -19,9 +23,9 @@ USE_STORED_DATA = True
 # FOR BACKTESTING USING STORED DATA
 if USE_STORED_DATA:
     # If using stored data, the TICKERS variable can only be one ticker at a time, since the stored data file only contains data for one ticker
-    TICKERS = 'NVDA'
+    TICKERS = 'AAPL'
     'When changing the following line to use a diffrent file of data for reading, change the backtesting dates and period in the main.py file!!!'
-    STORED_DATA_TO_BE_READ = 'data/stored_data2/data_NVDA_backtest_2021-01-01--2025-10-25.csv'
+    STORED_DATA_TO_BE_READ = 'data/stored_data2/data_AAPL_backtest_2021-01-01--2025-10-25.csv'
     
 # 'sma' 'ema' 'sma_rsi' 'sma_rsi_macd'  'ema_rsi'
 # 'sentiment_strategy'
@@ -35,7 +39,7 @@ CHOSEN_STRATEGY = 'buy_and_hold'
 #CH#OSEN_STRATEGY = 'mlp'
 
 
-DATA_PATH_FOR_SENTIMENT_STRATEGY = '/Users/prakhar/Desktop/MA_trading_bot/sentiment_analysis/GDELT/trading_days_daily_output'
+DATA_PATH_FOR_SENTIMENT_STRATEGY = str(BASE_DIR / 'sentiment_analysis' / 'GDELT' / 'trading_days_daily_output')
 
 STORED_DATA2_DIR = os.path.join('data', 'stored_data2')
 
@@ -52,11 +56,11 @@ def _resolve_data_path(*candidates):
     # Fall back to the first candidate even if it does not exist
     return candidates[0]
 
-LOG_REG_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/lr_model_NVDA_2.joblib'
-RANDOM_FOREST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/rf_model_QQQ_13.joblib'
-XGBOOST_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/xgb_model_QQQ_13.joblib'
-MLP_MODEL_PATH_FOR_STRATEGY = f"/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/mlp_{model_number}.keras"
-MLP_SCALAR_PATH_FOR_STRATEGY = f'/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/mlp_scaler_{model_number}.pkl'
+LOG_REG_MODEL_PATH_FOR_STRATEGY = '/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/lr_model_AAPL_1.joblib'
+RANDOM_FOREST_MODEL_PATH_FOR_STRATEGY = str(BASE_DIR / 'ML' / 'saved_models' / 'rf_model_QQQ_13.joblib')
+XGBOOST_MODEL_PATH_FOR_STRATEGY = str(BASE_DIR / 'ML' / 'saved_models' / 'xgb_model_QQQ_13.joblib')
+MLP_MODEL_PATH_FOR_STRATEGY = str(BASE_DIR / 'ML' / 'saved_models' / f'mlp_{model_number}.keras')
+MLP_SCALAR_PATH_FOR_STRATEGY = str(BASE_DIR / 'ML' / 'saved_models' / f'mlp_scaler_{model_number}.pkl')
 
 
 
@@ -65,14 +69,16 @@ MLP_SCALAR_PATH_FOR_STRATEGY = f'/Users/prakhar/Desktop/MA_trading_bot/ML/saved_
 
 # =================================== TRAINING CONFIG ====================================
 model_name = 'lr'
-MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = '/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/lr_model_NVDA_2.joblib'
-MODEL_PATH_WHERE_MLP_MODEL_SHOULD_GET_SAVED = f"/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/mlp_{model_number}.keras"
-PATH_FOR_SAVING_MLP_SCALAR = f'/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/mlp_scaler_{model_number}.pkl'
-TICKER = 'NVDA'
-DATA_FOR_ML_MODEL_TRAINING = 'data/stored_data2/data_NVDA_train_test_2012-05-18--2020-12-31.csv'
+MODEL_PATH_WHERE_TRAINED_MODEL_SHOULD_GET_SAVED = '/Users/prakhar/Desktop/MA_trading_bot/ML/saved_models/lr_model_AAPL_1.joblib'
+MODEL_PATH_WHERE_MLP_MODEL_SHOULD_GET_SAVED = str(BASE_DIR / 'ML' / 'saved_models' / f'mlp_{model_number}.keras')
+PATH_FOR_SAVING_MLP_SCALAR = str(BASE_DIR / 'ML' / 'saved_models' / f'mlp_scaler_{model_number}.pkl')
+TICKER = 'AAPL'
+DATA_FOR_ML_MODEL_TRAINING = 'data/stored_data2/data_AAPL_train_test_2012-05-18--2020-12-31.csv'
 #DATA_FOR_ML_MODEL_TRAINING = '/Users/prakhar/Desktop/MA_trading_bot/data/stored_data/data_QQQ_train_2017-01-02--2022-12-30.csv'           # QQQ
 
-SENTIMENT_DATA_PATH_FOR_ML_MODEL_TRAINING_FEATURE = '/Users/prakhar/Desktop/MA_trading_bot/sentiment_analysis/GDELT/trading_days_daily_output/AAPL_1_sentiment_trading_days.csv'
+SENTIMENT_DATA_PATH_FOR_ML_MODEL_TRAINING_FEATURE = str(
+    BASE_DIR / 'sentiment_analysis' / 'GDELT' / 'trading_days_daily_output' / 'AAPL_1_sentiment_trading_days.csv'
+)
 
 
 if TRAINING_MODE:
@@ -142,7 +148,7 @@ ML_BATCH_SIZE = 32
 
 # =================================== BACKTESTING WITH FRESHLY NEW DOWNLOADED DATA ====================================
 if not USE_STORED_DATA:
-    TICKERS = 'NVDA'
+    TICKERS = 'AAPL'
     #TICKERS =  "JNJ,KO,PG,D"
     #TICKERS =  "MSFT,DIS,UNH,UPS"
     #TICKERS =  "TSLA,NVDA,ARKK,META"
@@ -182,16 +188,16 @@ ALPHA_VANTAGE_API_KEY = '9VTDPFM0O0LXNZ41'
 
 # Hardcoded folder paths for backtesting and API key
 #The csv folder paths in which the resepctive files should be saved in. 
-FOLDER_PATH_FOR_INDIVIDUAL_BACKTEST_TABLE = '/Users/prakhar/Desktop/MA_trading_bot/saved_files/csv_trial_files_backtesting'
-FOLDER_PATH_FOR_SUMMARY_BACKTEST_TABLE = '/Users/prakhar/Desktop/MA_trading_bot/saved_files/csv_summary_files_backtesting'
+FOLDER_PATH_FOR_INDIVIDUAL_BACKTEST_TABLE = str(BASE_DIR / 'saved_files' / 'csv_trial_files_backtesting')
+FOLDER_PATH_FOR_SUMMARY_BACKTEST_TABLE = str(BASE_DIR / 'saved_files' / 'csv_summary_files_backtesting')
 # The folder I want my excel file to be saved in
-FOLDER_PATH_FOR_EXCEL_FILE = '/Users/prakhar/Desktop/MA_trading_bot/saved_files/excel_trial_files_backtesting'
-FOLDER_PATH_FOR_CSV_FILE = '/Users/prakhar/Desktop/MA_trading_bot/saved_files/csv_trial_files_backtesting'
-FOLDER_PATH_FOR_SUMMARIZED_EXCEL_FILE = '/Users/prakhar/Desktop/MA_trading_bot/saved_files/excel_summary_files_backtesting'
-FOLDER_PATH_FOR_PDF_SUMMARIZED_BACKTESTING_FILE = '/Users/prakhar/Desktop/MA_trading_bot/saved_files/pdf_summary_files-backtesting'
+FOLDER_PATH_FOR_EXCEL_FILE = str(BASE_DIR / 'saved_files' / 'excel_trial_files_backtesting')
+FOLDER_PATH_FOR_CSV_FILE = str(BASE_DIR / 'saved_files' / 'csv_trial_files_backtesting')
+FOLDER_PATH_FOR_SUMMARIZED_EXCEL_FILE = str(BASE_DIR / 'saved_files' / 'excel_summary_files_backtesting')
+FOLDER_PATH_FOR_PDF_SUMMARIZED_BACKTESTING_FILE = str(BASE_DIR / 'saved_files' / 'pdf_summary_files-backtesting')
 #Here the last symbol should be '/' because I am combining this path with the file name and hence creating a new path where the html portly chart gets saved
 #OUTPUT_FOLDER_PATH_FOR_PLOTLY_CHART = '/Users/prakhar/Desktop/MA_trading_bot/saved_files/charts_plotted_portly' 
-OUTPUT_FOLDER_PATH_FOR_PLOTLY_CHART = '/Users/prakhar/Desktop/MA_trading_bot/automated_backtesting_results/backtesting_plots'
+OUTPUT_FOLDER_PATH_FOR_PLOTLY_CHART = str(BASE_DIR / 'automated_backtesting_results' / 'backtesting_plots')
 
 
 

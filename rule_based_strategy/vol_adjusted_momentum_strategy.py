@@ -10,6 +10,9 @@ def vol_adjusted_momentum_strategy(data, sma_short_period, sma_long_period, vol_
     - Buys when short SMA > long SMA (momentum up) and volatility is normal.
     - Sells when short SMA < long SMA (momentum down) and volatility is normal.
     - 'Normal' volatility means vol_lower <= volatility <= vol_upper.
+
+    Signals follow the len(data)+1 next-day execution convention: initial HOLD
+    plus potential trailing entry; execution happens on the following trading day.
     """
 
     sma_short = calculate_sma(data, sma_short_period)

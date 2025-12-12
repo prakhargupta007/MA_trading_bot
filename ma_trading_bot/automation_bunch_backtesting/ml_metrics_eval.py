@@ -1,3 +1,10 @@
+"""
+Load trained ML artifacts and compute evaluation metrics on the held-out set.
+
+Used by automation to embed condensed metrics into summary outputs. Behaviour
+matches existing training data preparation paths.
+"""
+
 import importlib
 from typing import Optional, Sequence
 

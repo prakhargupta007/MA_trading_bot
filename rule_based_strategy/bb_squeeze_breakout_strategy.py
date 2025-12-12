@@ -29,6 +29,9 @@ def bb_squeeze_breakout_strategy(
        - Current close < lower band
 
     3. Ensures signal length EXACTLY matches data length.
+
+    Signals follow the len(data)+1 next-day execution convention used across the
+    system (initial HOLD, potential trailing entry, execution next day).
     """
 
     bb_upper, bb_lower, bb_mid = calculate_bollinger_bands(data, bb_window, bb_std_dev)

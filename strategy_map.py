@@ -1,3 +1,9 @@
+"""
+Central registry mapping strategy keys to implementations.
+
+All strategies follow the next-day execution convention (signals may be len(data)+1).
+"""
+
 # =====================================
 # strategy_map.py
 # =====================================

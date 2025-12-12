@@ -1,9 +1,7 @@
 __pycache__/
 *.pyc 
 /saved_files/
-/automated_backtesting_results/backtesting_plots/
-/automated_backtesting_results/backtesting_portfolio_plots/
-/automated_backtesting_results/full_backtesting_tables_excel/
+/automated_backtesting_results/
 /sentiment_analysis/GDELT/daily_output_folder/
 /sentiment_analysis/GDELT/full_output_folder/
 /sentiment_analysis/GDELT/trading_days_daily_output/

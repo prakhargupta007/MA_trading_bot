@@ -1,3 +1,7 @@
+"""
+Utility to persist per-ticker backtest actions to CSV and return a printable table.
+"""
+
 import csv 
 from tabulate import tabulate 
 import pandas as pd
@@ -7,6 +11,7 @@ from config import FOLDER_PATH_FOR_INDIVIDUAL_BACKTEST_TABLE
 FOLDER_PATH = FOLDER_PATH_FOR_INDIVIDUAL_BACKTEST_TABLE
 
 def create_and_save_backtest_table_csv_file(backtesting_results, ticker):
+    """Save action-level backtest results to CSV and return a tabulated preview."""
     actions, dates, numbers, prices, cash_flows, trades_df = backtesting_results
 
 
@@ -29,4 +34,3 @@ def create_and_save_backtest_table_csv_file(backtesting_results, ticker):
     backtest_table = tabulate(df, headers='keys', tablefmt='grid')
 
     return backtest_table
-

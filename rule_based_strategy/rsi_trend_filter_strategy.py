@@ -9,6 +9,9 @@ def rsi_trend_filter_strategy(data, sma_long_period, rsi_period, rsi_overbought,
     - Trades RSI signals only when aligned with the long-term trend (SMA200).
     - Long-term uptrend: Close > SMA200 -> buy when RSI < rsi_oversold.
     - Long-term downtrend: Close < SMA200 -> sell when RSI > rsi_overbought.
+
+    Signals follow the len(data)+1 next-day execution convention: initial HOLD
+    plus potential trailing entry; execution happens on the following trading day.
     """
 
     sma_long = calculate_sma(data, sma_long_period)

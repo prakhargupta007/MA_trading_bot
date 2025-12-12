@@ -1,3 +1,5 @@
+"""Fetch historical price data from Alpha Vantage (daily)."""
+
 from config import ALPHA_VANTAGE_API_KEY
 
 from alpha_vantage.timeseries import TimeSeries

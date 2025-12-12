@@ -8,6 +8,9 @@ def bollinger_mean_reversion_strategy(data, bb_window, bb_std_dev, **kwargs):
     - Buy when price < lower Bollinger Band.
     - Sell when price > upper Bollinger Band.
     - Hold otherwise.
+
+    Signals follow the len(data)+1 next-day execution convention: initial HOLD
+    plus potential trailing entry; execution happens on the following trading day.
     """
 
     bb_upper, bb_lower, bb_mid = calculate_bollinger_bands(data, bb_window, bb_std_dev)

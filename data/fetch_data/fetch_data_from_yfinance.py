@@ -1,7 +1,13 @@
+"""Fetch historical price data from yfinance."""
+
 import yfinance as yf
 import pandas as pd
 
 def fetch_data_from_yfinance(ticker, option_1_chosen, backtesting_period, end_of_backtesting, start_of_backtesting):   
+    """
+    Download OHLCV data for a ticker, handling both relative (period) and absolute date ranges.
+    Returns a DataFrame indexed by Date with numeric Close values.
+    """
     try:
         if option_1_chosen:
             # Calculate start and end dates

@@ -24,6 +24,9 @@ def sentiment_strategy(
 
     Returns:
         list[str]: List of trading signals ('BUY', 'SELL', 'HOLD') for each trading day.
+
+    Signals follow the len(data)+1 next-day execution convention: initial HOLD
+    plus potential trailing entry; execution happens on the following trading day.
     """
 
     # --- Load sentiment data ---

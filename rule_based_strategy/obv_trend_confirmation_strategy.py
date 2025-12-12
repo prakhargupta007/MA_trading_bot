@@ -8,6 +8,9 @@ def obv_trend_confirmation_strategy(data, sma_period, **kwargs):
     OBV Trend Confirmation Strategy
     - Buys when price > SMA and OBV is rising (volume confirms uptrend).
     - Sells when price < SMA and OBV is falling (volume confirms downtrend).
+
+    Signals follow the len(data)+1 next-day execution convention: initial HOLD
+    plus potential trailing entry; execution happens on the following trading day.
     """
 
     sma = calculate_sma(data, sma_period)

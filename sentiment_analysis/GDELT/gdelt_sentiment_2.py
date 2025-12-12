@@ -1,3 +1,4 @@
+# This is the ticker configuration for all tickers except for QQQ
 '''
 TICKER_CONFIG = {
     "AAPL": {

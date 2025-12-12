@@ -23,4 +23,4 @@ def generate_sentiment_score_feature_list(target_index, sentiment_data_path_for_
 # Through the categorial method  positive sentiment of score of 0.51 and 0.99 would get the same treatment but in this method the 0.99 would have a higher weightage than 0.51
 # This conversion into continous values is done for ML models
 # this conversion into continous values makes sense because the ML model ccan also learn the pattern or impact of the strength of the sentiment and potentially lead to better signal prediction.
-# This conversion could also be helpful in the rule based sentiment strategy as it could determine the position sizing based on sentiment strength, however  haven't implemented that yet and the categorial method is being used there. 
+# This conversion could also be helpful in the rule based sentiment strategy as it could determine the position sizing based on sentiment strength, however I haven't implemented that yet and the categorial method is being used there. 
