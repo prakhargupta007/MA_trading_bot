@@ -21,6 +21,7 @@ The system is modular, extensible, and designed for research-level experimentati
 
 # 🔥 Recruiter-Friendly Project Summary
 
+
 This project demonstrates the complete lifecycle of designing, evaluating, and automating quantitative trading strategies.  
 It integrates **data engineering**, **machine learning**, **sentiment modeling**, and a fully custom **backtesting engine** — all implemented from scratch.
 
@@ -87,7 +88,7 @@ flowchart TD
     K --> L[Export CSV/Excel/PDF Summaries]
 
 
-
+```
 
 MA_trading_bot/
 ├── main.py                           # Fetch → Indicators → Signals → Backtest → Reports
@@ -119,7 +120,7 @@ MA_trading_bot/
 └── README.md                         # This file
 
 
-
+---
 
 # 📘 Strategies
 
