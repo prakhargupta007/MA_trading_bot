@@ -1,7 +1,6 @@
 __pycache__/
 *.pyc 
 /saved_files/
-/automated_backtesting_results/
 /sentiment_analysis/GDELT/daily_output_folder/
 /sentiment_analysis/GDELT/full_output_folder/
 /sentiment_analysis/GDELT/trading_days_daily_output/
@@ -17,3 +16,4 @@ __pycache__/
 *.pkl
 *.h5
 *.keras
+*.html
