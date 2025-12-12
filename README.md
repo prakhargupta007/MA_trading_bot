@@ -124,7 +124,7 @@ MA_trading_bot/
 
 ## **Rule-Based Strategies**
 - SMA / EMA crossovers  
-- SMA-RSI / EMA-RSI hybrids  
+- SMA-RSI / EMA-RSI hybrids
 - SMA-RSI-MACD  
 - RSI trend filter  
 - MACD trend following  
@@ -253,7 +253,7 @@ Feature selection may be overridden with:
 # ▶️ Running the Project
 
 ## **Single Backtest**
-```bash
+bash
 python main.py
 
 ## **Train models**
