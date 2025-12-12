@@ -21,7 +21,6 @@ The system is modular, extensible, and designed for research-level experimentati
 
 # 🔥 Recruiter-Friendly Project Summary
 
-
 This project demonstrates the complete lifecycle of designing, evaluating, and automating quantitative trading strategies.  
 It integrates **data engineering**, **machine learning**, **sentiment modeling**, and a fully custom **backtesting engine** — all implemented from scratch.
 
@@ -68,6 +67,7 @@ This repo reflects real quant workflow experience, not toy examples.
 
 # 🏗️ Architecture Diagram
 
+```mermaid
 flowchart TD
     A[Load Config] --> B[Fetch or Load Price Data]
     B --> C[Compute Indicators]
@@ -85,38 +85,38 @@ flowchart TD
     I --> J[Performance Metrics]
     J --> K[Plot Results (Plotly/Matplotlib)]
     K --> L[Export CSV/Excel/PDF Summaries]
+```
 
-
-
+```text
 MA_trading_bot/
-├── main.py                           # Fetch → Indicators → Signals → Backtest → Reports
-├── rule_based_strategy/              # SMA, EMA, RSI, MACD, BB, OBV, sentiment, buy & hold
+├── main.py                           
+├── rule_based_strategy/              
 ├── ML/
-│   ├── ML_strategy/                  # LR, RF, XGB, MLP, Perfect Strategy
-│   ├── train_models/                 # Training scripts for ML models
-│   ├── saved_models/                 # Serialized model artifacts
-│   └── ml_feature_store.py           # Feature column resolver
+│   ├── ML_strategy/                  
+│   ├── train_models/                 
+│   ├── saved_models/                 
+│   └── ml_feature_store.py           
 ├── data/
-│   ├── fetch_data/                   # Yahoo/AlphaVantage loaders
-│   ├── stored_data2/                 # Offline price CSVs (2021–2025)
-│   └── funcs_for_data_prep_for_ML/   # Feature engineering, labeling, scaling
+│   ├── fetch_data/                   
+│   ├── stored_data2/                 
+│   └── funcs_for_data_prep_for_ML/   
 ├── sentiment_analysis/
 │   └── GDELT/
-│       ├── gdelt_sentiment_2.py      # Main pipeline for sentiment scoring
-│       ├── load_sentiment_data.py    # Aligns sentiment to trading days
+│       ├── gdelt_sentiment_2.py      
+│       ├── load_sentiment_data.py    
 │       ├── daily_output/             
 │       ├── full_output/              
 │       └── trading_days_daily_output/
-├── indicators/                       # Technical indicators
+├── indicators/                       
 ├── ma_trading_bot/
-│   ├── backtest/                     # Engine, fees, slippage, summaries
-│   ├── automation_bunch_backtesting/ # JSON-driven batch experiments
-│   └── plotly_plot_backtesting/      # Equity & signal charts
-├── risk_management/                  # Stop-loss modules
-├── metrics/                          # Sharpe, Sortino, MDD, IR, CAGR
-├── config.py                         # Runtime configuration
-└── README.md                         # This file
-
+│   ├── backtest/                     
+│   ├── automation_bunch_backtesting/ 
+│   └── plotly_plot_backtesting/      
+├── risk_management/                  
+├── metrics/                          
+├── config.py                         
+└── README.md                         
+```
 
 ---
 
@@ -124,7 +124,7 @@ MA_trading_bot/
 
 ## **Rule-Based Strategies**
 - SMA / EMA crossovers  
-- SMA-RSI / EMA-RSI hybrids
+- SMA-RSI / EMA-RSI hybrids  
 - SMA-RSI-MACD  
 - RSI trend filter  
 - MACD trend following  
@@ -143,7 +143,7 @@ MA_trading_bot/
 - Random Forest  
 - XGBoost  
 - MLP (TensorFlow/Keras)  
-- Perfect Strategy (upper bound benchmark)  
+- Perfect Strategy  
 
 All ML strategies support:
 - feature prep  
@@ -158,10 +158,10 @@ All ML strategies support:
 
 - Fetch news from GDELT  
 - Filter using ticker keyword lists  
-- Score with **CardiffNLP RoBERTa**  
+- Score with CardiffNLP RoBERTa  
 - Aggregate daily sentiment  
 - Align with trading-day calendars  
-- Export into `daily_output/`, `full_output/`, `trading_days_daily_output/`
+- Export into sentiment folders  
 
 Only “2” versions of files (e.g. `AAPL_2_sentimentfull.csv`) are used.
 
@@ -173,7 +173,7 @@ Located in `ma_trading_bot/backtest/`.
 
 Features:
 
-- **Next-day execution** (core design)  
+- Next-day execution  
 - Fractional shares  
 - Transaction costs  
 - Slippage modeling  
@@ -199,18 +199,18 @@ Metrics include:
 Training scripts handle:
 
 - feature generation  
-- Train/test splitting  
+- train/test splits  
 - scaling  
-- model fitting  
+- fitting  
 - evaluation  
 - saving artifacts  
 
 Inference strategies:
 
 - rebuild features  
-- load saved models  
+- load saved model  
 - classify signals  
-- apply position rules  
+- apply rules  
 
 ---
 
@@ -218,10 +218,10 @@ Inference strategies:
 
 `automate_train_and_backtest.py` provides:
 
-- multi-ticker batch testing  
-- multiple feature-set experiments  
-- training + backtesting loops  
-- consolidated Excel reports with hyperlinks  
+- multi-ticker testing  
+- multi-feature-set experiments  
+- training + backtesting  
+- consolidated Excel reports  
 
 Driven by JSON configs.
 
@@ -229,7 +229,7 @@ Driven by JSON configs.
 
 # 🔧 Configuration
 
-`config.py` controls:
+`config.py` controls strategy settings:
 
 - tickers  
 - strategy selection  
@@ -242,62 +242,37 @@ Driven by JSON configs.
 - model artifact paths  
 - starting capital  
 
-Feature selection may be overridden with:
-
-
-
-
-
 ---
 
 # ▶️ Running the Project
 
 ## **Single Backtest**
-bash
+```bash
 python main.py
+```
 
 ## **Train models**
+```bash
 python -m ML.train_models.train_logistic_regression
 python -m ML.train_models.train_random_forest
 python -m ML.train_models.train_xgboost
 python -m ML.train_models.train_mlp
+```
 
 ## **Batch Experiments**
+```bash
 python -m ma_trading_bot.automation_bunch_backtesting.automate_train_and_backtest
+```
 
 ## **Installing Dependencies**
+```bash
 pip install -r requirements.txt
+```
 
-## **Dependency List**
-alpha_vantage
-fpdf2
-joblib
-keras
-matplotlib
-numpy
-openpyxl
-pandas
-plotly
-requests
-scikit-learn
-seaborn
-ta
-TA-Lib
-tabulate
-tensorflow
-torch
-transformers
-xgboost
-yfinance
-
-
-
-
+---
 
 # ⚠️ Disclaimer
-This project is for research and educational use only.
-It is not investment advice and should not be used for live trading.
-
+This project is for research and educational use only.  
 
 # 📄 License
 Academic and research use only.
