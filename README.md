@@ -1,7 +1,7 @@
 # MA Trading Bot  
 ![Python](https://img.shields.io/badge/python-3.10+-blue.svg)
 ![Status](https://img.shields.io/badge/project-Maturaarbeit-orange)
-![Models](https://img.shields.io/badge/strategies-ML%20%7C%20Rule--Based-blue)
+![Models](https://img.shields.io/badge/strategies-ML%20%7C%20Rule--Based%20%7C%20-Sentiment--Based-red)
 ![Backtester](https://img.shields.io/badge/backtester-next--day--execution-green)
 
 A full algorithmic trading research toolkit developed as part of my Maturaarbeit.  
