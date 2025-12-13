@@ -2,8 +2,8 @@ __pycache__/
 *.pyc 
 /saved_files/
 /ML/saved_models/
-automated_backtesting_results/backtestsing_plots
-automated_backtesting_results/backtestsing_portfolio_plots
+automated_backtesting_results/backtesting_plots
+automated_backtesting_results/backtesting_portfolio_plots
 __pycache__/
 .venv/
 *.csv
