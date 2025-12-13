@@ -1,13 +1,9 @@
 __pycache__/
 *.pyc 
 /saved_files/
-/sentiment_analysis/GDELT/daily_output_folder/
-/sentiment_analysis/GDELT/full_output_folder/
-/sentiment_analysis/GDELT/trading_days_daily_output/
-/sentiment_analysis/stock_news_api/output_stocknewsapi/
 /ML/saved_models/
-ML/
-sentiment_analysis/
+automated_backtesting_results/backtestsing_plots
+automated_backtesting_results/backtestsing_portfolio_plots
 __pycache__/
 .venv/
 *.csv
